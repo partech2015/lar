@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "lar"
+version = "0.1.0"
+description = "Lár: A 'Define-by-Run' Agentic Framework."
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [
+    { include = "lar", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"  # <-- THIS IS THE FIX (changed from ^3.9)
+google-generativeai = "^0.5.0" # Added your main LLM dependency
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.2"
+python-dotenv = "^1.0.1"
+streamlit = "^1.30.0"
+graphviz = "^0.20.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
