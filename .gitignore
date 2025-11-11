@@ -1,1 +1,2 @@
-
+# Ignore the Google Cloud service account key
+firestore-key.json

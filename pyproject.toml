@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "lar"
 version = "0.1.0"
-description = "Lár: A 'Define-by-Run' Agentic Framework."
+description = "Lár: The PyTorch for Agents. A 'define-by-run' agentic framework."
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 packages = [
@@ -9,14 +9,17 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"  # <-- THIS IS THE FIX (changed from ^3.9)
-google-generativeai = "^0.5.0" # Added your main LLM dependency
+python = "^3.10"
+google-generativeai = "^0.7.2"
+firebase-admin = "^6.5.0"
+fastapi = "^0.111.1"  # <-- PRODUCTION DEPENDENCY
+uvicorn = "^0.30.3"   # <-- PRODUCTION DEPENDENCY
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
 python-dotenv = "^1.0.1"
-streamlit = "^1.30.0"
-graphviz = "^0.20.1"
+streamlit = "^1.37.0"
+graphviz = "^0.20.3"
 
 [build-system]
 requires = ["poetry-core"]

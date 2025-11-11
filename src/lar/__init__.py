@@ -1,5 +1,3 @@
-# src/lar/__init__.py
-
 """
 Lár: A "Define-by-Run" Agentic Framework.
 This file makes the core classes available for easy import.
@@ -13,7 +11,8 @@ from .node import (
     PrintStateNode, 
     LLMNode, 
     RouterNode,
-    ToolNode      # <-- Add your new node here
+    ToolNode,
+    ClearErrorNode  # <-- ADDED THIS
 )
 from .executor import GraphExecutor
 
@@ -25,6 +24,7 @@ __all__ = [
     "PrintStateNode",
     "LLMNode",
     "RouterNode",
-    "ToolNode",     # <-- And here
+    "ToolNode",
+    "ClearErrorNode", # <-- AND ADDED THIS
     "GraphExecutor",
 ]
