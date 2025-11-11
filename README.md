@@ -12,11 +12,11 @@ This framework provides a deterministic, stateful, and node-based system for orc
 
 The primary challenge in production-grade AI is a lack of traceability. When a multi-step agent fails, it's often impossible to determine *why*.
 
-  * **The "Black Box" (Chain-based):** Logic is defined in a single, monolithic chain. The entire sequence is executed at once. State is implicit, and debugging requires external, often paid, tracing tools.
+  * **The "Black Box" (Other Frameworks):** Relies on a "magic" `AgentExecutor` that tries to do everything at once. When this magic fails, it's a complex black box that is nearly impossible to debug.
 
-  * **The "Glass Box" (Lár):** Logic is encapsulated in discrete **Nodes** (`LLMNode`, `ToolNode`, `RouterNode`). An **Executor** runs one node at a time. The executor's primary job is to produce a detailed `history` log of every state change, which you can visualize in real-time.
+  * **The "Glass Box" (Lár):**  Lár is, by design, a simple, explicit loop. The `GraphExecutor` runs one node at a time, logs the exact state change, and then pauses.
 
-This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the *diff* of the state at every transition, and pinpoint the exact node where logic failed.
+This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the diff of the state at every transition, and pinpoint the exact node where logic failed. Lár's "flight data recorder" (`history`) isn't an add-on; it's the core output of the engine.
 
 ## Key Features
 
