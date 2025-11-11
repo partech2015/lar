@@ -1,8 +1,12 @@
 import uvicorn
 from fastapi import FastAPI, BackgroundTasks, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import os
 import datetime
+from typing import Dict, Any, List
+import time
+
+# --- Firestore Imports ---
 import firebase_admin
 from firebase_admin import credentials, firestore
 
@@ -17,10 +21,11 @@ from lar import (
     GraphState,
     ClearErrorNode
 )
+from lar.utils import compute_state_diff
 
 # --- Load API Keys (from .env) ---
-# (FastAPI doesn't load .env automatically, but uvicorn can.
-# For simplicity, we'll assume they are set in the environment)
+from dotenv import load_dotenv
+load_dotenv()
 if not os.getenv("GOOGLE_API_KEY"):
     print("WARNING: GOOGLE_API_KEY not found in .env file.")
 
@@ -35,9 +40,9 @@ try:
     print("Successfully connected to Firestore.")
 except Exception as e:
     print(f"FATAL: Failed to connect to Firestore: {e}")
+    db_client = None
 
-# === Agent Components (Copied from snath_app.py) ===
-# All your "lar" logic is re-used here
+# === Agent "Tool" & "Logic" Registries ===
 
 def run_generated_code(code_string: str) -> str:
     try:
@@ -47,65 +52,111 @@ def run_generated_code(code_string: str) -> str:
                 code_string = code_string.rsplit("\n", 1)[0]
         local_scope = {}
         exec(code_string, {}, local_scope)
-        if 'add_five' not in local_scope:
-            raise NameError("The function 'add_five' was not defined.")
+        if 'add_five' not in local_scope: raise NameError("func 'add_five' not defined")
         func = local_scope['add_five']
         result = func(10)
-        if result != 15:
-            raise ValueError(f"Logic error: Expected 15, but got {result}")
+        if result != 15: raise ValueError(f"Logic error: Expected 15, got {result}")
         return "Success!"
     except Exception as e:
         raise e
 
-def judge_function(state: GraphState) -> str:
-    if state.get("last_error"):
-        return "failure"
-    else:
-        return "success"
+def judge_code_function(state: GraphState) -> str:
+    return "failure" if state.get("last_error") else "success"
 
-def build_agent_graph(writer_prompt: str) -> BaseNode:
-    success_node = AddValueNode(key="final_status", value="SUCCESS", next_node=None)
-    critical_fail_node = AddValueNode(key="final_status", value="CRITICAL_FAILURE", next_node=None)
-    tester_node = ToolNode(
-        tool_function=run_generated_code,
-        input_keys=["code_string"], output_key="test_result",
-        next_node=None, error_node=None
-    )
-    clear_error_node = ClearErrorNode(next_node=tester_node)
-    corrector_node = LLMNode(
-        model_name="gemini-2.5-pro",
-        prompt_template="""
-        Your last attempt to write a Python function failed.
-        CODE: {code_string}
-        ERROR: {last_error}
-        Please fix the code and ONLY output the complete, corrected Python function.
-        """,
-        output_key="code_string",
-        next_node=clear_error_node
-    )
-    judge_node = RouterNode(
-        decision_function=judge_function,
-        path_map={ "success": success_node, "failure": corrector_node },
-        default_node=critical_fail_node
-    )
-    tester_node.next_node = judge_node
-    tester_node.error_node = judge_node
-    writer_node = LLMNode(
-        model_name="gemini-2.5-pro",
-        prompt_template=writer_prompt,
-        output_key="code_string",
-        next_node=tester_node
-    )
-    return writer_node
+def plan_router_function(state: GraphState) -> str:
+    plan = state.get("plan", "").strip().upper()
+    return "CODE" if "CODE" in plan else "TEXT"
 
-# === The "Headless" Agent Executor ===
-# This is what runs in the background
+TOOL_REGISTRY = { "run_generated_code": run_generated_code }
+LOGIC_REGISTRY = {
+    "judge_code_function": judge_code_function,
+    "plan_router_function": plan_router_function,
+}
 
-def run_agent_in_background(run_id: str, task: str, writer_prompt: str):
+# === THIS IS THE FIX (v2.1) ===
+def build_graph_from_json(graph_definition: dict) -> BaseNode:
     """
-    This is the function that does the actual work.
-    It will run the agent and save every step to Firestore.
+    Parses a JSON-defined graph and constructs the Lár node objects.
     """
+    nodes = {}
+    
+    # We get the 'nodes' dictionary *from* the graph definition
+    nodes_config = graph_definition.get("nodes", {})
+    
+    # First pass: create all the node objects
+    for node_id, config in nodes_config.items(): # <-- FIX: Iterate over nodes_config
+        node_type = config["type"]
+        
+        if node_type == "LLMNode":
+            nodes[node_id] = LLMNode(
+                model_name=config["model_name"],
+                prompt_template=config["prompt_template"],
+                output_key=config["output_key"],
+                next_node=None
+            )
+        elif node_type == "ToolNode":
+            tool_func = TOOL_REGISTRY.get(config["tool_function_name"])
+            if not tool_func: raise ValueError(f"Tool '{config['tool_function_name']}' not found.")
+            
+            nodes[node_id] = ToolNode(
+                tool_function=tool_func,
+                input_keys=config["input_keys"],
+                output_key=config["output_key"],
+                next_node=None,
+                error_node=None
+            )
+        elif node_type == "RouterNode":
+            logic_func = LOGIC_REGISTRY.get(config["decision_function_name"])
+            if not logic_func: raise ValueError(f"Logic func '{config['decision_function_name']}' not found.")
+            
+            nodes[node_id] = RouterNode(
+                decision_function=logic_func,
+                path_map={},
+                default_node=None
+            )
+        elif node_type == "ClearErrorNode":
+            nodes[node_id] = ClearErrorNode(next_node=None)
+        elif node_type == "AddValueNode":
+            nodes[node_id] = AddValueNode(
+                key=config["key"],
+                value=config["value"],
+                next_node=None
+            )
+    
+    # Second pass: link all the nodes together
+    for node_id, config in nodes_config.items(): # <-- FIX: Iterate over nodes_config
+        current_node = nodes.get(node_id)
+        if not current_node: continue
+            
+        # We need to check the type of `current_node` before accessing `type`
+        current_node_type = config.get("type")
+
+        if config.get("next_node"):
+            current_node.next_node = nodes.get(config["next_node"])
+            
+        if current_node_type == "ToolNode" and config.get("error_node"):
+            current_node.error_node = nodes.get(config["error_node"])
+            
+        if current_node_type == "RouterNode":
+            if config.get("default_node"):
+                current_node.default_node = nodes.get(config["default_node"])
+            for key, target_node_id in config.get("path_map", {}).items():
+                current_node.path_map[key] = nodes.get(target_node_id)
+
+    # The graph must have an "entry_point" defined
+    entry_point_id = graph_definition.get("entry_point")
+    if not entry_point_id:
+        raise ValueError("Graph definition is missing 'entry_point'.")
+    
+    start_node = nodes.get(entry_point_id)
+    if not start_node:
+        raise ValueError(f"Entry point '{entry_point_id}' not found in nodes.")
+
+    return start_node
+# === END FIX ===
+
+# === Headless Executor (Unchanged) ===
+def run_agent_in_background(run_id: str, agent_id: str, initial_state: dict):
     if not db_client:
         print(f"Error: Firestore not connected. Cannot run agent for {run_id}.")
         return
@@ -113,83 +164,102 @@ def run_agent_in_background(run_id: str, task: str, writer_prompt: str):
     run_ref = db_client.collection("agent_runs").document(run_id)
     
     try:
-        # 1. Build the graph
-        full_prompt = writer_prompt.format(task=task)
-        start_node = build_agent_graph(full_prompt)
+        agent_doc = db_client.collection("agents").document(agent_id).get()
+        if not agent_doc.exists:
+            raise ValueError(f"Agent blueprint '{agent_id}' not found.")
+        
+        graph_definition = agent_doc.to_dict().get("graph")
+        
+        start_node = build_graph_from_json(graph_definition)
         executor = GraphExecutor()
         
-        # 2. Run the generator step-by-step
-        for step_log in executor.run_step_by_step(start_node, {"task": task}):
+        for step_log in executor.run_step_by_step(start_node, initial_state):
             print(f"  [Run {run_id}] Step {step_log['step']}: {step_log['node']}...")
-            # Save each step to the database as it happens
-            run_ref.update({"history": firestore.ArrayUnion([step_log])})
+            step_doc_id = f"step_{step_log['step']}"
+            step_data_to_save = {k: v for k, v in step_log.items() if k != 'state_before'}
+            run_ref.collection("steps").document(step_doc_id).set(step_data_to_save)
         
         print(f"[Run {run_id}] ...Finished.")
         run_ref.update({"status": "completed"})
 
     except Exception as e:
         print(f"[Run {run_id}] ...CRITICAL FAILURE: {e}")
-        run_ref.update({"status": "failed", "error": str(e)})
+        run_ref.update({"status": "failed", "final_error": str(e)})
 
+# === API Endpoints (Unchanged) ===
+app = FastAPI(title="Snath.ai API (v2.1)", version="2.1")
 
-# === The API Endpoints ===
-
-# This creates our FastAPI app
-app = FastAPI(title="Snath.ai API", version="1.0")
-
+class CreateAgentRequest(BaseModel):
+    agent_name: str
+    graph: Dict[str, Any]
+    
 class AgentRunRequest(BaseModel):
-    task: str
-    writer_prompt: str
+    user_id: str = Field(..., example="user_aadithya")
+    initial_data: Dict[str, Any] = Field(..., example={"task": "Fix this code..."})
 
-@app.post("/agents/run")
-def start_agent_run(request: AgentRunRequest, background_tasks: BackgroundTasks):
-    """
-    Starts a new agent run in the background.
-    """
+@app.post("/agents")
+def create_agent(request: CreateAgentRequest):
     if not db_client:
         raise HTTPException(status_code=500, detail="Firestore not connected")
-    
-    # 1. Create a new document in Firestore to get a Run ID
-    run_ref = db_client.collection("agent_runs").document()
-    run_id = run_ref.id
-    
-    run_ref.set({
-        "task_summary": request.task[:50] + "...",
-        "timestamp": firestore.SERVER_TIMESTAMP,
-        "status": "running",
-        "history": []
-    })
-    
-    # 2. Add the *actual* agent run as a background task
-    # This lets the API return a response *immediately*
-    background_tasks.add_task(
-        run_agent_in_background,
-        run_id=run_id,
-        task=request.task,
-        writer_prompt=request.writer_prompt
-    )
-    
-    # 3. Return the Run ID to the user instantly
-    return {"message": "Agent run started", "run_id": run_id}
-
-@app.get("/agents/run/{run_id}")
-def get_agent_run(run_id: str):
-    """
-    Gets the status and history of a specific agent run.
-    """
-    if not db_client:
-        raise HTTPException(status_code=500, detail="Firestore not connected")
-        
     try:
-        run_doc = db_client.collection("agent_runs").document(run_id).get()
-        if not run_doc.exists:
-            raise HTTPException(status_code=404, detail="Run not found")
-        
-        return run_doc.to_dict()
+        agent_ref = db_client.collection("agents").document(request.agent_name)
+        agent_ref.set({
+            "agent_name": request.agent_name,
+            "graph": request.graph,
+            "created_at": firestore.SERVER_TIMESTAMP
+        })
+        return {"message": "Agent blueprint saved", "agent_id": agent_ref.id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# This is the command to run the server
+@app.post("/agents/{agent_id}/run")
+def start_agent_run(agent_id: str, request: AgentRunRequest, background_tasks: BackgroundTasks):
+    if not db_client:
+        raise HTTPException(status_code=500, detail="Firestore not connected")
+    
+    run_ref = db_client.collection("agent_runs").document()
+    run_id = run_ref.id
+    
+    initial_state = request.initial_data
+    initial_state["run_id"] = run_id
+    initial_state["user_id"] = request.user_id
+    
+    run_ref.set({
+        "task_summary": initial_state.get("task", "No task")[:50] + "...",
+        "timestamp": firestore.SERVER_TIMESTAMP,
+        "status": "pending",
+        "agent_id": agent_id,
+        "user_id": request.user_id,
+        "initial_state": initial_state
+    })
+    
+    background_tasks.add_task(
+        run_agent_in_background,
+        run_id=run_id,
+        agent_id=agent_id,
+        initial_state=initial_state
+    )
+    
+    return {"message": "Agent run queued", "run_id": run_id}
+
+@app.get("/agents/run/{run_id}")
+def get_agent_run(run_id: str):
+    if not db_client:
+        raise HTTPException(status_code=500, detail="Firestore not connected")
+    try:
+        run_doc_ref = db_client.collection("agent_runs").document(run_id)
+        run_doc = run_doc_ref.get()
+        if not run_doc.exists:
+            raise HTTPException(status_code=404, detail="Run not found")
+        
+        run_data = run_doc.to_dict()
+        
+        steps_ref = run_doc_ref.collection("steps").order_by("step").stream()
+        run_data["steps"] = [step.to_dict() for step in steps_ref]
+        
+        return run_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
-

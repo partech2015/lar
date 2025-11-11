@@ -1,2 +1,55 @@
-# Ignore the Google Cloud service account key
+--- Secrets ---
+
+This is the most important section.
+
+Never commit your API keys or environment files.
+
+.env
 firestore-key.json
+
+--- Python ---
+
+Bytecode and cache
+
+pycache/
+*.pyc
+*.pyo
+*.pyd
+
+Poetry virtual environment
+
+.venv/
+
+--- IDE / OS Specific ---
+
+macOS
+
+.DS_Store
+
+VSCode
+
+.vscode/
+
+PyCharm / IntelliJ
+
+.idea/
+
+--- Testing ---
+
+Pytest cache (in case you add tests later)
+
+.pytest_cache/
+coverage.xml
+htmlcov/
+
+--- Streamlit ---
+
+Streamlit's config and cache
+
+.streamlit/
+
+--- Build Artifacts ---
+
+dist/
+build/
+*.egg-info/
