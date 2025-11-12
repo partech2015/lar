@@ -28,7 +28,7 @@ This "define-by-run" approach transforms debugging from an art into a science. Y
 
   * **Testable Units:** Every node is a standalone class. You can unit test your `ToolNode` (your "hands") and your `RouterNode` (your "logic") completely independently of an LLM call.
 
-  * **`Snath` Visualizer:** A built-in Streamlit app (`snath_app.py`) that provides a live, step-by-step, interactive debugger for your agents.
+  * **`Snath™` Visualizer:** A built-in Streamlit app (`snath_app.py`) that provides a live, step-by-step, interactive debugger for your agents.
 
 -----
 
@@ -52,7 +52,7 @@ This project is managed with [Poetry](https://python-poetry.org/).
 
 -----
 
-## Quick Start: The `Snath` Visualizer
+## Quick Start: The `Snath™` Visualizer
 
 The best way to understand `lar` is to use the interactive `Snath` debugger.
 
@@ -168,13 +168,13 @@ tester_node.error_node = judge_node
 
 -----
 
-## Project Vision: `lar` & `Snath`
+## Project Vision: `lar` & `Snath™`
 
 This project follows a professional Open-Core model.
 
   * **`lar` (The Core Engine):** This repository. The `lar` library is, and always will be, free and open-source (MIT License). It is the core framework for building and running agents.
 
-  * **`Snath` (The Commercial Platform):** The future commercial, managed platform for teams and enterprises, available at **`snath.ai`**. `Snath` will provide a hosted, collaborative environment for deploying, managing, monitoring, and debugging `lar`-based agents at scale. The `snath_app.py` in this repo is the first prototype of this platform.
+  * **`Snath™` (The Commercial Platform):** The future commercial, managed platform for teams and enterprises, available at **`snath.ai`**. `Snath™` will provide a hosted, collaborative environment for deploying, managing, monitoring, and debugging `lar`-based agents at scale. The `snath_app.py` in this repo is the first prototype of this platform.
 
 ## Contributing
 
