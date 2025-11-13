@@ -273,7 +273,7 @@ def reconstruct_history(initial_state: dict, steps: list) -> list:
 
 # === Streamlit App UI ===
 
-st.set_page_config(layout="wide", page_title="Snath (powered by Lár)")
+st.set_page_config(layout="wide", page_title="Snath™ (powered by Lár)")
 
 # Initialize session state
 if "executor" not in st.session_state:
@@ -286,7 +286,7 @@ if "mode" not in st.session_state:
     st.session_state.mode = "idle"
 
 with st.sidebar:
-    st.markdown("<h1><span style='color: #60a5fa;'>Snath</span>.ai</h1>", unsafe_allow_html=True)
+    st.markdown("<h1><span style='color: #60a5fa;'>Snath™</span>.ai</h1>", unsafe_allow_html=True)
     st.write("The visual platform for `lar` agents.")
     
     with st.expander("1. Run New Agent", expanded=True):
