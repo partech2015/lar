@@ -18,14 +18,11 @@ The primary challenge in production-grade AI is a lack of traceability. When a m
 
 This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the diff of the state at every transition, and pinpoint the exact node where logic failed. Lár's "flight data recorder" (`history`) isn't an add-on; it's the core output of the engine.
 
-##  Glass Box vs Black Box
+## Why lar is Better: The "Glass Box" Advantage
 
-| LangChain (“Black Box”) | Lár (“Glass Box”) |
-|-------------------------|-------------------|
-| Returns a single answer with no trace. | Shows a full execution trace with diffs. |
-| Silent failures — no idea why an agent messed up. | Every step’s state changes are visible and auditable. |
-| Debugging = guesswork. | Debugging = inspecting exact node transitions. |
-| *“I don’t know what happened.”* | *“I see exactly what happened.”* |
+The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" Engine) |
+|------|-------------------------|-------------------|
+Debugging | A Nightmare. When an agent fails, you get a 100-line stack trace from inside the framework's "magic" AgentExecutor. You have to guess what went wrong.| Instant & Precise. Your history log is the debugger. You see the exact node that failed (e.g., ToolNode), the exact error (429 Rate Limit), and the exact state that caused it.
 
 
 ## Key Features
