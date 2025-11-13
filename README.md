@@ -252,19 +252,6 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 
 - **[snath-ai/support-demo (Coming Soon)](https://github.com/snath-ai/rag-demo)**:The Customer Support agent described above.
 
-The "Planner" is just the beginning. The *real* power of `lar` is building auditable, self-correcting loops.
-
-We have built a **complete, end-to-end RAG demo** that shows `lar` managing a complex, multi-step agent that can:
-1.  Plan a search query.
-2.  Retrieve context from a local `FAISS` vector database.
-3.  Synthesize a "first draft" answer.
-4.  **Critique its own draft** using an `LLMNode` as a "test."
-5.  **Loop** and *refine* the draft until it passes the critique.
-
-You can run this demo yourself, live, one step at a time.
-
-### **See live RAG Demo ->[ rag-demo](https://github.com/snath-ai/rag-demo)**
-
 
 ## Contributing
 
