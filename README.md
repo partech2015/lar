@@ -38,7 +38,7 @@ This "define-by-run" approach transforms debugging from an art into a science. Y
 
   * **Testable Units:** Every node is a standalone class. You can unit test your `ToolNode` (your "hands") and your `RouterNode` (your "logic") completely independently of an LLM call.
 
-  * **`Snath™` Visualizer:** A built-in Streamlit app (`snath_app.py`) that provides a live, step-by-step, interactive debugger for your agents.
+  
 
 -----
 
