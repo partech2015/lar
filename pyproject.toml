@@ -2,7 +2,7 @@
 name = "lar-engine"
 version = "0.1.6"
 description = "Lár: The PyTorch for Agents. A 'define-by-run' agentic framework."
-authors = ["Your Name <you@example.com>"]
+authors = ["Snath AI <admin@snath.ai>"]
 readme = "README.md"
 packages = [
     { include = "lar", from = "src" }
