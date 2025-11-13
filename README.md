@@ -101,13 +101,19 @@ This project is managed with [Poetry](https://python-poetry.org/).
     cd lar
     ```
 
-2.  **Install dependencies:**
+2. **Set Up Environment Variables**
+
+Create a `.env` file:
+
+```bash
+GOOGLE_API_KEY="YOUR_API_KEY_HERE"
+```
+3.  **Install dependencies:**
     This command creates a virtual environment and installs all packages from `pyproject.toml`.
 
     ```bash
     poetry install
     ```
-
 
 -----
 

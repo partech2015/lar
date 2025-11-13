@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lar-engine"
-version = "0.1.4"
+version = "0.1.5"
 description = "Lár: The PyTorch for Agents. A 'define-by-run' agentic framework."
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
@@ -11,10 +11,8 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 google-generativeai = "^0.7.2"
-firebase-admin = "^6.5.0"
-fastapi = "^0.111.1"  
-uvicorn = "^0.30.3"   
-
+# --- WE HAVE REMOVED fastapi, uvicorn, and firebase-admin ---
+# This is now a CLEAN, lightweight engine.
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
