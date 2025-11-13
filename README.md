@@ -106,7 +106,7 @@ This agent will:
 
 ### Graph Architecture
 
-(assets/lar Basic Architecture.jpg)
+![Graph Architecture](assets/lar Basic Architecture.jpg)
 
 ### Building the Graph
 
