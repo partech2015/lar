@@ -1,6 +1,6 @@
 # Lár: The PyTorch for Agents
 
-**Lár**(Irish for "core" or "center") by SnathAI™ is an open source "define-by-run" agentic framework for building auditable and reliable AI systems.
+**Lár**(Irish for "core" or "center") by **SnathAI™** is an open source "define-by-run" agentic framework for building auditable and reliable AI systems.
 
 It is engineered as a robust alternative to static, "black box" frameworks, which obscure logic, inhibit debugging, and fail unpredictably. Lár implements a **"glass box"** architecture, inspired by the dynamic graphs of PyTorch, where every step of an agent's reasoning process is explicit, inspectable, and logged by default.
 
