@@ -18,6 +18,16 @@ The primary challenge in production-grade AI is a lack of traceability. When a m
 
 This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the diff of the state at every transition, and pinpoint the exact node where logic failed. Lár's "flight data recorder" (`history`) isn't an add-on; it's the core output of the engine.
 
+##  Glass Box vs Black Box
+
+| LangChain (“Black Box”) | Lár (“Glass Box”) |
+|-------------------------|-------------------|
+| Returns a single answer with no trace. | Shows a full execution trace with diffs. |
+| Silent failures — no idea why an agent messed up. | Every step’s state changes are visible and auditable. |
+| Debugging = guesswork. | Debugging = inspecting exact node transitions. |
+| *“I don’t know what happened.”* | *“I see exactly what happened.”* |
+
+
 ## Key Features
 
   * **Define-by-Run Architecture:** The execution graph is created dynamically, step-by-step. This naturally enables complex, stateful logic like loops and self-correction.
