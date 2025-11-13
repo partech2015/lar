@@ -42,47 +42,13 @@ This "define-by-run" approach transforms debugging from an art into a science. Y
 
 -----
 
-## Installation
 
-This project is managed with [Poetry](https://python-poetry.org/).
+### Graph Architecture
 
-1.  **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/snath-ai/lar.git
-    cd lar
-    ```
-
-2.  **Install dependencies:**
-    This command creates a virtual environment and installs all packages from `pyproject.toml`.
-
-    ```bash
-    poetry install
-    ```
+![Lár Self-Correcting Agent Architecture](assets/lar_architecture.jpeg)
 
 -----
 
-## Quick Start: The `Snath™` Visualizer
-
-The best way to understand `lar` is to use the interactive `Snath` debugger.
-
-1.  **Set your API key:**
-    Create a `.env` file in the project root.
-
-    ```
-    # .env
-    GOOGLE_API_KEY='YOUR_API_KEY_HERE'
-    ```
-
-2.  **Run the app:**
-
-    ```bash
-    poetry run streamlit run snath_app.py
-    ```
-
-This app allows you to execute a self-correcting agent step-by-step. At each step, it renders the graph's current state and provides a "diff" of the `GraphState`, showing exactly what was **added**, **removed**, or **modified** by the last node.
-
------
 
 ## The `Lár` Architecture: Core Primitives
 
@@ -103,6 +69,29 @@ You can build any agent with four core components:
 
 -----
 
+
+
+## Installation
+
+This project is managed with [Poetry](https://python-poetry.org/).
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/snath-ai/lar.git
+    cd lar
+    ```
+
+2.  **Install dependencies:**
+    This command creates a virtual environment and installs all packages from `pyproject.toml`.
+
+    ```bash
+    poetry install
+    ```
+
+
+-----
+
 ## Example: A Self-Correcting Agent
 
 The following graph defines an agent that writes, tests, and *debugs its own code*. This kind of stateful loop is trivial in `lar` but extremely complex in a linear-chain framework.
@@ -114,9 +103,7 @@ This agent will:
 3.  **Judge Result** (using `RouterNode`)
 4.  If the test fails, it **loops back** to an `LLMNode` (the "Corrector") with the error message, clears the error, and tries again.
 
-### Graph Architecture
 
-![Lár Self-Correcting Agent Architecture](assets/lar_architecture.jpeg)
 
 ### Building the Graph
 
