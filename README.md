@@ -106,7 +106,7 @@ This agent will:
 
 ### Graph Architecture
 
-![Lár Self-Correcting Agent Architecture](assets/lar_architecture.png)
+![Lár Self-Correcting Agent Architecture](assets/lar_architecture.jpeg)
 
 ### Building the Graph
 
