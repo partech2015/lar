@@ -142,105 +142,123 @@ This is the simple, powerful "Customer Support" agent we'll build. It's a "Maste
 ```mermaid
 graph TD
     A[Start] --> B(LLMNode<br/>'Agent 1: Triage');
-    B --> C{RouterNode<br/>'Manager: Route Task'};
+    B --> C(LLMNode<br/>'Agent 2: Planner');
+    C --> D(ToolNode<br/>'Retriever');
+    D --> E{RouterNode<br/>'Manager: Route by Category'};
     
     subgraph "Billing Department"
-        C -- "BILLING" --> D(LLMNode<br/>'Agent 2: Billing Specialist');
-        D --> F[AddValueNode<br/>'Success'];
+        E -- "BILLING_AGENT" --> F(LLMNode<br/>'Agent 3: Billing Specialist');
     end
 
     subgraph "Tech Support Department"
-        C -- "TECH_SUPPORT" --> E(LLMNode<br/>'Agent 3: Tech Specialist');
-        E --> F;
+        E -- "TECH_AGENT" --> G(LLMNode<br/>'Agent 4: Tech Specialist');
     end
-```
-### 2. The Code (The "Lego Bricks" in Action)
-This is all you need to build and run this agent. It's just Python.
 
-```python
+    subgraph "General"
+        E -- "GENERAL_AGENT" --> H(LLMNode<br/>'Agent 5: Generalist');
+    end
+
+    F --> I[AddValueNode<br/>'Final Answer'];
+    G --> I;
+    H --> I;
+    I --> J[END];
+```
+
+# The "Lego Bricks" in Action (The Code)
+
+This is the full logic from `support_app.py`. It's just a clean, explicit Python script.
+
+```python 
 from lar import *
 from lar.utils import compute_state_diff # (Used by executor)
 
 # 1. Define the "choice" logic for our Router
 def triage_router_function(state: GraphState) -> str:
-    """Reads the 'plan' from the state and returns a route key."""
-    plan = state.get("plan", "").strip().upper()
+    """Reads the 'category' from the state and returns a route key."""
+    category = state.get("category", "GENERAL").strip().upper()
     
-    if "BILLING" in plan:
-        return "BILLING_PATH"
-    elif "TECH_SUPPORT" in plan:
-        return "TECH_PATH"
+    if "BILLING" in category:
+        return "BILLING_AGENT"
+    elif "TECH_SUPPORT" in category:
+        return "TECH_AGENT"
     else:
-        return "GENERAL_PATH"
+        return "GENERAL_AGENT"
 
 # 2. Define the agent's nodes (the "bricks")
 # We build from the end to the start.
 
 # --- The End Nodes (the destinations) ---
-success_node = AddValueNode(
-    key="final_status", 
-    value="SUCCESS", 
-    next_node=None # 'None' means the graph stops
-)
+final_node = AddValueNode(key="final_response", value="{agent_answer}", next_node=None)
+critical_fail_node = AddValueNode(key="final_status", value="CRITICAL_FAILURE", next_node=None)
 
+# --- The "Specialist" Agents ---
 billing_agent = LLMNode(
     model_name="gemini-2.5-pro",
-    prompt_template="You are a billing specialist. Answer the user's question: {task}",
-    output_key="final_response",
-    next_node=success_node # After answering, go to success
+    prompt_template="You are a BILLING expert. Answer '{task}' using ONLY this context: {retrieved_context}",
+    output_key="agent_answer",
+    next_node=final_node
 )
-
-tech_support_agent = LLMNode(
+tech_agent = LLMNode(
     model_name="gemini-2.5-pro",
-    prompt_template="You are a tech support specialist. Answer the user's question: {task}",
-    output_key="final_response",
-    next_node=success_node
+    prompt_template="You are a TECH SUPPORT expert. Answer '{task}' using ONLY this context: {retrieved_context}",
+    output_key="agent_answer",
+    next_node=final_node
 )
-
 general_agent = LLMNode(
     model_name="gemini-2.5-pro",
-    prompt_template="You are a general agent. Politely answer the user's question: {task}",
-    output_key="final_response",
-    next_node=success_node
+    prompt_template="You are a GENERAL assistant. Answer '{task}' using ONLY this context: {retrieved_context}",
+    output_key="agent_answer",
+    next_node=final_node
 )
-
-
-# --- 2. Define the "Choice" (The Router) ---
-triage_router_node = RouterNode(
+    
+# --- The "Manager" (Router) ---
+specialist_router = RouterNode(
     decision_function=triage_router_function,
     path_map={
-        "BILLING_PATH": billing_agent,
-        "TECH_PATH": tech_support_agent,
-        "GENERAL_PATH": general_agent
+        "BILLING_AGENT": billing_agent,
+        "TECH_AGENT": tech_agent,
+        "GENERAL_AGENT": general_agent
     },
-    default_node=general_agent # Default to the general agent
+    default_node=general_agent
 )
-
-# --- 3. Define the "Start" (The Triage Agent) ---
+    
+# --- The "Retriever" (Tool) ---
+retrieve_node = ToolNode(
+    tool_function=retrieve_relevant_chunks, # This is our local FAISS search
+    input_keys=["search_query"],
+    output_key="retrieved_context",
+    next_node=specialist_router, 
+    error_node=critical_fail_node
+)
+    
+# --- The "Planner" (LLM) ---
+planner_node = LLMNode(
+    model_name="gemini-2.5-pro",
+    prompt_template="You are a search query machine. Convert this task to a search query: {task}. Respond with ONLY the query.",
+    output_key="search_query",
+    next_node=retrieve_node
+)
+    
+# --- The "Triage" Node (The *real* start) ---
 triage_node = LLMNode(
     model_name="gemini-2.5-pro",
-    prompt_template="""
-    You are a triage bot. Read the user's task: "{task}"
-    Is this a "BILLING" question, a "TECH_SUPPORT" question, 
-    or a "GENERAL" question?
-    Respond with ONLY the category name.
-    """,
-    output_key="plan",
-    next_node=triage_router_node # After planning, go to the router
+    prompt_template="You are a triage bot. Classify this task: \"{task}\". Respond ONLY with: BILLING, TECH_SUPPORT, or GENERAL.",
+    output_key="category",
+    next_node=planner_node
 )
 
-# --- 4. Run the Agent ---
-executor = GraphExecutor()
-initial_state = {"task": "How do I reset my password?"}
-
-# The executor runs the graph and returns the full log
-result_log = list(executor.run_step_by_step(
-    start_node=triage_node, 
-    initial_state=initial_state
-))
-
-# You can now inspect the 'result_log' to see the "glass box"
-# The agent correctly routed to the 'tech_support_agent'
+# 3. Run the Agent
+# executor = GraphExecutor()
+# initial_state = {"task": "How do I reset my password?"}
+# result_log = list(executor.run_step_by_step(
+#     start_node=triage_node, 
+#     initial_state=initial_state
+# ))
+# The "glass box" log for Step 0 will show:
+# "state_diff": {"added": {"category": "TECH_SUPPORT"}}
+#
+# The log for Step 1 will show:
+# "Routing to LLMNode" (the tech_support_agent)
 ```
 -----
 
@@ -250,7 +268,7 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 - **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
 
 
-- **[snath-ai/support-demo (Coming Soon)](https://github.com/snath-ai/rag-demo)**:The Customer Support agent described above.
+- **[snath-ai/support-demo](https://github.com/snath-ai/customer-support-demo)**:The Customer Support agent described above.
 
 
 ## Contributing
