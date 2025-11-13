@@ -1,6 +1,6 @@
 # Lár: The PyTorch for Agents
 
-**Lár** (Irish for "core" or "center") is a "define-by-run" agentic framework for building auditable and reliable AI systems.
+**Lár by SnathAI™** (Irish for "core" or "center") is an open source "define-by-run" agentic framework for building auditable and reliable AI systems.
 
 It is engineered as a robust alternative to static, "black box" frameworks, which obscure logic, inhibit debugging, and fail unpredictably. Lár implements a **"glass box"** architecture, inspired by the dynamic graphs of PyTorch, where every step of an agent's reasoning process is explicit, inspectable, and logged by default.
 
@@ -106,30 +106,7 @@ This agent will:
 
 ### Graph Architecture
 
-```mermaid
-graph TD
-    A[Start] --> B(Step 0: LLMNode<br/>'Writer');
-    B --> C(Step 1: ToolNode<br/>'Tester');
-    C --> D{Step 2: RouterNode<br/>'Judge'};
-    
-    subgraph "Success Path"
-        D -- "success" --> G[Step 5: AddValueNode<br/>'Finalize'];
-        G --> H[END];
-    end
-
-    subgraph "Correction Loop"
-        D -- "failure" --> E(Step 3: LLMNode<br/>'Corrector');
-        E --> F(Step 4: ClearErrorNode<br/>'Cleanup');
-        F --> C;
-    end
-    
-    classDef success fill:#22c55e,stroke:#16a34a,color:#fff;
-    classDef error fill:#ef4444,stroke:#dc2626,color:#fff;
-    classDef logic fill:#3b82f6,stroke:#2563eb,color:#fff;
-
-    class B,C,D,E,F,G success;
-    class D logic;
-```
+(assets/lar Basic Architecture.jpg)
 
 ### Building the Graph
 
