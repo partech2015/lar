@@ -94,63 +94,94 @@ This project is managed with [Poetry](https://python-poetry.org/).
 
 -----
 
-## Example: A Self-Correcting Agent
+## Example: Building a "Planner" Agent
 
-The following graph defines an agent that writes, tests, and *debugs its own code*. This kind of stateful loop is trivial in `lar` but extremely complex in a linear-chain framework.
+This is the "Hello, World!" of the `lar` framework. This agent can *plan* its work. It takes a user's task and decides *if* it needs to write code or just answer as a chatbot.
 
-This agent will:
+### 1. Define the Logic
 
-1.  **Write Code** (using `LLMNode`)
-2.  **Test Code** (using `ToolNode`)
-3.  **Judge Result** (using `RouterNode`)
-4.  If the test fails, it **loops back** to an `LLMNode` (the "Corrector") with the error message, clears the error, and tries again.
-
-
-
-### Building the Graph
+First, we define our "choice" logic. This is just a simple Python function.
 
 ```python
 from lar import *
 
-# 1. Define the tools and logic
-def run_generated_code(code_string: str) -> str:
-    # ... (executes code, raises ValueError on logic error)
-    pass
-
-def judge_function(state: GraphState) -> str:
-    # ... (checks state for "last_error", returns "failure" or "success")
-    pass
-
-# 2. Define the agent's nodes
-success_node = AddValueNode(key="final_status", value="SUCCESS", next_node=None)
-tester_node = ToolNode(tool_function=run_generated_code, ...)
-clear_error_node = ClearErrorNode(next_node=tester_node)
-
-corrector_node = LLMNode(
-    prompt_template="Fix this code: {code_string}. Error: {last_error}",
-    output_key="code_string",
-    next_node=clear_error_node
-)
-
-judge_node = RouterNode(
-    decision_function=judge_function,
-    path_map={"success": success_node, "failure": corrector_node}
-)
-
-# Set the tester node's paths
-tester_node.next_node = judge_node
-tester_node.error_node = judge_node
+# This is the "brain" of our Router
+def plan_router_function(state: GraphState) -> str:
+    """Reads the 'plan' from the state and returns a route key."""
+    plan = state.get("plan", "").strip().upper()
+    
+    if "CODE" in plan:
+        return "CODE_PATH"
+    else:
+        return "TEXT_PATH"
 ```
 
+
+### Build the Graph (The "Lego Bricks")
+
+We build the graph by defining our nodes and linking them. It's just Python.
+
+# --- 1. Define the End Nodes (the destinations) ---
+```python
+
+success_node = AddValueNode(
+    key="final_status", 
+    value="SUCCESS", 
+    next_node=None # 'None' means the graph stops
+)
+
+chatbot_node = LLMNode(
+    model_name="gemini-2.5-pro",
+    prompt_template="You are a helpful assistant. Answer the user's task: {task}",
+    output_key="final_response",
+    next_node=success_node # After answering, go to success
+)
+
+code_writer_node = LLMNode(
+    model_name="gemini-2.5-pro",
+    prompt_template="Write a Python function for this task: {task}",
+    output_key="code_string",
+    next_node=success_node # For this simple demo, we just stop
+)
+
+# --- 2. Define the "Choice" (The Router) ---
+master_router_node = RouterNode(
+    decision_function=plan_router_function,
+    path_map={
+        "CODE_PATH": code_writer_node,
+        "TEXT_PATH": chatbot_node
+    },
+    default_node=chatbot_node # Default to just chatting
+)
+
+# --- 3. Define the "Start" (The Planner) ---
+planner_node = LLMNode(
+    model_name="gemini-2.5-pro",
+    prompt_template="""
+    Analyze this task: "{task}"
+    Does it require writing code or just a text answer?
+    Respond with ONLY the word "CODE" or "TEXT".
+    """,
+    output_key="plan",
+    next_node=master_router_node # After planning, go to the router
+)
+
+# --- 4. Run the Agent ---
+executor = GraphExecutor()
+initial_state = {"task": "What is the capital of France?"}
+
+# The executor runs the graph and returns the final log
+result = executor.run(
+    start_node=planner_node, 
+    initial_state=initial_state
+)
+
+print(result["state"].get("final_response"))
+# Output: "The capital of France is Paris."
+
+```
 -----
 
-## Project Vision: `lar` & `Snath™`
-
-This project follows a professional Open-Core model.
-
-  * **`lar` (The Core Engine):** This repository. The `lar` library is, and always will be, free and open-source (MIT License). It is the core framework for building and running agents.
-
-  * **`Snath™` (The Commercial Platform):** The future commercial, managed platform for teams and enterprises, available at **`snath.ai`**. `Snath™` will provide a hosted, collaborative environment for deploying, managing, monitoring, and debugging `lar`-based agents at scale.
 ## Contributing
 
 We welcome contributions to `lar`. Please open an issue or submit a pull request for any bugs, features, or documentation improvements.
