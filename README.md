@@ -18,7 +18,7 @@ The primary challenge in production-grade AI is a lack of traceability. When a m
 
 This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the diff of the state at every transition, and pinpoint the exact node where logic failed. Lár's "flight data recorder" (`history`) isn't an add-on; it's the core output of the engine.
 
-## Why lar is Better: The "Glass Box" Advantage
+## Why `LAR` is Better: The "Glass Box" Advantage
 
 The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" Engine) |
 |------|-------------------------|-------------------|
