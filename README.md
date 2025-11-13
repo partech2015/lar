@@ -129,27 +129,31 @@ You can build any agent with 6 core components. `lar` is a "glass box" because y
 * **`AddValueNode` / `ClearErrorNode`**: "Utility" nodes that clean up the state, copy values, and keep your graph running smoothly.
 
 ---
+## Example: Multi-Agent Orchestration (A Customer Support Agent)
 
-## Example 1: The "Planner" Agent (Hello, World!)
+The *real* power of `lar` is not just loops, but **multi-agent orchestration.**
 
-This is the simplest, most powerful "real-world" agent you can build. This agent is smart enough to *plan* its work. It takes a user's task and decides whether to write code or just answer as a chatbot.
+Other frameworks use a "chaotic chat room" model, where agents *talk* to each other and you *hope* for a good result. `lar` is a deterministic **"assembly line."** You are the architect. You build a "glass box" graph that routes a task to specialized agents, guaranteeing order and auditing every step.
 
 ### 1. The "Glass Box" Flowchart
 
-This is the simple graph we are about to build.
+This is the simple, powerful "Customer Support" agent we'll build. It's a "Master Agent" that routes tasks to specialists.
 
 ```mermaid
 graph TD
-    A[Start] --> B(LLMNode<br/>'Planner');
-    B --> C{RouterNode<br/>'Master Router'};
+    A[Start] --> B(LLMNode<br/>'Agent 1: Triage');
+    B --> C{RouterNode<br/>'Manager: Route Task'};
     
-    C -- "TEXT_PATH" --> D(LLMNode<br/>'Chatbot');
-    C -- "CODE_PATH" --> E(LLMNode<br/>'Code Writer');
+    subgraph "Billing Department"
+        C -- "BILLING" --> D(LLMNode<br/>'Agent 2: Billing Specialist');
+        D --> F[AddValueNode<br/>'Success'];
+    end
 
-    D --> F[AddValueNode<br/>'Success'];
-    E --> F;
-``` 
-
+    subgraph "Tech Support Department"
+        C -- "TECH_SUPPORT" --> E(LLMNode<br/>'Agent 3: Tech Specialist');
+        E --> F;
+    end
+```
 ### 2. The Code (The "Lego Bricks" in Action)
 This is all you need to build and run this agent. It's just Python.
 
@@ -158,81 +162,93 @@ from lar import *
 from lar.utils import compute_state_diff # (Used by executor)
 
 # 1. Define the "choice" logic for our Router
-def plan_router_function(state: GraphState) -> str:
+def triage_router_function(state: GraphState) -> str:
     """Reads the 'plan' from the state and returns a route key."""
     plan = state.get("plan", "").strip().upper()
     
-    if "CODE" in plan:
-        return "CODE_PATH"
+    if "BILLING" in plan:
+        return "BILLING_PATH"
+    elif "TECH_SUPPORT" in plan:
+        return "TECH_PATH"
     else:
-        return "TEXT_PATH"
+        return "GENERAL_PATH"
 
 # 2. Define the agent's nodes (the "bricks")
 # We build from the end to the start.
 
-# --- The End Nodes ---
+# --- The End Nodes (the destinations) ---
 success_node = AddValueNode(
     key="final_status", 
     value="SUCCESS", 
     next_node=None # 'None' means the graph stops
 )
 
-chatbot_node = LLMNode(
+billing_agent = LLMNode(
     model_name="gemini-2.5-pro",
-    prompt_template="You are a helpful assistant. Answer the user's task: {task}",
+    prompt_template="You are a billing specialist. Answer the user's question: {task}",
     output_key="final_response",
     next_node=success_node # After answering, go to success
 )
 
-code_writer_node = LLMNode(
+tech_support_agent = LLMNode(
     model_name="gemini-2.5-pro",
-    prompt_template="Write a Python function for this task: {task}",
-    output_key="code_string",
-    next_node=success_node # For this demo, we just stop
+    prompt_template="You are a tech support specialist. Answer the user's question: {task}",
+    output_key="final_response",
+    next_node=success_node
 )
 
-# --- The "Choice" Node (The Router) ---
-master_router_node = RouterNode(
-    decision_function=plan_router_function,
+general_agent = LLMNode(
+    model_name="gemini-2.5-pro",
+    prompt_template="You are a general agent. Politely answer the user's question: {task}",
+    output_key="final_response",
+    next_node=success_node
+)
+
+
+# --- 2. Define the "Choice" (The Router) ---
+triage_router_node = RouterNode(
+    decision_function=triage_router_function,
     path_map={
-        "CODE_PATH": code_writer_node,
-        "TEXT_PATH": chatbot_node
+        "BILLING_PATH": billing_agent,
+        "TECH_PATH": tech_support_agent,
+        "GENERAL_PATH": general_agent
     },
-    default_node=chatbot_node # Default to just chatting
+    default_node=general_agent # Default to the general agent
 )
 
-# --- The "Start" Node (The Planner) ---
-planner_node = LLMNode(
+# --- 3. Define the "Start" (The Triage Agent) ---
+triage_node = LLMNode(
     model_name="gemini-2.5-pro",
     prompt_template="""
-    Analyze this task: "{task}"
-    Does it require writing code or just a text answer?
-    Respond with ONLY the word "CODE" or "TEXT".
+    You are a triage bot. Read the user's task: "{task}"
+    Is this a "BILLING" question, a "TECH_SUPPORT" question, 
+    or a "GENERAL" question?
+    Respond with ONLY the category name.
     """,
     output_key="plan",
-    next_node=master_router_node # After planning, go to the router
+    next_node=triage_router_node # After planning, go to the router
 )
 
-# 3. Run the Agent
+# --- 4. Run the Agent ---
 executor = GraphExecutor()
-initial_state = {"task": "What is the capital of France?"}
+initial_state = {"task": "How do I reset my password?"}
 
 # The executor runs the graph and returns the full log
-result = executor.run_step_by_step(start_node=planner_node, initial_state=initial_state)
+result_log = list(executor.run_step_by_step(
+    start_node=triage_node, 
+    initial_state=initial_state
+))
 
-# You can now inspect the 'history' or the 'final_state'
-# (This code is just to show the final output)
-final_log = list(result)
-final_state = GraphState(initial_state)
-for step in final_log:
-    final_state = GraphState(apply_diff(step["state_before"], step["state_diff"]))
-
-print(final_state.get("final_response"))
-# Output: The capital of France is Paris.
+# You can now inspect the 'result_log' to see the "glass box"
+# The agent correctly routed to the 'tech_support_agent'
 ```
 -----
 
-## Advanced Example: The Self-Correcting "RAG" Agent
+## Ready to Build a Real Agent?
+We have built two "killer demos" that prove this "glass box" model. You can clone, build, and run them today.
+
+[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo): A complete, self-correcting RAG agent that uses a local vector database.
+[snath-ai/support-demo (Coming Soon)](https://github.com/snath-ai/rag-demo):The Customer Support agent described above.
 
 The "Planner" is just the beginning. The *real* power of `lar` is building auditable, self-correcting loops.
 
