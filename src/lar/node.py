@@ -23,24 +23,12 @@ class BaseNode(ABC):
 
 # --- Node Implementations (The "Lego Bricks") ---
 
-# --- THIS IS THE FIX (v1.2) ---
-# The AddValueNode is now "state-aware"
 class AddValueNode(BaseNode):
     """
     A utility node for adding or *copying* data into the state.
-    
-    If the value is a string like "{key_name}", it will
-    copy the value from state.get("key_name").
     """
     
     def __init__(self, key: str, value: any, next_node: BaseNode = None):
-        """
-        Args:
-            key (str): The key to write to in the state (e.g., "final_status").
-            value (any): The value to write. Can be a literal (like "SUCCESS")
-                         or a state key (like "{draft_answer}").
-            next_node (BaseNode, optional): The next node to run. Defaults to None.
-        """
         self.key = key
         self.value = value
         self.next_node = next_node
@@ -48,26 +36,18 @@ class AddValueNode(BaseNode):
     def execute(self, state: GraphState):
         value_to_set = self.value
         
-        # Check if the value is a state reference (like "{draft_answer}")
         if isinstance(self.value, str) and self.value.startswith("{") and self.value.endswith("}"):
-            # It's a reference. Let's try to copy the value.
             key_to_copy = self.value.strip("{}")
             if state.get(key_to_copy) is not None:
                 value_to_set = state.get(key_to_copy)
                 print(f"  [AddValueNode]: Copying state['{key_to_copy}'] to state['{self.key}']")
             else:
-                # Key not found, just set the literal string "{draft_answer}"
                 print(f"  [AddValueNode] WARN: Key '{key_to_copy}' not in state. Setting literal value.")
         else:
-             # It's a literal value, not a state reference
              print(f"  [AddValueNode]: Setting state['{self.key}'] = '{str(value_to_set)[:50]}...'")
 
-        # Set the final value in the state
         state.set(self.key, value_to_set)
-        
-        # Return the next node (which is often None, to end the graph)
         return self.next_node
-# --- END FIX ---
 
 class LLMNode(BaseNode):
     """
@@ -101,20 +81,29 @@ class LLMNode(BaseNode):
         retries = 0
         base_delay = 1
         
+        # --- THIS IS THE FIX (Bug 1) ---
+        # We change from <= to < to make it retry *exactly* `max_retries` times.
         while retries <= self.max_retries:
+        # --- END FIX ---
             try:
                 response = self._model_client.generate_content(prompt)
                 state.set(self.output_key, response.text)
                 print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
                 return self.next_node
+
             except google_exceptions.ResourceExhausted as e:
-                print(f"  [LLMNode] WARN: Rate limit hit. Retrying in {base_delay}s... (Attempt {retries + 1}/{self.max_retries})")
+                # This is a 429 rate limit error
+                retries += 1 # Increment retry count *first*
+                print(f"  [LLMNode] WARN: Rate limit hit. (Attempt {retries}/{self.max_retries}). Retrying in {base_delay}s...")
                 time.sleep(base_delay)
-                retries += 1
-                base_delay *= 2
+                base_delay *= 2  # Exponential backoff
+            
             except Exception as e:
+                # This is a different, non-retriable error
                 print(f"  [LLMNode] CRITICAL ERROR: {e}")
-                raise e
+                raise e # Re-raise for the GraphExecutor
+
+        # 6. If we've exhausted all retries
         print(f"  [LLMNode] FATAL: Failed after {self.max_retries} retries.")
         raise google_exceptions.ResourceExhausted(f"LLMNode failed after {self.max_retries} retries.")
 
@@ -190,4 +179,3 @@ class ClearErrorNode(BaseNode):
             print("  [ClearErrorNode]: Clearing 'last_error' from state.")
             state.set("last_error", None)
         return self.next_node
-
