@@ -71,15 +71,14 @@ You can build any agent with four core components:
 
 -----
 
-### See a Real Failure: The "Glass Box" Audit Trail
+### Example: The "Glass Box" Audit Trail
 
-### See a Real Failure: The "Glass Box" Audit Trail
 
-You don't have to guess. Here is a **real log** from this demo after hitting the Gemini API's free-tier rate limit.
+You don't need to guess why an agent failed. `lar` is a "glass box" that provides a complete, auditable log for every run, especially failures.
 
-Instead of a generic `500 ERROR`, the `lar` engine *caught* the failure, *logged the exact reason*, and *ended the graph gracefully*.
+This is a **real execution** log from a lar-built agent. The agent's job was to run a "Planner" and then a "Synthesizer" (both LLMNodes). The GraphExecutor caught a fatal error, gracefully stopped the agent, and produced this perfect audit trail.
 
-**Execution Summary:**
+**Execution Summary (Run ID: a1b2c3d4-...)**
 | Step | Node | Outcome | Key Changes |
 | :--- | :--- | :--- | :--- |
 | 0 | `LLMNode` | `success` | `+ ADDED: 'search_query'` |
