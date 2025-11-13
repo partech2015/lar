@@ -247,8 +247,10 @@ result_log = list(executor.run_step_by_step(
 ## Ready to Build a Real Agent?
 We have built two "killer demos" that prove this "glass box" model. You can clone, build, and run them today.
 
-[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo): A complete, self-correcting RAG agent that uses a local vector database.
-[snath-ai/support-demo (Coming Soon)](https://github.com/snath-ai/rag-demo):The Customer Support agent described above.
+- **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
+
+
+- **[snath-ai/support-demo (Coming Soon)](https://github.com/snath-ai/rag-demo)**:The Customer Support agent described above.
 
 The "Planner" is just the beginning. The *real* power of `lar` is building auditable, self-correcting loops.
 
