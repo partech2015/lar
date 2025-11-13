@@ -164,9 +164,9 @@ graph TD
     I --> J[END];
 ```
 
-# The "Lego Bricks" in Action (The Code)
+## The "Lego Bricks" in Action (The Code)
 
-This is the full logic from `support_app.py`. It's just a clean, explicit Python script.
+### This is the full logic from `support_app.py`. It's just a clean, explicit Python script.
 
 ```python 
 from lar import *
