@@ -138,9 +138,8 @@ def plan_router_function(state: GraphState) -> str:
 
 We build the graph by defining our nodes and linking them. It's just Python.
 
-# --- 1. Define the End Nodes (the destinations) ---
 ```python
-
+# --- 1. Define the End Nodes (the destinations) ---
 success_node = AddValueNode(
     key="final_status", 
     value="SUCCESS", 
