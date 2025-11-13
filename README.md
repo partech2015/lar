@@ -71,6 +71,24 @@ You can build any agent with four core components:
 
 -----
 
+### See a Real Failure: The "Glass Box" Audit Trail
+
+### See a Real Failure: The "Glass Box" Audit Trail
+
+You don't have to guess. Here is a **real log** from this demo after hitting the Gemini API's free-tier rate limit.
+
+Instead of a generic `500 ERROR`, the `lar` engine *caught* the failure, *logged the exact reason*, and *ended the graph gracefully*.
+
+**Execution Summary:**
+| Step | Node | Outcome | Key Changes |
+| :--- | :--- | :--- | :--- |
+| 0 | `LLMNode` | `success` | `+ ADDED: 'search_query'` |
+| 1 | `ToolNode` | `success` | `+ ADDED: 'retrieved_context'` |
+| 2 | `LLMNode` | `success` | `+ ADDED: 'draft_answer'` |
+| 3 | `LLMNode` | **`error`** | **`+ ADDED: 'error': "429 You exceeded your current quota..."`** |
+
+**This is the `lar` difference.** You know the *exact* node (`LLMNode`), the *exact* step (3), and the *exact reason* ("429 Quota Exceeded") for the failure. You can't debug a "black box," but you can **always** fix a "glass box."
+
 
 
 ## Installation
