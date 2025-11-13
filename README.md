@@ -226,7 +226,6 @@ print(final_state.get("final_response"))
 ```
 -----
 ### 3.Advanced Example: The `rag-demo`
-```markdown
 ---
 
 ## Advanced Example: The Self-Correcting "RAG" Agent
@@ -243,7 +242,7 @@ We have built a **complete, end-to-end RAG demo** that shows `lar` managing a co
 You can run this demo yourself, live, one step at a time.
 
 ### **[ See the Live `rag-demo` (and its code) here](https://github.com/snath-ai/rag-demo)**
-```
+
 
 ## Contributing
 
