@@ -148,8 +148,7 @@ This project follows a professional Open-Core model.
 
   * **`lar` (The Core Engine):** This repository. The `lar` library is, and always will be, free and open-source (MIT License). It is the core framework for building and running agents.
 
-  * **`Snath™` (The Commercial Platform):** The future commercial, managed platform for teams and enterprises, available at **`snath.ai`**. `Snath™` will provide a hosted, collaborative environment for deploying, managing, monitoring, and debugging `lar`-based agents at scale. The `snath_app.py` in this repo is the first prototype of this platform.
-
+  * **`Snath™` (The Commercial Platform):** The future commercial, managed platform for teams and enterprises, available at **`snath.ai`**. `Snath™` will provide a hosted, collaborative environment for deploying, managing, monitoring, and debugging `lar`-based agents at scale.
 ## Contributing
 
 We welcome contributions to `lar`. Please open an issue or submit a pull request for any bugs, features, or documentation improvements.
