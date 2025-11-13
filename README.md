@@ -111,18 +111,47 @@ This project is managed with [Poetry](https://python-poetry.org/).
 
 -----
 
-## Example: Building a "Planner" Agent
+## The Lár Primitives (The "Lego Bricks")
 
-This is the "Hello, World!" of the `lar` framework. This agent can *plan* its work. It takes a user's task and decides *if* it needs to write code or just answer as a chatbot.
+You can build any agent with 6 core components. `lar` is a "glass box" because you see *exactly* how these components connect.
 
-### 1. Define the Logic
+* **`GraphState`**: The "Memory." A simple Python object that is passed to every node, allowing them to share data.
+* **`GraphExecutor`**: The "Engine." A simple `generator` that runs one node at a time and `yield`s the `history` log.
+* **`LLMNode`**: The "Brain." It calls the Gemini API to think, write, or critique. It's resilient and auto-retries on rate limits.
+* **`ToolNode`**: The "Hands." It runs any Python function (like `run_code` or `search_web`) and has separate `success` and `error` paths.
+* **`RouterNode`**: The "Choice." Your `if/else` statement. It runs a simple Python function to decide which node to run next.
+* **`AddValueNode` / `ClearErrorNode`**: "Utility" nodes that clean up the state, copy values, and keep your graph running smoothly.
 
-First, we define our "choice" logic. This is just a simple Python function.
+---
+
+## Example 1: The "Planner" Agent (Hello, World!)
+
+This is the simplest, most powerful "real-world" agent you can build. This agent is smart enough to *plan* its work. It takes a user's task and decides whether to write code or just answer as a chatbot.
+
+### 1. The "Glass Box" Flowchart
+
+This is the simple graph we are about to build.
+
+```mermaid
+graph TD
+    A[Start] --> B(LLMNode<br/>'Planner');
+    B --> C{RouterNode<br/>'Master Router'};
+    
+    C -- "TEXT_PATH" --> D(LLMNode<br/>'Chatbot');
+    C -- "CODE_PATH" --> E(LLMNode<br/>'Code Writer');
+
+    D --> F[AddValueNode<br/>'Success'];
+    E --> F;
+``` 
+
+### 2. The Code (The "Lego Bricks" in Action)
+This is all you need to build and run this agent. It's just Python.
 
 ```python
 from lar import *
+from lar.utils import compute_state_diff # (Used by executor)
 
-# This is the "brain" of our Router
+# 1. Define the "choice" logic for our Router
 def plan_router_function(state: GraphState) -> str:
     """Reads the 'plan' from the state and returns a route key."""
     plan = state.get("plan", "").strip().upper()
@@ -131,15 +160,11 @@ def plan_router_function(state: GraphState) -> str:
         return "CODE_PATH"
     else:
         return "TEXT_PATH"
-```
 
+# 2. Define the agent's nodes (the "bricks")
+# We build from the end to the start.
 
-### Build the Graph (The "Lego Bricks")
-
-We build the graph by defining our nodes and linking them. It's just Python.
-
-```python
-# --- 1. Define the End Nodes (the destinations) ---
+# --- The End Nodes ---
 success_node = AddValueNode(
     key="final_status", 
     value="SUCCESS", 
@@ -157,10 +182,10 @@ code_writer_node = LLMNode(
     model_name="gemini-2.5-pro",
     prompt_template="Write a Python function for this task: {task}",
     output_key="code_string",
-    next_node=success_node # For this simple demo, we just stop
+    next_node=success_node # For this demo, we just stop
 )
 
-# --- 2. Define the "Choice" (The Router) ---
+# --- The "Choice" Node (The Router) ---
 master_router_node = RouterNode(
     decision_function=plan_router_function,
     path_map={
@@ -170,7 +195,7 @@ master_router_node = RouterNode(
     default_node=chatbot_node # Default to just chatting
 )
 
-# --- 3. Define the "Start" (The Planner) ---
+# --- The "Start" Node (The Planner) ---
 planner_node = LLMNode(
     model_name="gemini-2.5-pro",
     prompt_template="""
@@ -182,21 +207,43 @@ planner_node = LLMNode(
     next_node=master_router_node # After planning, go to the router
 )
 
-# --- 4. Run the Agent ---
+# 3. Run the Agent
 executor = GraphExecutor()
 initial_state = {"task": "What is the capital of France?"}
 
-# The executor runs the graph and returns the final log
-result = executor.run(
-    start_node=planner_node, 
-    initial_state=initial_state
-)
+# The executor runs the graph and returns the full log
+result = executor.run_step_by_step(start_node=planner_node, initial_state=initial_state)
 
-print(result["state"].get("final_response"))
-# Output: "The capital of France is Paris."
+# You can now inspect the 'history' or the 'final_state'
+# (This code is just to show the final output)
+final_log = list(result)
+final_state = GraphState(initial_state)
+for step in final_log:
+    final_state = GraphState(apply_diff(step["state_before"], step["state_diff"]))
 
+print(final_state.get("final_response"))
+# Output: The capital of France is Paris.
 ```
 -----
+### 3.Advanced Example: The `rag-demo`
+```markdown
+---
+
+## Advanced Example: The Self-Correcting "RAG" Agent
+
+The "Planner" is just the beginning. The *real* power of `lar` is building auditable, self-correcting loops.
+
+We have built a **complete, end-to-end RAG demo** that shows `lar` managing a complex, multi-step agent that can:
+1.  Plan a search query.
+2.  Retrieve context from a local `FAISS` vector database.
+3.  Synthesize a "first draft" answer.
+4.  **Critique its own draft** using an `LLMNode` as a "test."
+5.  **Loop** and *refine* the draft until it passes the critique.
+
+You can run this demo yourself, live, one step at a time.
+
+### **[ See the Live `rag-demo` (and its code) here](https://github.com/snath-ai/rag-demo)**
+```
 
 ## Contributing
 
