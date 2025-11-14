@@ -18,6 +18,7 @@ The primary challenge in production-grade AI is a lack of traceability. When a m
 
 This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the diff of the state at every transition, and pinpoint the exact node where logic failed. Lár's "flight data recorder" (`history`) isn't an add-on; it's the core output of the engine.
 
+
 ## Why `Lár` is Better: The "Glass Box" Advantage
 
 The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" Engine) |
@@ -144,20 +145,29 @@ graph TD
     A[Start] --> B(LLMNode<br/>'Agent 1: Triage');
     B --> C(LLMNode<br/>'Agent 2: Planner');
     C --> D(ToolNode<br/>'Retriever');
-    D --> E{RouterNode<br/>'Manager: Route by Category'};
     
+    %% This is the "hub" node
+    D --> E{RouterNode<br/>'Manager: Route By Category'};
+    
+    %% Define the three parallel paths
+    E -- "BILLING_AGENT" --> F;
+    E -- "TECH_AGENT" --> G;
+    E -- "GENERAL_AGENT" --> H;
+
+    %% Define what's INSIDE the subgraphs
     subgraph "Billing Department"
-        E -- "BILLING_AGENT" --> F(LLMNode<br/>'Agent 3: Billing Specialist');
+        F(LLMNode<br/>'Agent 3: Billing Specialist');
     end
 
     subgraph "Tech Support Department"
-        E -- "TECH_AGENT" --> G(LLMNode<br/>'Agent 4: Tech Specialist');
+        G(LLMNode<br/>'Agent 4: Tech Specialist');
     end
-
+    
     subgraph "General"
-        E -- "GENERAL_AGENT" --> H(LLMNode<br/>'Agent 5: Generalist');
+        H(LLMNode<br/>'Agent 5: Generalist');
     end
 
+    %% Define the "join" point
     F --> I[AddValueNode<br/>'Final Answer'];
     G --> I;
     H --> I;
