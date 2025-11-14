@@ -48,7 +48,44 @@ Core Philosophy | Sells "Magic." | Sells "Trust."
 
 ### Graph Architecture
 
-![Lár Self-Correcting Agent Architecture](assets/lar_architecture.jpeg)
+```mermaid
+graph TD
+    A(Start) --> B(Step 0: PlannerNode<br/>'Writer');
+    B --> C; %% Connect Planner to the start of the loop (Tester)
+    C --> D; %% Connect Tester to the Judge
+
+    %% Define the "Success Path" subgraph
+    subgraph "Success Path"
+        direction TB
+        D{Step 2: RouteNode<br/>'Judge'};
+        G(Step 5: AddValueNode<br/>'Finalize');
+    end
+    
+    %% Define the "Correction Loop" subgraph
+    subgraph "Correction Loop"
+        direction TB
+        C(Step 1: ToolNode<br/>'Tester');
+        E(Step 3: LLMNode<br/>'Corrector');
+        F(Step 4: ClearErrorNode<br/>'Cleanup');
+    end
+    
+    %% Define the main logic flow
+    D -- "Success" --> G;
+    D -- "Failure" --> E;
+    E --> F;
+    F --> C; %% This is the "loop back"
+    G --> H(End);
+    
+    %% Define styles to match the diagram
+    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490
+    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b
+    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3
+    
+    class A,H startend;
+    class B,C,E,F,G default;
+    class D logic;
+```
+
 
 -----
 
