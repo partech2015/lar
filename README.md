@@ -46,36 +46,10 @@ Core Philosophy | Sells "Magic." | Sells "Trust."
 -----
 
 
-### The "Glass Box" Graph Architecture flow chart
+### Graph Architecture
 
-This is the "assembly line" for a self-correcting agent. Instead of a "black box" chain, `lar` lets you build an explicit, auditable loop.
+![Lár Self-Correcting Agent Architecture](assets/lar_architecture.jpeg)
 
-```mermaid
-graph LR
-    A(Start) --> B(Step 0: PlannerNode<br/>'Writer');
-    B --> C(Step 1: ToolNode<br/>'Tester');
-    C --> D{Step 2: RouteNode<br/>'Judge'};
-    
-    subgraph "Success Path"
-        D -- "Success" --> G(Step 5: AddValueNode<br/>'Finalize');
-        G --> H(End);
-    end
-
-    subgraph "Correction Loop"
-        D -- "Failure" --> E(Step 3: LLMNode<br/>'Corrector');
-        E --> F(Step 4: ClearErrorNode<br/>'Cleanup');
-        F --> C;
-    end
-    
-    %% Define styles to match the diagram
-    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
-    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
-    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3;
-    
-    class A,H startend;
-    class B,C,E,F,G default;
-    class D logic;
-```
 -----
 
 
