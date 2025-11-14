@@ -51,29 +51,21 @@ Core Philosophy | Sells "Magic." | Sells "Trust."
 This is the "assembly line" for a self-correcting agent. Instead of a "black box" chain, `lar` lets you build an explicit, auditable loop.
 
 ```mermaid
-graph TD
+graph LR
     A(Start) --> B(Step 0: PlannerNode<br/>'Writer');
-    B --> C;
-    C --> D;
-
+    B --> C(Step 1: ToolNode<br/>'Tester');
+    C --> D{Step 2: RouteNode<br/>'Judge'};
+    
     subgraph "Success Path"
-        direction TB
-        D{Step 2: RouteNode<br/>'Judge'};
-        G(Step 5: AddValueNode<br/>'Finalize');
+        D -- "Success" --> G(Step 5: AddValueNode<br/>'Finalize');
+        G --> H(End);
     end
-    
+
     subgraph "Correction Loop"
-        direction TB
-        C(Step 1: ToolNode<br/>'Tester');
-        E(Step 3: LLMNode<br/>'Corrector');
-        F(Step 4: ClearErrorNode<br/>'Cleanup');
+        D -- "Failure" --> E(Step 3: LLMNode<br/>'Corrector');
+        E --> F(Step 4: ClearErrorNode<br/>'Cleanup');
+        F --> C;
     end
-    
-    D -- "Success" --> G;
-    D -- "Failure" --> E;
-    E --> F;
-    F --> C;
-    G --> H(End);
     
     %% Define styles to match the diagram
     classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
