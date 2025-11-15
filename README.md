@@ -70,7 +70,7 @@ graph TD
     D -- "Success" --> G
     D -- "Failure" --> E
     E --> F
-    F --> C %% This is the "loop back"
+    F --> C 
     G --> H(End)
     
     %% Define styles to match the diagram
