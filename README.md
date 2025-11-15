@@ -49,9 +49,13 @@ Core Philosophy | Sells "Magic." | Sells "Trust."
 ### Graph Architecture
 
 ```mermaid
+The "Glass Box" Flowchart
+
+This is the "assembly line" for a self-correcting agent. Instead of a "black box" chain, lar lets you build an explicit, auditable loop.
+
 graph TD
     A(Start) --> B(Step 0: PlannerNode<br/>'Writer');
-    B --> C; %% Connect Planner to the start of the loop (Tester)
+    B --> C; %% Connect Planner to the start of the loop
     C --> D; %% Connect Tester to the Judge
 
     %% Define the "Success Path" subgraph
@@ -84,6 +88,7 @@ graph TD
     class A,H startend;
     class B,C,E,F,G default;
     class D logic;
+
 
 ```
 
