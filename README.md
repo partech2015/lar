@@ -89,7 +89,6 @@ graph TD
     class B,C,E,F,G default;
     class D logic;
 
-
 ```
 
 
