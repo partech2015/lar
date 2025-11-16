@@ -26,7 +26,7 @@ Our "engine" (`GraphExecutor`) is simple, "dumb," and predictable. It only knows
 
 This "glass box" approach is not an "add-on"; it is the **core, default, open-source output of the engine.**
 
-This means you get:
+### This means you get:
 
 - **Instant Debugging**: You can see the exact node that failed, the exact data it received, and the exact error it produced.
 
