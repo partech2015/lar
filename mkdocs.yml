@@ -1,7 +1,6 @@
 site_name: Lár Engine
 site_author: Snath.ai
-site_url: https://docs.snath.ai/
-
+site_url: https://snath-ai.github.io/lar/
 repo_name: snath-ai/lar
 repo_url: https://github.com/snath-ai/lar
 edit_uri: ""
@@ -18,6 +17,9 @@ theme:
     - search.suggest
     - content.code.annotate
 
+# --- THIS IS THE FIX ---
+# Removed the "1-", "2-", etc. from the file paths
+# to match your actual file names.
 nav:
   - 'Home': index.md
   - 'Getting Started': getting-started.md
@@ -26,8 +28,8 @@ nav:
     - 'The 6 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
   - 'Guides':
-    - 'Multi-Agent Orchestration': guides/1-multi-agent-orchestration.md
-    - 'Self-Correcting Loops': guides/2-self-correction-loop.md
+    - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
+    - 'Self-Correcting Loops': guides/self-correction-loop.md
   - 'API Reference':
     - 'LLMNode': api-reference/llmnode.md
     - 'ToolNode': api-reference/toolnode.md
