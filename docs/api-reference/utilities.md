@@ -80,7 +80,7 @@ copy_answer_node = AddValueNode(
 
 A "janitor" node. Its only job is to clean up the `last_error` key, which is critical for self-correcting loops.
 
-'''python
+```python
 # After the Corrector runs, this node cleans up
 # before looping back to the Tester.
 clear_error_node = ClearErrorNode(
