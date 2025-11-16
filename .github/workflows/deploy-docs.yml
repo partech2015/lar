@@ -1,0 +1,39 @@
+# This is a GitHub Actions file.
+# It tells GitHub how to build and deploy your MkDocs website.
+
+name: Deploy Lár Docs to GitHub Pages
+
+# Run this workflow every time you push to the 'main' branch
+on:
+  push:
+    branches:
+      - main
+
+# A workflow run is made of one or more jobs
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checks out your repository's code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Sets up Python (matching your pyproject.toml)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' 
+
+      # 3. Sets up Poetry (to install your dependencies)
+      - name: Set up Poetry
+        uses: Gr1N/setup-poetry@v9
+      
+      # 4. Installs your dependencies (like mkdocs-material)
+      - name: Install dependencies
+        run: poetry install --with dev
+      
+      # 5. This is the "magic" command:
+      #    It builds your docs and pushes them to the 'gh-pages' branch
+      - name: Deploy docs
+        run: poetry run mkdocs gh-deploy --force
