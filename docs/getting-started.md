@@ -18,8 +18,8 @@ pip install lar-engine
 Lár reads your Google API key from an environment variable.
 Create a .env file in the root of your project:
 --- 
-
 ### .env
+---
 GOOGLE_API_KEY="YOUR_API_KEY_HERE"
 
 Make sure your environment is configured to load variables from .env.
