@@ -19,8 +19,8 @@ This is the "assembly line" for a self-correcting agent.
 ```mermaid
 graph TD
     A(Start) --> B(Step 0: PlannerNode<br/>'Writer');
-    B --> C; %% Connect Planner to the start of the loop (Tester)
-    C --> D; %% Connect Tester to the Judge
+    B --> C; 
+    C --> D; 
 
     %% Define the "Success Path" subgraph
     subgraph "Success Path"
