@@ -2,7 +2,7 @@
 
 The primary challenge in production-grade AI is a lack of traceability. When a multi-step agent fails, it's often impossible to determine why.
 
-The **"Black Box" (Other Frameworks)**
+## The **"Black Box" (Other Frameworks)**
 
 Traditional agent frameworks rely on "magic" `AgentExecutor` objects that try to do everything at once. They are complex, monolithic, and hide their internal logic.
 
@@ -12,7 +12,7 @@ Traditional agent frameworks rely on "magic" `AgentExecutor` objects that try to
 
 - Debugging becomes a frustrating, time-consuming nightmare. To get any visibility, you are forced to use external, often paid, tracing platforms.
 
-**The "Glass Box" (The `Lár` Way)**
+## **The "Glass Box" (The `Lár` Way)**
 
 `Lár` is built on the opposite philosophy. We believe that **reliability comes from simplicity and transparency.**
 
