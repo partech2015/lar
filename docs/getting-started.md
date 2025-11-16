@@ -1,33 +1,38 @@
-Getting Started
+# Getting Started
 
-Let's build a "smart" agent in 3 minutes. This agent is a "Master Planner" that can decide what kind of work to do.
+## Build a “Master Planner” Agent in Under 3 Minutes
 
-1. Installation
+This quick-start guide will help you install the engine, configure your environment, and create your first **Glass Box Agent**—a smart planner that decides whether to route a task to a “Coder” agent or a conversational “Chatbot.”
 
-This project is managed with Poetry.
+---
 
+### 1. Install the Engine
+
+You can install the core Lár engine directly from PyPI:
+
+```bash
 pip install lar-engine
+```
+### 2. Configure Your API Key
 
+Lár reads your Google API key from an environment variable.
+Create a .env file in the root of your project:
 
-(This installs the core lar engine from PyPI.)
-
-2. Set Your API Key
-
-Lár reads your Google API key from an environment variable. Create a .env file in your project's root:
-
-# .env
+### .env
 GOOGLE_API_KEY="YOUR_API_KEY_HERE"
 
+Make sure your environment is configured to load variables from .env.
 
-3. Build Your First "Glass Box" Agent
+### 3. Create Your First “Glass Box” Agent
 
-This agent will take a user's task and plan its response, deciding whether to route to a "Coder" agent or a simple "Chatbot."
+Now, build a simple Master Planner Agent that accepts a user’s task, evaluates it, and chooses the appropriate worker—either a coding agent or a lightweight chatbot.
 
+
+```python
 import os
 from lar import *
 from lar.utils import compute_state_diff
 from dotenv import load_dotenv
-```python
 # Load your .env file
 load_dotenv()
 os.environ["GOOGLE_API_KEY"] # (This line is for Colab/Jupyter)
