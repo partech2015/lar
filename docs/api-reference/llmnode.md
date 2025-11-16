@@ -4,13 +4,13 @@ The `LLMNode` is the "brain" of your agent. It is a resilient, state-aware node 
 
 It automatically formats your prompt with data from the `GraphState` and writes the model's text output back to the state.
 
-Key Features
+## Key Features
 
-Resilient: Automatically retries on `429` (rate-limit) errors with exponential backoff.
+- Resilient: Automatically retries on `429` (rate-limit) errors with exponential backoff.
 
-Cost Auditing: Automatically logs `prompt_tokens`, `output_tokens`, and `total_tokens` to the `run_metadata` in the history log.
+- Cost Auditing: Automatically logs `prompt_tokens`, `output_tokens`, and `total_tokens` to the `run_metadata` in the history log.
 
-Stateful: Uses Python's `format()` string method to dynamically populate your prompt with any value from the `GraphState`.
+- Stateful: Uses Python's `format()` string method to dynamically populate your prompt with any value from the `GraphState`.
 
 # Example Usage
 
