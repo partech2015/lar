@@ -13,6 +13,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    # --- THIS IS THE FIX ---
+    # This block explicitly grants the "write" permissions
+    # that are greyed out in your organization's settings.
+    permissions:
+      contents: write
+    # --- END FIX ---
 
     steps:
       # 1. Checks out your repository's code
@@ -34,6 +41,5 @@ jobs:
         run: poetry install --with dev
       
       # 5. This is the "magic" command:
-      #    It builds your docs and pushes them to the 'gh-pages' branch
       - name: Deploy docs
         run: poetry run mkdocs gh-deploy --force
