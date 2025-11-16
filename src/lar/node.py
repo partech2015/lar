@@ -81,29 +81,37 @@ class LLMNode(BaseNode):
         retries = 0
         base_delay = 1
         
-        # --- THIS IS THE FIX (Bug 1) ---
-        # We change from <= to < to make it retry *exactly* `max_retries` times.
-        while retries <= self.max_retries:
-        # --- END FIX ---
+        while retries < self.max_retries:
             try:
+                # 1. Try to call the API
                 response = self._model_client.generate_content(prompt)
+                
+                # 2. Save the text response
                 state.set(self.output_key, response.text)
                 print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
+                
+                # 3. NEW: Save the usage metadata to a temporary key
+                if hasattr(response, 'usage_metadata'):
+                    usage = {
+                        "prompt_tokens": response.usage_metadata.prompt_token_count,
+                        "output_tokens": response.usage_metadata.candidates_token_count,
+                        "total_tokens": response.usage_metadata.total_token_count,
+                    }
+                    state.set("__last_run_metadata", usage)
+                    print(f"  [LLMNode]: Logged {usage['total_tokens']} tokens.")
+
                 return self.next_node
 
             except google_exceptions.ResourceExhausted as e:
-                # This is a 429 rate limit error
-                retries += 1 # Increment retry count *first*
+                retries += 1
                 print(f"  [LLMNode] WARN: Rate limit hit. (Attempt {retries}/{self.max_retries}). Retrying in {base_delay}s...")
                 time.sleep(base_delay)
-                base_delay *= 2  # Exponential backoff
+                base_delay *= 2
             
             except Exception as e:
-                # This is a different, non-retriable error
                 print(f"  [LLMNode] CRITICAL ERROR: {e}")
-                raise e # Re-raise for the GraphExecutor
+                raise e
 
-        # 6. If we've exhausted all retries
         print(f"  [LLMNode] FATAL: Failed after {self.max_retries} retries.")
         raise google_exceptions.ResourceExhausted(f"LLMNode failed after {self.max_retries} retries.")
 
