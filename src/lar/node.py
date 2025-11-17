@@ -69,6 +69,7 @@ class LLMNode(BaseNode):
         self.output_key = output_key
         self.next_node = next_node
         self.max_retries = max_retries
+        self.generation_config = generation_config or {}
 
         if LLMNode._model_client is None:
             print("  [LLMNode]: Initializing Gemini model client...")
