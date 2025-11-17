@@ -14,6 +14,7 @@ from .node import (
     ClearErrorNode  
 )
 from .executor import GraphExecutor
+from .utils import compute_state_diff, apply_diff
 
 # Define what happens when a user types `from lar import *`
 __all__ = [
@@ -23,6 +24,8 @@ __all__ = [
     "LLMNode",
     "RouterNode",
     "ToolNode",
-    "ClearErrorNode", 
+    "ClearErrorNode",
     "GraphExecutor",
+    "compute_state_diff",
+    "apply_diff"  
 ]
