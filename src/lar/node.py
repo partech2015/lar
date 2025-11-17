@@ -61,7 +61,9 @@ class LLMNode(BaseNode):
                  prompt_template: str, 
                  output_key: str, 
                  next_node: BaseNode = None,
-                 max_retries: int = 3):
+                 max_retries: int = 3,
+                 generation_config: Optional[Dict[str, Any]] = None
+                 ):
         
         self.model_name = model_name
         self.prompt_template = prompt_template
@@ -83,8 +85,11 @@ class LLMNode(BaseNode):
         
         while retries < self.max_retries:
             try:
-                # 1. Try to call the API
-                response = self._model_client.generate_content(prompt)
+                
+                response = self._model_client.generate_content(
+                    prompt,
+                    generation_config=self.generation_config 
+                )
                 
                 # 2. Save the text response
                 state.set(self.output_key, response.text)
