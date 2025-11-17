@@ -18,36 +18,35 @@ This is the "assembly line" for a self-correcting agent.
 
 ```mermaid
 graph TD
-    A(Start) --> B(Step 0: PlannerNode<br/>'Writer');
-    B --> C; 
-    C --> D; 
+    A([Start]) --> B[Step 0: PlannerNode - Writer]
+    B --> C
+    C --> D
 
-    %% Define the "Success Path" subgraph
-    subgraph "Success Path"
+    %% Success path
+    subgraph Success_Path
         direction TB
-        D{Step 2: RouteNode<br/>'Judge'};
-        G(Step 5: AddValueNode<br/>'Finalize');
+        D{Step 2: RouteNode - Judge}
+        G[Step 5: AddValueNode - Finalize]
     end
-    
-    %% Define the "Correction Loop" subgraph
-    subgraph "Correction Loop"
+
+    %% Correction loop
+    subgraph Correction_Loop
         direction TB
-        C(Step 1: ToolNode<br/>'Tester');
-        E(Step 3: LLMNode<br/>'Corrector');
-        F(Step 4: ClearErrorNode<br/>'Cleanup');
+        C[Step 1: ToolNode - Tester]
+        E[Step 3: LLMNode - Corrector]
+        F[Step 4: ClearErrorNode - Cleanup]
     end
-    
-    %% Define the main logic flow
-    D -- "Success" --> G;
-    D -- "Failure" --> E;
-    E --> F;
-    F --> C; %% This is the "loop back"
-    G --> H(End);
-    
-    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490
-    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b
-    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3
-    
+
+    D -- Success --> G
+    D -- Failure --> E
+    E --> F
+    F --> C
+    G --> H([End])
+
+    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
+    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
+    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3;
+
     class A,H startend;
     class B,C,E,F,G default;
     class D logic;

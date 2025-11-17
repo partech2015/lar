@@ -1,16 +1,16 @@
-The "Glass Box" Audit Log
+# The "Glass Box" Audit Log
 
-The GraphExecutor's "killer feature" is the history log it generates. This is not just a print statement; it's a structured Event Sourced log that gives you a complete audit trail of every agent run.
+The `GraphExecutor`'s "killer feature" is the `history` log it generates. This is not just a `print` statement; it's a structured **Event Sourced** log that gives you a complete audit trail of every agent run.
 
-Your app (like the Snath UI) doesn't just get a final answer. It gets a receipt for how the agent "thought."
+Your app (like the `Snath` UI) doesn't just get a final answer. It gets a **receipt** for how the agent "thought."
 
-The "Event Sourcing" Model
+**The "Event Sourcing" Model**
 
-To be infinitely scalable, lar (as of v2.0) does not log the entire state at every step. That is slow and expensive.
+To be infinitely scalable, `lar` (as of v2.0) does not log the entire state at every step. That is slow and expensive.
 
-Instead, it logs "events" (state diffs).
+Instead, it logs **"events" (state diffs)**.
 
-The GraphExecutor yields a step_log object for each step. This log is a small, efficient JSON object:
+The `GraphExecutor` `yields` a `step_log` object for each step. This log is a small, efficient JSON object:
 ```json
 {
   "step": 0,
@@ -37,17 +37,17 @@ The GraphExecutor yields a step_log object for each step. This log is a small, e
 }
 ```
 
-What This Log Tells You
+**What This Log Tells You**
 
-step & node: Where you are in the graph.
+- `step` **&** `node`: Where you are in the graph.
 
-outcome: What happened ("success" or "error").
+- `outcome`: What happened ("success" or "error").
 
-state_before: A "snapshot" of the agent's entire memory before this node ran.
+- `state_before`: A "snapshot" of the agent's entire memory before this node ran.
 
-state_diff: The "killer feature." This is the exact change the node made to the state. You can see it added the "plan": "TEXT" key.
+- `state_diff`: The "**killer feature.**" This is the exact change the node made to the state. You can see it `added` the `"plan": "TEXT" key`.
 
-run_metadata: The cost audit. You can see this single LLMNode step cost 43 tokens.
+- `run_metadata`: The **cost audit**. You can see this single `LLMNode` step cost 43 tokens.
 
 When your agent fails, the "glass box" gives you a perfect record:
 ```json
