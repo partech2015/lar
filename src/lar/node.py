@@ -102,7 +102,21 @@ class LLMNode(BaseNode):
                     contents=prompt, # <-- The user's prompt
                     generation_config=final_gen_config # <-- The config object
                 )
-                
+                 # Check if the response was blocked *before* trying to access .text
+                if not response.candidates or not response.candidates[0].content or not response.candidates[0].content.parts:
+                    # This means the response was empty or blocked
+                    finish_reason = "Unknown"
+                    safety_ratings = "Unknown"
+                    if response.candidates:
+                        finish_reason = response.candidates[0].finish_reason
+                        safety_ratings = response.candidates[0].safety_ratings
+                    
+                    # This is a critical, non-retriable error
+                    raise ValueError(
+                        f"LLM response was blocked or empty. "
+                        f"Finish Reason: {finish_reason}. "
+                        f"Safety Ratings: {safety_ratings}"
+                    )
                 state.set(self.output_key, response.text)
                 print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
                 
