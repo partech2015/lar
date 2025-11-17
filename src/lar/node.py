@@ -70,21 +70,18 @@ class LLMNode(BaseNode):
         self.output_key = output_key
         self.next_node = next_node
         self.max_retries = max_retries
+        
+        # --- THIS IS THE FIX for the AttributeError ---
         self.generation_config = generation_config or {}
-
+        # --- END FIX ---
 
         if LLMNode._model_client is None:
             print("  [LLMNode]: Initializing Gemini model client...")
             genai.configure() 
             LLMNode._model_client = genai.GenerativeModel(self.model_name)
     
-    def execute(self, state: GraphState):
-        prompt = self.prompt_template.format(**state.get_all())
-        print(f"  [LLMNode]: Sending prompt: '{prompt[:50]}...'")
-        
-        retries = 0
-        base_delay = 1
-        
+    # --- THIS IS THE FIX for the SyntaxError ---
+    # We now have only *one* execute method
     def execute(self, state: GraphState):
         prompt = self.prompt_template.format(**state.get_all())
         print(f"  [LLMNode]: Sending prompt: '{prompt[:50]}...'")
@@ -94,6 +91,7 @@ class LLMNode(BaseNode):
         
         while retries < self.max_retries:
             try:
+                # This line now works because 'self.generation_config' exists
                 response = self._model_client.generate_content(
                     prompt,
                     generation_config=self.generation_config 
@@ -125,7 +123,7 @@ class LLMNode(BaseNode):
 
         print(f"  [LLMNode] FATAL: Failed after {self.max_retries} retries.")
         raise google_exceptions.ResourceExhausted(f"LLMNode failed after {self.max_retries} retries.")
-
+    # --- END FIX ---
 
 class RouterNode(BaseNode):
     """
