@@ -2,9 +2,8 @@ import time
 import google.generativeai as genai
 from abc import ABC, abstractmethod
 from .state import GraphState
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Optional, Any 
 from google.api_core import exceptions as google_exceptions
-from typing import Callable, Dict, List, Optional, Any
 # --- The Core API "Contract" ---
 class BaseNode(ABC):
     """
