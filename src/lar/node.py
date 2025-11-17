@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from .state import GraphState
 from typing import Callable, Dict, List, Optional, Any 
 from google.api_core import exceptions as google_exceptions
+
 # --- The Core API "Contract" ---
 class BaseNode(ABC):
     """
@@ -71,6 +72,7 @@ class LLMNode(BaseNode):
         self.max_retries = max_retries
         self.generation_config = generation_config or {}
 
+
         if LLMNode._model_client is None:
             print("  [LLMNode]: Initializing Gemini model client...")
             genai.configure() 
@@ -83,19 +85,23 @@ class LLMNode(BaseNode):
         retries = 0
         base_delay = 1
         
+    def execute(self, state: GraphState):
+        prompt = self.prompt_template.format(**state.get_all())
+        print(f"  [LLMNode]: Sending prompt: '{prompt[:50]}...'")
+        
+        retries = 0
+        base_delay = 1
+        
         while retries < self.max_retries:
             try:
-                
                 response = self._model_client.generate_content(
                     prompt,
                     generation_config=self.generation_config 
                 )
                 
-                # 2. Save the text response
                 state.set(self.output_key, response.text)
                 print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
                 
-                # 3. NEW: Save the usage metadata to a temporary key
                 if hasattr(response, 'usage_metadata'):
                     usage = {
                         "prompt_tokens": response.usage_metadata.prompt_token_count,
@@ -119,6 +125,7 @@ class LLMNode(BaseNode):
 
         print(f"  [LLMNode] FATAL: Failed after {self.max_retries} retries.")
         raise google_exceptions.ResourceExhausted(f"LLMNode failed after {self.max_retries} retries.")
+
 
 class RouterNode(BaseNode):
     """
