@@ -59,4 +59,7 @@ def build_log_table(history: list) -> Table:
     
     table.add_row("---", "---", "---", "---", "---")
     table.add_row("", "[bold]TOTAL[/bold]", "", f"[bold yellow]{total_tokens}[/bold yellow]", "")
+    total_tokens=0
     return table
+
+
