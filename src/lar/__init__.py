@@ -1,6 +1,8 @@
 """
 Lár: A "Define-by-Run" Agentic Framework.
-This file makes the core classes available for easy import.
+
+This file makes the core classes and utilities available for easy import
+by any developer who runs `pip install lar-engine`.
 """
 
 # Import the core classes to the top level of the package
@@ -11,21 +13,38 @@ from .node import (
     LLMNode, 
     RouterNode,
     ToolNode,
-    ClearErrorNode  
+    ClearErrorNode
 )
 from .executor import GraphExecutor
 from .utils import compute_state_diff, apply_diff
+from .formatter import build_log_table, summarize_diff
+
+
 
 # Define what happens when a user types `from lar import *`
+# This is the "public API" of your framework.
 __all__ = [
+    # Core Components
     "GraphState",
+    "GraphExecutor",
+    
+    # Node "Lego Bricks"
     "BaseNode",
     "AddValueNode",
     "LLMNode",
     "RouterNode",
     "ToolNode",
     "ClearErrorNode",
-    "GraphExecutor",
+    
+    # Utility Functions
     "compute_state_diff",
-    "apply_diff"  
+    "apply_diff",
+    
+    # NEW: Formatter Functions
+    "build_log_table",
+    "summarize_diff"
 ]
+
+# This is our "canary." It proves to the user
+# that they are running the correct, new version.
+print("\n✅ Lár Engine v0.2.0 (Rich Log Formatter) Successfully Imported ✅\n")
