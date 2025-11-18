@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from .state import GraphState
 from typing import Callable, Dict, List, Optional, Any 
 from google.api_core import exceptions as google_exceptions
-
+from google.genai import types
 # --- The Core API "Contract" ---
 class BaseNode(ABC):
     """
@@ -63,7 +63,7 @@ class LLMNode(BaseNode):
                  next_node: BaseNode = None,
                  max_retries: int = 3,
                  system_instruction: Optional[str] = None, 
-                 generation_config: Optional[Dict[str, Any]] = None 
+                 #generation_config: Optional[Dict[str, Any]] = None 
                  ):
         
         self.model_name = model_name
@@ -72,7 +72,7 @@ class LLMNode(BaseNode):
         self.next_node = next_node
         self.max_retries = max_retries
         self.system_instruction = system_instruction
-        self.generation_config_dict = generation_config or {}
+        #self.generation_config_dict = generation_config or {}
 
         if LLMNode._model_client is None:
             print("  [LLMNode]: Initializing Gemini model client...")
@@ -86,11 +86,11 @@ class LLMNode(BaseNode):
         
         # 2. Build the Generation Config object
         # This combines our 'temperature' dict and our 'system_instruction' string
-        config_args = self.generation_config_dict.copy()
-        if self.system_instruction:
-            config_args["system_instruction"] = self.system_instruction
+        #config_args = self.generation_config_dict.copy()
+        #if self.system_instruction:
+        #    config_args["system_instruction"] = self.system_instruction
             
-        final_gen_config = types.GenerateContentConfig(**config_args)
+        #final_gen_config = types.GenerateContentConfig(**config_args)
 
         retries = 0
         base_delay = 1
@@ -100,7 +100,7 @@ class LLMNode(BaseNode):
                 # 3. Call the API with the *new, official* structure
                 response = self._model_client.generate_content(
                     contents=prompt, # <-- The user's prompt
-                    generation_config=final_gen_config # <-- The config object
+                    #generation_config=final_gen_config # <-- The config object
                 )
                  # Check if the response was blocked *before* trying to access .text
                 if not response.candidates or not response.candidates[0].content or not response.candidates[0].content.parts:
