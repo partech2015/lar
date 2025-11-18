@@ -1,3 +1,19 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/snath-ai/.github/main/assets/lar-logo.png" width="80" alt="Lár Logo" />
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/lar-engine/">
+    <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/lar-engine?style=for-the-badge&color=blue">
+  </a>
+  <a href="https://pypi.org/project/lar-engine/">
+    <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/lar-engine?style=for-the-badge&color=blueviolet">
+
+  <a href="https://www.linkedin.com/company/snathai/">
+    <img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-snathai-0077B5?style=for-the-badge&logo=linkedin">
+  </a>
+</p>
+
 # Lár: The PyTorch for Agents
 
 **Lár** by **SnathAI™** is an open source "define-by-run" agentic framework for building auditable and reliable AI systems.
