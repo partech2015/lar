@@ -43,9 +43,9 @@ graph TD
     F --> C
     G --> H([End])
 
-    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
-    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
-    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3;
+    classDef default fill:#cffafe,stroke:#0891b2,color:#1a1a1a;   %% Darker text for default nodes
+    classDef logic fill:#fee2e2,stroke:#dc2626,color:#1a1a1a;    %% Darker text for logic node
+    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#1a1a1a; %% Darker text for start/end nodes
 
     class A,H startend;
     class B,C,E,F,G default;
