@@ -19,40 +19,37 @@ This is the "assembly line" for a self-correcting agent.
 ```mermaid
 graph TD
     A([Start]) --> B[Step 0: PlannerNode - Writer]
-    B --> C_node %% Changed to C_node to avoid conflict with subgraph C
-    C_node --> D_node %% Changed to D_node to avoid conflict with subgraph D
+    B --> C
+    C --> D
 
     %% Success path
     subgraph Success_Path
         direction TB
-        D_node{Step 2: RouteNode - Judge} %% Renamed to D_node
+        D{Step 2: RouteNode - Judge}
         G[Step 5: AddValueNode - Finalize]
     end
 
     %% Correction loop
     subgraph Correction_Loop
         direction TB
-        C_node[Step 1: ToolNode - Tester] %% Renamed to C_node
+        C[Step 1: ToolNode - Tester]
         E[Step 3: LLMNode - Corrector]
         F[Step 4: ClearErrorNode - Cleanup]
     end
 
-    D_node -- Success --> G
-    D_node -- Failure --> E
+    D -- Success --> G
+    D -- Failure --> E
     E --> F
-    F --> C_node
+    F --> C
     G --> H([End])
 
-    classDef blueBox fill:#e0f7fa,stroke:#00bcd4,color:#006064; %% Lighter blue for default nodes
-    classDef pinkDiamond fill:#fce4ec,stroke:#e91e63,color:#ad1457; %% Lighter pink for decision node
-    classDef startEndCircle fill:#e8eaf6,stroke:#3f51b5,color:#1a237e; %% Lighter indigo for start/end
-    classDef subgraphBorder stroke:#90a4ae,stroke-width:2px; %% Grey border for subgraphs
+    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
+    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
+    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3;
 
-    class A,H startEndCircle;
-    class B,C_node,E,F,G blueBox;
-    class D_node pinkDiamond;
-
-    class Success_Path, Correction_Loop subgraphBorder;
+    class A,H startend;
+    class B,C,E,F,G default;
+    class D logic;
 ```
 
 # The Code (The "Lego Bricks" in Action)
