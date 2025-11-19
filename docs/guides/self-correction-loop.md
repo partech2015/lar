@@ -18,47 +18,42 @@ This is the "assembly line" for a self-correcting agent.
 
 ```mermaid
 graph TD
-    start([Start])
-    planner[Step 0: PlannerNode - Writer]
-    tester[Step 1: ToolNode - Tester]
-    judge{Step 2: RouteNode - Judge}
-    corrector[Step 3: LLMNode - Corrector]
-    cleanup[Step 4: ClearErrorNode - Cleanup]
-    finalize[Step 5: AddValueNode - Finalize]
-    stop([End])
+graph TD
+    A([Start]) --> B[Step 0: PlannerNode - Writer]
+    B --> C1[Step 1: ToolNode - Tester]
+    C1 --> D{Step 2: RouteNode - Judge}
 
-    subgraph Correction_Loop
-        direction TD
-        tester
-        corrector
-        cleanup
-    end
-
+    %% Success path
     subgraph Success_Path
-        direction TD
-        judge
-        finalize
+        direction TB
+        G[Step 5: AddValueNode - Finalize]
     end
 
-    start --> planner
-    planner --> tester
-    tester --> judge
+    %% Correction loop
+    subgraph Correction_Loop
+        direction TB
+        E[Step 3: LLMNode - Corrector]
+        F[Step 4: ClearErrorNode - Cleanup]
+    end
 
-    judge -- Success --> finalize
-    judge -- Failure --> corrector
+    %% Routing logic
+    D -- Success --> G
+    D -- Failure --> E
 
-    corrector --> cleanup
-    cleanup --> tester
+    %% Correction loop wiring
+    E --> F
+    F --> C1
 
-    finalize --> stop
+    G --> H([End])
 
-    classDef default fill:#1f2937,stroke:#60a5fa,color:#e0e7ff;
-    classDef logic fill:#450a0a,stroke:#f87171,color:#fee2e2;
-    classDef startend fill:#1e3a8a,stroke:#93c5fd,color:#bfdbfe;
+    %% Color styles — matching reference theme
+    classDef default fill:#f0f9ff,stroke:#38bdf8,color:#0369a1;
+    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
+    classDef startend fill:#ede9fe,stroke:#7c3aed,color:#5b21b6;
 
-    class start,stop startend;
-    class planner,tester,corrector,cleanup,finalize default;
-    class judge logic;
+    class A,H startend;
+    class B,C1,E,F,G default;
+    class D logic;
 ```
 
 # The Code (The "Lego Bricks" in Action)
