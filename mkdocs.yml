@@ -17,8 +17,7 @@ theme:
     - search.suggest
     - content.code.annotate
 
-# --- THIS IS THE FIX ---
-# Removed the "1-", "2-", etc. from the file paths
+# Removed the "1-", "2-", etc. from the file paths <-- This comment is misleading
 # to match your actual file names.
 nav:
   - 'Home': index.md
