@@ -16,9 +16,10 @@ theme:
     - navigation.top
     - search.suggest
     - content.code.annotate
-  favicon: 'favicon.png'
-  icon:
-    logo: 'assets/lar-logo.svg'     
+
+  custom_dir: theme_overrides 
+  favicon: 'assets/favicon.png' 
+  
 
 markdown_extensions:
   - admonition
