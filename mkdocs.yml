@@ -17,8 +17,12 @@ theme:
     - search.suggest
     - content.code.annotate
 
-# Removed the "1-", "2-", etc. from the file paths <-- This comment is misleading
-# to match your actual file names.
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 nav:
   - 'Home': index.md
   - 'Getting Started': getting-started.md

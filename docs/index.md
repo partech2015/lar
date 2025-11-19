@@ -36,4 +36,4 @@ This means you can:
 
 Stop guessing. Start building agents you can trust.
 
-Get Started in 3 Minutes https://github.com/snath-ai/lar/blob/main/docs/getting-started.md
+Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
