@@ -18,8 +18,10 @@ google-genai = "^1.50.1"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
 python-dotenv = "^1.0.1"
+
+[tool.poetry.group.docs.dependencies] 
 mkdocs = "^1.5.3"
-mkdocs-material = "^9.5.15"
+mkdocs-material = "^9.5.15" 
 pymdown-extensions = "^10.0"
 
 [build-system]
