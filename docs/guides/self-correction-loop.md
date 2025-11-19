@@ -16,52 +16,44 @@ The "Glass Box" Flowchart
 
 This is the "assembly line" for a self-correcting agent.
 
+```mermaid
 graph TD
-    %% Define Nodes
-    start([Start])
-    planner[Step 0: PlannerNode - Writer]
-    tester[Step 1: ToolNode - Tester]
-    judge{Step 2: RouteNode - Judge}
-    corrector[Step 3: LLMNode - Corrector]
-    cleanup[Step 4: ClearErrorNode - Cleanup]
-    finalize[Step 5: AddValueNode - Finalize]
-    stop([End])
+    A([Start]) --> B[Step 0: PlannerNode - Writer]
+    B --> C_node %% Changed to C_node to avoid conflict with subgraph C
+    C_node --> D_node %% Changed to D_node to avoid conflict with subgraph D
 
-    %% Subgraphs
-    subgraph Correction_Loop
-        direction TD
-        tester
-        corrector
-        cleanup
-    end
-
+    %% Success path
     subgraph Success_Path
-        direction TD
-        judge
-        finalize
+        direction TB
+        D_node{Step 2: RouteNode - Judge} %% Renamed to D_node
+        G[Step 5: AddValueNode - Finalize]
     end
 
-    %% Connections
-    start --> planner
-    planner --> tester
-    tester --> judge
+    %% Correction loop
+    subgraph Correction_Loop
+        direction TB
+        C_node[Step 1: ToolNode - Tester] %% Renamed to C_node
+        E[Step 3: LLMNode - Corrector]
+        F[Step 4: ClearErrorNode - Cleanup]
+    end
 
-    judge -- Success --> finalize
-    judge -- Failure --> corrector
+    D_node -- Success --> G
+    D_node -- Failure --> E
+    E --> F
+    F --> C_node
+    G --> H([End])
 
-    corrector --> cleanup
-    cleanup --> tester
+    classDef blueBox fill:#e0f7fa,stroke:#00bcd4,color:#006064; %% Lighter blue for default nodes
+    classDef pinkDiamond fill:#fce4ec,stroke:#e91e63,color:#ad1457; %% Lighter pink for decision node
+    classDef startEndCircle fill:#e8eaf6,stroke:#3f51b5,color:#1a237e; %% Lighter indigo for start/end
+    classDef subgraphBorder stroke:#90a4ae,stroke-width:2px; %% Grey border for subgraphs
 
-    finalize --> stop
+    class A,H startEndCircle;
+    class B,C_node,E,F,G blueBox;
+    class D_node pinkDiamond;
 
-    %% Class Definitions for Styling
-    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
-    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
-    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3;
-
-    class start,stop startend;
-    class planner,tester,corrector,cleanup,finalize default;
-    class judge logic;
+    class Success_Path, Correction_Loop subgraphBorder;
+```
 
 # The Code (The "Lego Bricks" in Action)
 ```python
