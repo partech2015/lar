@@ -16,7 +16,7 @@ theme:
     - navigation.top
     - search.suggest
     - content.code.annotate
-  favicon: 'favicon.ico'
+  favicon: 'favicon.png'
 
 markdown_extensions:
   - admonition
