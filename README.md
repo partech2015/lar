@@ -64,7 +64,7 @@ Core Philosophy | Sells "Magic." | Sells "Trust."
 -----
 
 
-### Graph Architecture
+### A Simple Self-Correcting Loop
 
 ```mermaid
 graph TD
