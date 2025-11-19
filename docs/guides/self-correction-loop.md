@@ -18,7 +18,6 @@ This is the "assembly line" for a self-correcting agent.
 
 ```mermaid
 graph TD
-graph TD
     A([Start]) --> B[Step 0: PlannerNode - Writer]
     B --> C1[Step 1: ToolNode - Tester]
     C1 --> D{Step 2: RouteNode - Judge}
