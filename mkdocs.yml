@@ -18,7 +18,7 @@ theme:
     - content.code.annotate
   favicon: 'favicon.png'
   icon:
-    logo: 'lar-logo'     
+    logo: 'assets/lar-logo.svg'     
 
 markdown_extensions:
   - admonition
