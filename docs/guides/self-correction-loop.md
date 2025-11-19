@@ -16,41 +16,52 @@ The "Glass Box" Flowchart
 
 This is the "assembly line" for a self-correcting agent.
 
-```mermaid
 graph TD
-    A([Start]) --> B[Step 0: PlannerNode - Writer]
-    B --> C
-    C --> D
+    %% Define Nodes
+    start([Start])
+    planner[Step 0: PlannerNode - Writer]
+    tester[Step 1: ToolNode - Tester]
+    judge{Step 2: RouteNode - Judge}
+    corrector[Step 3: LLMNode - Corrector]
+    cleanup[Step 4: ClearErrorNode - Cleanup]
+    finalize[Step 5: AddValueNode - Finalize]
+    stop([End])
 
-    %% Success path
-    subgraph Success_Path
-        direction TB
-        D{Step 2: RouteNode - Judge}
-        G[Step 5: AddValueNode - Finalize]
-    end
-
-    %% Correction loop
+    %% Subgraphs
     subgraph Correction_Loop
-        direction TB
-        C[Step 1: ToolNode - Tester]
-        E[Step 3: LLMNode - Corrector]
-        F[Step 4: ClearErrorNode - Cleanup]
+        direction TD
+        tester
+        corrector
+        cleanup
     end
 
-    D -- Success --> G
-    D -- Failure --> E
-    E --> F
-    F --> C
-    G --> H([End])
+    subgraph Success_Path
+        direction TD
+        judge
+        finalize
+    end
 
+    %% Connections
+    start --> planner
+    planner --> tester
+    tester --> judge
+
+    judge -- Success --> finalize
+    judge -- Failure --> corrector
+
+    corrector --> cleanup
+    cleanup --> tester
+
+    finalize --> stop
+
+    %% Class Definitions for Styling
     classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490;
     classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
     classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3;
 
-    class A,H startend;
-    class B,C,E,F,G default;
-    class D logic;
-```
+    class start,stop startend;
+    class planner,tester,corrector,cleanup,finalize default;
+    class judge logic;
 
 # The Code (The "Lego Bricks" in Action)
 ```python
