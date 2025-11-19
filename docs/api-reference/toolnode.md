@@ -50,6 +50,27 @@ add_node = ToolNode(
 )
 ```
 
+What it Does
+
+- When execute(state) is called:
+
+    1. It builds a list of inputs by getting each key from self.input_keys.
+
+    2. It calls self.tool_function(*inputs).
+
+- If it succeeds:
+
+    1. It saves the return value to state.set(self.output_key, ...)
+
+    2. It returns self.next_node.
+
+- If it fails:
+
+    1. It saves the exception message to state.set("last_error", ...)
+
+    2. It returns self.error_node.
+    
+
 ```__init__``` Parameters
 
 | Parameter | Type | Required | Description|
@@ -59,23 +80,3 @@ add_node = ToolNode(
 | `output_key` | `str` | Yes | The `GraphState` key to save the tool's return value to.|
 | `next_node` | `BaseNode` | Yes | The node to run if the tool succeeds.|
 | `error_node` | `BaseNode` | No | The node to run if the tool fails (raises an Exception). If None, the graph will stop.|
-
-What it Does
-
-When execute(state) is called:
-
-It builds a list of inputs by getting each key from self.input_keys.
-
-It calls self.tool_function(*inputs).
-
-If it succeeds:
-
-It saves the return value to state.set(self.output_key, ...)
-
-It returns self.next_node.
-
-If it fails:
-
-It saves the exception message to state.set("last_error", ...)
-
-It returns self.error_node.
