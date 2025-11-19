@@ -40,15 +40,6 @@ judge_node = RouterNode(
 )
 ```
 
-```__init__``` Parameters
-
-
-| Parameter | Type | Required | Description|
-|-----------|------|----|---------------|
-| `decision_function` | `Callable` | Yes | A Python function that takes a `GraphState` as input and returns a single `str` (the route key).|
-| `path_map` | `Dict` | Yes | A dictionary that maps the string keys from your function to the `BaseNode` objects to run (e.g., `{"success_path": ...}`)|
-| `default_node` | `BaseNode` | No | (Optional) A fallback node to run if the `decision_function` returns a key that is not in the `path_map`.|
-
 What it Does
 
 When `execute(state)` is called:
@@ -62,3 +53,12 @@ When `execute(state)` is called:
 4. If not found, it returns the `default_node`.
 
 5. If no default, it returns `None` and stops the graph.
+
+```__init__``` Parameters
+
+
+| Parameter | Type | Required | Description|
+|-----------|------|----|---------------|
+| `decision_function` | `Callable` | Yes | A Python function that takes a `GraphState` as input and returns a single `str` (the route key).|
+| `path_map` | `Dict` | Yes | A dictionary that maps the string keys from your function to the `BaseNode` objects to run (e.g., `{"success_path": ...}`)|
+| `default_node` | `BaseNode` | No | (Optional) A fallback node to run if the `decision_function` returns a key that is not in the `path_map`.|
