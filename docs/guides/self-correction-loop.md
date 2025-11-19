@@ -18,7 +18,7 @@ This is the "assembly line" for a self-correcting agent.
 
 ```mermaid
 graph TD
-start([Start])
+    start([Start])
     planner[Step 0: PlannerNode - Writer]
     tester[Step 1: ToolNode - Tester]
     judge{Step 2: RouteNode - Judge}
@@ -40,7 +40,6 @@ start([Start])
         finalize
     end
 
-
     start --> planner
     planner --> tester
     tester --> judge
@@ -53,9 +52,9 @@ start([Start])
 
     finalize --> stop
 
-    classDef default fill:#1f2937,stroke:#60a5fa,color:#e0e7ff; /* Dark slate blue fill, blue stroke, light text */
-    classDef logic fill:#450a0a,stroke:#f87171,color:#fee2e2; /* Dark red fill, light red stroke, light text */
-    classDef startend fill:#1e3a8a,stroke:#93c5fd,color:#bfdbfe; /* Darker blue fill, light blue stroke, very light text */
+    classDef default fill:#1f2937,stroke:#60a5fa,color:#e0e7ff;
+    classDef logic fill:#450a0a,stroke:#f87171,color:#fee2e2;
+    classDef startend fill:#1e3a8a,stroke:#93c5fd,color:#bfdbfe;
 
     class start,stop startend;
     class planner,tester,corrector,cleanup,finalize default;
