@@ -16,9 +16,7 @@ theme:
     - navigation.top
     - search.suggest
     - content.code.annotate
-
-  favicon: 'assets/favicon.png' 
-  
+  favicon: 'favicon.png'
 
 markdown_extensions:
   - admonition
