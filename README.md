@@ -23,8 +23,8 @@
 This framework provides a deterministic, stateful, and node-based system for orchestrating complex agentic behavior, including self-correction, dynamic branching, and tool-use loops.
 
 -----
-
-[Full Documentation ---->](https://docs.snath.ai)
+**Full Documentation**
+[https://docs.snath.ai](https://docs.snath.ai)
 
 ## Core Philosophy: "Glass Box" vs. "Black Box"
 
