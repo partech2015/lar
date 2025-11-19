@@ -27,7 +27,6 @@ start([Start])
     finalize[Step 5: AddValueNode - Finalize]
     stop([End])
 
-    %% Subgraphs
     subgraph Correction_Loop
         direction TD
         tester
@@ -41,7 +40,7 @@ start([Start])
         finalize
     end
 
-    %% Connections
+
     start --> planner
     planner --> tester
     tester --> judge
