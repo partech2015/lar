@@ -18,7 +18,7 @@ This is the "assembly line" for a self-correcting agent.
 
 ```mermaid
 graph TD
-    A([Start]) --> B[Step 0: PlannerNode - Writer]
+    A[Start] --> B[Step 0: PlannerNode - Writer]
     B --> C1[Step 1: ToolNode - Tester]
     C1 --> D{Step 2: RouteNode - Judge}
 
@@ -35,24 +35,22 @@ graph TD
         F[Step 4: ClearErrorNode - Cleanup]
     end
 
-    %% Routing logic
     D -- Success --> G
     D -- Failure --> E
-
-    %% Correction loop wiring
     E --> F
     F --> C1
+    G --> H[End]
 
-    G --> H([End])
+    %% --- CLEAN STYLE TO MATCH SECOND IMAGE ---
+    %% no fills, no colors, simple outlines
 
-    %% Color styles — matching reference theme
-    classDef default fill:#f0f9ff,stroke:#38bdf8,color:#0369a1;
-    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b;
-    classDef startend fill:#ede9fe,stroke:#7c3aed,color:#5b21b6;
+    classDef default stroke:#8FA3B0, color:#FFFFFF, fill:#1E293B;
+    classDef decision stroke:#8FA3B0, color:#FFFFFF, fill:#1E293B;
+    classDef startend stroke:#8FA3B0, color:#FFFFFF, fill:#1E293B;
 
     class A,H startend;
     class B,C1,E,F,G default;
-    class D logic;
+    class D decision;
 ```
 
 # The Code (The "Lego Bricks" in Action)
