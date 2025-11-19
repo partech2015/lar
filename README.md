@@ -66,37 +66,37 @@ Core Philosophy | Sells "Magic." | Sells "Trust."
 
 ```mermaid
 graph TD
-    A(Start) --> B(Step 0: PlannerNode<br/>'Writer')
-    B --> C
-    C --> D
+    A[Start] --> B[Step 0: PlannerNode - Writer]
+    B --> C1[Step 1: ToolNode - Tester]
+    C1 --> D{Step 2: RouteNode - Judge}
 
-    subgraph "Success Path"
+    %% Success path
+    subgraph Success_Path
         direction TB
-        D{Step 2: RouteNode<br/>'Judge'}
-        G(Step 5: AddValueNode<br/>'Finalize')
+        G[Step 5: AddValueNode - Finalize]
     end
-    
-    subgraph "Correction Loop"
+
+    %% Correction loop
+    subgraph Correction_Loop
         direction TB
-        C(Step 1: ToolNode<br/>'Tester')
-        E(Step 3: LLMNode<br/>'Corrector')
-        F(Step 4: ClearErrorNode<br/>'Cleanup')
+        E[Step 3: LLMNode - Corrector]
+        F[Step 4: ClearErrorNode - Cleanup]
     end
-    
-    D -- "Success" --> G
-    D -- "Failure" --> E
+
+    D -- Success --> G
+    D -- Failure --> E
     E --> F
-    F --> C 
-    G --> H(End)
-    
-    %% Define styles to match the diagram
-    classDef default fill:#cffafe,stroke:#0891b2,color:#0e7490
-    classDef logic fill:#fee2e2,stroke:#dc2626,color:#991b1b
-    classDef startend fill:#e0e7ff,stroke:#4f46e5,color:#3730a3
-    
-    class A,H startend
-    class B,C,E,F,G default
-    class D logic
+    F --> C1
+    G --> H[End]
+
+
+    classDef default stroke:#8FA3B0, color:#FFFFFF, fill:#1E293B;
+    classDef decision stroke:#8FA3B0, color:#FFFFFF, fill:#1E293B;
+    classDef startend stroke:#8FA3B0, color:#FFFFFF, fill:#1E293B;
+
+    class A,H startend;
+    class B,C1,E,F,G default;
+    class D decision;
 ```
 
 -----
