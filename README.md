@@ -174,7 +174,7 @@ GOOGLE_API_KEY="YOUR_API_KEY_HERE"
 You can build any agent with 6 core components. `lar` is a "glass box" because you see *exactly* how these components connect.
 
 * **`GraphState`**: The "Memory." A simple Python object that is passed to every node, allowing them to share data.
-* **`GraphExecutor`**: The "Engine." A simple `generator` that runs one node at a time and `yield`s the `history` log.
+* **`GraphExecutor`**: The "Engine." A simple `generator` that runs one node at a time and `yields` the `history` log.
 * **`LLMNode`**: The "Brain." It calls the Gemini API to think, write, or critique. It's resilient and auto-retries on rate limits.
 * **`ToolNode`**: The "Hands." It runs any Python function (like `run_code` or `search_web`) and has separate `success` and `error` paths.
 * **`RouterNode`**: The "Choice." Your `if/else` statement. It runs a simple Python function to decide which node to run next.
