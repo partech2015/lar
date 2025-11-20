@@ -309,17 +309,20 @@ triage_node = LLMNode(
 )
 
 # 3. Run the Agent
-# executor = GraphExecutor()
-# initial_state = {"task": "How do I reset my password?"}
-# result_log = list(executor.run_step_by_step(
-#     start_node=triage_node, 
-#     initial_state=initial_state
-# ))
-# The "glass box" log for Step 0 will show:
-# "state_diff": {"added": {"category": "TECH_SUPPORT"}}
-#
-# The log for Step 1 will show:
-# "Routing to LLMNode" (the tech_support_agent)
+executor = GraphExecutor()
+initial_state = {"task": "How do I reset my password?"}
+result_log = 
+    list(executor.run_step_by_step(
+        start_node=triage_node, 
+        initial_state=initial_state
+))
+'''
+The "glass box" log for Step 0 will show:
+"state_diff": {"added": {"category": "TECH_SUPPORT"}}
+
+The log for Step 1 will show:
+"Routing to LLMNode" (the tech_support_agent)
+'''
 ```
 -----
 
