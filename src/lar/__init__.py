@@ -47,4 +47,4 @@ __all__ = [
 
 # This is our "canary." It proves to the user
 # that they are running the correct, new version.
-print("\n✅ Lár Engine v0.2.0 (Rich Log Formatter) Successfully Imported ✅\n")
+print("\n---- Lár Engine Successfully Imported ------\n")

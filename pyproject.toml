@@ -2,7 +2,7 @@
 name = "lar-engine"
 version = "0.5.3"
 description = "Lár: The PyTorch for Agents. A 'define-by-run' agentic framework."
-authors = ["Snath AI <admin@snath.ai>"]
+authors = ["Snath AI <contact@snath.ai>"]
 license = "Apache-2.0"
 readme = "README.md"
 packages = [

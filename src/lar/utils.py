@@ -38,6 +38,5 @@ def apply_diff(state: dict, diff: dict) -> dict:
     for key, value in diff.get("added", {}).items():
         new_state[key] = value
     for key, values in diff.get("modified", {}).items():
-        new_state[key] = values["new"] # Set to the 'new' value
-        
+        new_state[key] = values["new"] 
     return new_state
