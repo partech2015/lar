@@ -138,7 +138,7 @@ This is a **real execution** log from a lar-built agent. The agent's job was to 
 | 2 | `LLMNode` | `success` | `+ ADDED: 'draft_answer'` |
 | 3 | `LLMNode` | **`error`** | **`+ ADDED: 'error': "429 You exceeded your current quota..."`** |
 
-**This is the `lar` difference.** You know the *exact* node (`LLMNode`), the *exact* step (3), and the *exact reason* ("429 Quota Exceeded") for the failure. You can't debug a "black box," but you can **always** fix a "glass box."
+**This is the `lar` difference.** You know the `*exact* node` (`LLMNode`), the `*exact* step` (3), and the `*exact reason*` (`429 Quota Exceeded`) for the failure. You can't debug a "black box," but you can **always** fix a "glass box."
 
 
 
