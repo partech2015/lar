@@ -14,6 +14,7 @@ import os
 import json
 import datetime
 from dotenv import load_dotenv
+from rich.console import Console
 
 # --- Lár "Lego Bricks" ---
 # We import the core components from our engine
