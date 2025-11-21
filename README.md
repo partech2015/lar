@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/snath-ai/.github/main/assets/lar-logo.png" width="80" alt="Lár Logo" />
 </p>
-
+<p align="center"><em>The GlassBox Engine for Agent Reasoning</em></p>
 <p align="center">
   <a href="https://pypi.org/project/lar-engine/">
     <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/lar-engine?style=for-the-badge&color=blue">
