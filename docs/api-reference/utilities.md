@@ -1,5 +1,7 @@
 # API Reference: Utilities
 
+## Graph Components
+
 These are the "scaffolding" components that hold the framework together: the `GraphExecutor`, the `GraphState`, and our simple helper nodes.
 
 **`1. GraphExecutor`**
