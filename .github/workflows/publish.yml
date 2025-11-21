@@ -24,13 +24,15 @@ jobs:
         with:
           python-version: "3.11" # Match the version you use locally
 
-      - name: Install Poetry
-        # Poetry is used for dependency management and building
-        run: pip install poetry
-
-      - name: Install Dependencies
-        # Installs your project dependencies, including dev dependencies for testing
-        run: poetry install --sync --no-root 
+      - name: Install Poetry and Dependencies
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.2 # Specify a modern Poetry version
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          
+      - name: Install Project Dependencies
+        run: poetry install --sync --no-root
 
       - name: Run PyTest
         # Runs your unit tests before building the release package
