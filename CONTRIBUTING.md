@@ -6,11 +6,10 @@ Lár aims to become the *PyTorch of Agent Reasoning*, and community contribution
 ## How to Contribute
 ### 1. Fork the repository  
 ### 2. Create a feature branch  
-    
-        ```
-        git checkout -b feature/my-feature
-        ```
 
+```bash
+git checkout -b feature/my-feature
+```
 ### 3. Add tests  
 Lár emphasizes reliability and auditability.  
 Every new feature *must* include tests.
