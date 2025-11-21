@@ -79,7 +79,6 @@ class GraphExecutor:
              # Extract metadata
             if "__last_run_metadata" in state_after:
                 log_entry["run_metadata"] = state_after.pop("__last_run_metadata")
-                state.set("__last_run_metadata", None) 
 
 
             # 6. Compute the diff (now on the *cleaned* state_after)
@@ -91,8 +90,8 @@ class GraphExecutor:
             yield log_entry
             
             
-            # 7. Yield the log of this step and pause
-            yield log_entry
+            '''# 7. Yield the log of this step and pause
+            yield log_entry '''
             
             # 8. Resume on the next call
             current_node = next_node

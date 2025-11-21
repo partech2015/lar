@@ -47,6 +47,7 @@ class AddValueNode(BaseNode):
              print(f"  [AddValueNode]: Setting state['{self.key}'] = '{str(value_to_set)[:50]}...'")
 
         state.set(self.key, value_to_set)
+        state.set("__last_run_metadata", None)
         return self.next_node
 
 class LLMNode(BaseNode):
@@ -121,10 +122,14 @@ class LLMNode(BaseNode):
                 print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
                 
                 if hasattr(response, 'usage_metadata'):
+                    prompt_count = response.usage_metadata.prompt_token_count
+                    output_count = response.usage_metadata.candidates_token_count
+                    
                     usage = {
-                        "prompt_tokens": response.usage_metadata.prompt_token_count,
-                        "output_tokens": response.usage_metadata.candidates_token_count,
-                        "total_tokens": response.usage_metadata.total_token_count,
+                        "prompt_tokens": prompt_count,
+                        "output_tokens": output_count,
+                        # FIX: Enforce correct total token sum for transparency
+                        "total_tokens": prompt_count + output_count, 
                     }
                     state.set("__last_run_metadata", usage)
                     print(f"  [LLMNode]: Logged {usage['total_tokens']} tokens.")
@@ -160,6 +165,9 @@ class RouterNode(BaseNode):
         route_key = self.decision_function(state)
         print(f"  [RouterNode]: Decision function returned '{route_key}'")
         next_node = self.path_map.get(route_key)
+
+        state.set("__last_run_metadata", None)
+
         if next_node:
             print(f"  [RouterNode]: Routing to {next_node.__class__.__name__}")
             return next_node
@@ -194,6 +202,9 @@ class ToolNode(BaseNode):
             result = self.tool_function(*inputs)
             state.set(self.output_key, result)
             print(f"  [ToolNode]: Saved result to state['{self.output_key}']")
+
+            state.set("__last_run_metadata", None)
+            
             return self.next_node
         except Exception as e:
             print(f"  [ToolNode] ERROR: {self.tool_function.__name__} failed: {e}")
