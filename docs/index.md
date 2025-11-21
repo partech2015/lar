@@ -1,6 +1,6 @@
 # Welcome to Lár: The Glass Box Agent Framework
 
-Lár (Irish for "core" or "center") is the open-source "PyTorch for Agents."
+**Lár** by *SnathAI™* (Irish for "core" or "center") is the open-source "PyTorch for Agents."
 
 It is a "define-by-run" framework for building auditable, reliable, and production-ready AI agents.
 
