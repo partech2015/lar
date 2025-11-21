@@ -44,3 +44,4 @@ PyCharm / IntelliJ
 .pytest_cache/
 coverage.xml
 htmlcov/
+simple_agent.py

@@ -1,4 +1,4 @@
-site_name: Lár by SnathAI™
+site_name: ''
 site_author: Snath.ai
 site_url: https://snath-ai.github.io/lar/
 repo_name: snath-ai/lar
@@ -16,6 +16,7 @@ theme:
     - navigation.top
     - search.suggest
     - content.code.annotate
+  custom_dir: theme_overrides
   favicon: 'favicon.png'
 
 markdown_extensions:
