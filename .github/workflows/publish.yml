@@ -1,0 +1,76 @@
+name: Publish Package to PyPI
+
+# 1. Trigger the workflow only when a new release is published
+on:
+  release:
+    types: [published]
+
+# 2. Permissions required for PyPI Trusted Publishing (OIDC)
+permissions:
+  contents: read
+  id-token: write # <-- CRITICAL for OIDC security
+
+jobs:
+  build_and_test:
+    name: Build & Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11" # Match the version you use locally
+
+      - name: Install Poetry
+        # Poetry is used for dependency management and building
+        run: pip install poetry
+
+      - name: Install Dependencies
+        # Installs your project dependencies, including dev dependencies for testing
+        run: poetry install --sync --no-root 
+
+      - name: Run PyTest
+        # Runs your unit tests before building the release package
+        run: poetry run pytest
+
+      - name: Build Package
+        # Creates the .whl and .tar.gz distribution files
+        run: poetry build
+      
+      - name: Store Distribution Files
+        # Uploads the built package files so the next job can access them
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+          
+  pypi_publish:
+    name: Publish to PyPI
+    needs: [build_and_test] # This job only runs if the 'build_and_test' job succeeds
+    runs-on: ubuntu-latest
+    
+    # 3. Environment configuration (Best Practice)
+    environment:
+      name: pypi
+      url: https://pypi.org/p/lar-engine/ # Update 'lar-engine' if necessary
+      
+    permissions:
+      id-token: write # Must be set again at the job level
+
+    steps:
+      - name: Download Distribution Files
+        # Downloads the packages built in the previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish Package to PyPI
+        # Uses the official PyPA action for secure publishing via OIDC
+        uses: pypa/gh-action-pypi-publish@release/v1 
+        with:
+          # This action uses the OIDC token automatically, no secrets needed!
+          passphrase: ${{ secrets.PUBLISH_PASSWORD }} # Placeholder for legacy use, OIDC bypasses it.
