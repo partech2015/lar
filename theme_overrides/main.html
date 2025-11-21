@@ -3,7 +3,7 @@
 {% block header %}
   {{ super() }}
   <a href="{{ '/' | url }}" title="{{ config.site_name | default(config.site_url) }}" class="md-header__button md-logo" aria-label="{{ config.site_name | default(config.site_url) }}">
-    <img src="{{ url_for('assets/lar-logo.svg') }}" alt="{{ config.site_name }}" width="24" height="24">
+    <img src="{{ '/assets/lar-logo.svg' | url }}" alt="{{ config.site_name }}" width="24" height="24">
   </a>
 {% endblock %}
 
