@@ -1,0 +1,12 @@
+/* Custom styles for Lár framework documentation */
+
+/* Make inline code elements stand out against the dark slate background */
+.md-typeset code {
+    /* Background: A slightly brighter, yet dark, color (e.g., dark blue/purple) */
+    background-color: #374151; 
+    /* Text Color: Use a light color for high contrast */
+    color: #e5e7eb; 
+    /* Add padding for readability */
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
