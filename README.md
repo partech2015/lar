@@ -341,4 +341,19 @@ We welcome contributions to `lar`. Please open an issue or submit a pull request
 
 ## License
 
-This project is licensed under `Apache 2.0`.
+Làr is licensed under the Apache License 2.0.
+
+This means:
+
+- You are free to use Làr in personal, academic, or commercial projects.
+- You may modify and distribute the code.
+- You MUST retain the copyright notice and the NOTICE file.
+- If you distribute a modified version, you must document what you changed.
+- You receive a patent license for contributions made to the project.
+
+Apache 2.0 protects the original author (Aadithya Vishnu Sajeev)
+while encouraging broad adoption and community collaboration.
+
+For developers building on Làr:
+Please ensure that the LICENSE and NOTICE files remain intact
+to preserve full legal compatibility with the Apache 2.0 terms.
