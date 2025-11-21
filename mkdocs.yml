@@ -17,7 +17,7 @@ theme:
     - search.suggest
     - content.code.annotate
   custom_dir: theme_overrides
-  favicon: 'favicon.png'
+  favicon: 'assets/lar-logo.png'
 
 markdown_extensions:
   - admonition
