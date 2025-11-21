@@ -7,9 +7,9 @@ Lár aims to become the *PyTorch of Agent Reasoning*, and community contribution
 ### 1. Fork the repository  
 ### 2. Create a feature branch  
     
-    ```bash
-    git checkout -b feature/my-feature
-    ```
+        ```bash
+        git checkout -b feature/my-feature
+        ```
 
 ### 3. Add tests  
 Lár emphasizes reliability and auditability.  
