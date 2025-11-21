@@ -1,7 +1,8 @@
 # tests/test_tool.py
 
 import pytest
-from lar import GraphExecutor, ToolNode, AddValueNode, GraphState
+# CRITICAL: Added apply_diff for state reconstruction
+from lar import GraphExecutor, ToolNode, AddValueNode, GraphState, apply_diff 
 
 # --- Define some "tools" to test ---
 
@@ -35,19 +36,24 @@ def test_tool_success_path():
     executor = GraphExecutor()
     initial_state = {"num1": 10, "num2": 5}
 
-    # 2. Act
+    # 2. Act: Use run_step_by_step and rebuild the state
+    audit_log = list(executor.run_step_by_step(
+        start_node=tool, 
+        initial_state=initial_state
+    ))
     
-    # --- THIS IS THE FIX ---
-    # The variable is `tool`, not `start_node`
-    result = executor.run(tool, initial_state)
-    final_state = result["state"]
-    # --- END FIX ---
+    # Reconstruct the final state from the log
+    final_state_data = initial_state
+    for step in audit_log:
+        final_state_data = apply_diff(final_state_data, step["state_diff"])
 
     # 3. Assert
+    # Check that the graph ran two steps (ToolNode -> AddValueNode)
+    assert len(audit_log) == 2
     # Check that the tool's output was saved
-    assert final_state.get("sum_result") == 15
+    assert final_state_data.get("sum_result") == 15
     # Check that the success_node was run
-    assert final_state.get("status") == "success"
+    assert final_state_data.get("status") == "success"
 
 
 def test_tool_failure_path():
@@ -71,18 +77,23 @@ def test_tool_failure_path():
     executor = GraphExecutor()
     initial_state = {}
 
-    # 2. Act
+    # 2. Act: Use run_step_by_step and rebuild the state
+    audit_log = list(executor.run_step_by_step(
+        start_node=tool, 
+        initial_state=initial_state
+    ))
     
-    # --- THIS IS THE FIX ---
-    # We must unpack the `result` dictionary to get the `state`
-    result = executor.run(tool, initial_state)
-    final_state = result["state"]
-    # --- END FIX ---
+    # Reconstruct the final state from the log
+    final_state_data = initial_state
+    for step in audit_log:
+        final_state_data = apply_diff(final_state_data, step["state_diff"])
 
     # 3. Assert
+    # Check that the graph ran two steps (ToolNode -> ErrorNode)
+    assert len(audit_log) == 2
     # Check that the error_node was run
-    assert final_state.get("status") == "failed"
+    assert final_state_data.get("status") == "failed"
     # Check that the success output was never set
-    assert final_state.get("never_set") is None
-    # Check that the error message was saved to the state
-    assert "This tool was designed to fail" in final_state.get("last_error")
+    assert final_state_data.get("never_set") is None
+    # Check that the error message was saved to the state by ToolNode
+    assert "This tool was designed to fail" in final_state_data.get("last_error")

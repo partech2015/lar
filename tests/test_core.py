@@ -1,51 +1,57 @@
 # tests/test_core.py
 
 import pytest
-from lar import GraphExecutor, AddValueNode, PrintStateNode, GraphState
+# Removed PrintStateNode import
+from lar import GraphExecutor, AddValueNode, GraphState, apply_diff 
 
 def test_simple_graph_execution():
     """
     Tests a simple, linear A -> B graph.
-    - Node A (AddValueNode) adds a value to the state.
-    - Node B (PrintStateNode) prints the state and ends the graph.
-    We will then assert that the final state contains the value from Node A.
+    - Node A (AddValueNode) adds a value.
+    - Node B (AddValueNode) marks the end.
+    Asserts that both values are in the final state.
     """
     
     # 1. Arrange: Set up the graph and executor
-    
-    # Define the initial data for the graph
     initial_state = {"user": "Solo Developer"}
     
     # Define the nodes in reverse order, from end to start
-    # Node B: The end of the graph
-    end_node = PrintStateNode()
+    
+    # Node B: The end of the graph (replaces PrintStateNode)
+    # This node will run, add a final marker, then return None, ending the graph.
+    end_node = AddValueNode(
+        key="test_status",
+        value="COMPLETED",
+        next_node=None # CRITICAL: Signals the end of execution
+    )
     
     # Node A: The start of the graph
-    # This node will run, then return `end_node` as the next step
     start_node = AddValueNode(
         key="message", 
         value="Hello Lár!", 
         next_node=end_node
     )
     
-    # Create the engine that will run the graph
     executor = GraphExecutor()
 
-    # 2. Act: Run the graph
+    # 2. Act: Run the graph and capture the full audit log
+    audit_log = list(executor.run_step_by_step(
+        start_node=start_node, 
+        initial_state=initial_state
+    ))
     
-    # The executor will run start_node, which modifies the state,
-    # then returns end_node. The executor then runs end_node,
-    # which returns None, ending the loop.
-    result = executor.run(start_node, initial_state)
-    final_state = result["state"]
+    # Reconstruct the final state from the log
+    final_state_data = initial_state
+    for step in audit_log:
+        final_state_data = apply_diff(final_state_data, step["state_diff"])
 
     # 3. Assert: Check if the graph did its job
     
-    # Check that the final state is what we expect
-    assert final_state is not None
+    # The audit log must contain exactly two steps
+    assert len(audit_log) == 2 
     
-    # Check that the value from the initial state is still there
-    assert final_state.get("user") == "Solo Developer"
-    
-    # Check that the value from AddValueNode was added correctly
-    assert final_state.get("message") == "Hello Lár!"
+    # Check that the final state contains the values from both nodes
+    assert final_state_data is not None
+    assert final_state_data.get("user") == "Solo Developer"
+    assert final_state_data.get("message") == "Hello Lár!"
+    assert final_state_data.get("test_status") == "COMPLETED"

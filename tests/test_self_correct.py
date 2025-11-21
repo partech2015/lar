@@ -10,7 +10,8 @@ from lar import (
     ToolNode,
     RouterNode,
     AddValueNode,
-    GraphState
+    GraphState,
+    apply_diff # <--- CRITICAL FIX: Imported apply_diff
 )
 
 # --- Load .env file for testing ---
@@ -24,7 +25,7 @@ API_KEY_IS_PRESENT = os.getenv("GOOGLE_API_KEY") is not None
 def run_generated_code(code_string: str) -> str:
     """
     A 'tool' that attempts to execute LLM-generated code.
-    It execs the code, finds the 'add_five' function,
+    It executes the code, finds the 'add_five' function,
     and runs a test case (10 + 5 = 15).
     """
     try:
@@ -64,12 +65,14 @@ def run_generated_code(code_string: str) -> str:
 def judge_function(state: GraphState) -> str:
     """
     Checks the state for 'last_error'.
-    If an error exists, it routes to the 'failure' path.
-    If no error, it routes to the 'success' path.
+    If an error exists, it routes to the 'failure' path (to correct).
+    If no error, it routes to the 'success' path (to end).
     """
+    # NOTE: The RouterNode's execute method should clear the metadata, 
+    # but the judge function still needs the last_error check.
+    
     if state.get("last_error"):
-        # Clear the error so we don't loop forever
-        state.set("last_error", None) 
+        state.set("last_error", None)
         return "failure"
     else:
         return "success"
@@ -89,7 +92,6 @@ def test_self_correcting_agent_loop():
     critical_fail_node = AddValueNode(key="final_status", value="CRITICAL_FAILURE", next_node=None)
 
     # --- The "Corrector" Node (LLM) ---
-    # This node's job is to fix the error.
     corrector_node = LLMNode(
         model_name="gemini-2.5-pro",
         prompt_template="""
@@ -102,34 +104,30 @@ def test_self_correcting_agent_loop():
         
         Please fix the code and ONLY output the complete, corrected Python function.
         """,
-        output_key="code_string",  # <-- It OVERWRITES the bad code with the new code
-        next_node=None  # Will be set later to create the loop
+        output_key="code_string",  # <-- Overwrites the bad code
+        next_node=None  
     )
 
     # --- The "Judge" Node (Router) ---
-    # This node makes the "choice."
     judge_node = RouterNode(
         decision_function=judge_function,
         path_map={
             "success": success_node,
-            "failure": corrector_node  # <-- If it fails, it routes to the Corrector
+            "failure": corrector_node 
         },
         default_node=critical_fail_node
     )
     
     # --- The "Tester" Node (Tool) ---
-    # This node "acts" by running the code.
     tester_node = ToolNode(
         tool_function=run_generated_code,
-        input_keys=["code_string"],     # <-- Reads the code from state
-        output_key="test_result",     # <-- Saves "Success!" to the state
-        next_node=judge_node,         # <-- On success, goes to the Judge
-        error_node=judge_node         # <-- On failure, ALSO goes to the Judge
+        input_keys=["code_string"],     
+        output_key="test_result",     
+        next_node=judge_node,         
+        error_node=judge_node         
     )
     
     # --- The "Writer" Node (LLM) ---
-    # This is the START of the graph.
-    # We'll give it a slightly broken prompt to *force* a failure.
     writer_node = LLMNode(
         model_name="gemini-2.5-pro",
         prompt_template="""
@@ -139,12 +137,10 @@ def test_self_correcting_agent_loop():
         ONLY output the Python function.
         """,
         output_key="code_string",
-        next_node=tester_node  # <-- After writing, it goes to the Tester
+        next_node=tester_node  
     )
     
     # --- Create the Loop ---
-    # This is the magic. The Corrector's "next" step is the Tester.
-    # This creates the cycle: (Correct -> Test -> Judge)
     corrector_node.next_node = tester_node
 
     # 2. ACT: Run the agent
@@ -152,22 +148,26 @@ def test_self_correcting_agent_loop():
     executor = GraphExecutor()
     initial_state = {"task": "Create a function to add 5"}
     
-    # --- THIS IS THE FIX ---
-    # The starting node for this agent is the 'writer_node', not 'start_node'.
-    result = executor.run(writer_node, initial_state)
-    # --- END FIX ---
+    # FIX: Use run_step_by_step to get the full audit log
+    audit_log = list(executor.run_step_by_step(
+        start_node=writer_node, 
+        initial_state=initial_state
+    ))
     
-    final_state = result["state"]
+    # FIX: Reconstruct the final state from the audit log
+    final_state_data = initial_state
+    for step in audit_log:
+        final_state_data = apply_diff(final_state_data, step["state_diff"])
 
     # 3. ASSERT: Check if the agent *eventually* succeeded
     
-    # The agent should have failed at least once (from our bad prompt),
-    # then looped, corrected itself, and finally succeeded.
-    
     # The final result from the tool ("Success!") should be in the state
-    assert final_state.get("test_result") == "Success!"
+    assert final_state_data.get("test_result") == "Success!"
     
     # The "Judge" should have routed to the "success_node" in the end
-    assert final_state.get("final_status") == "SUCCESS"
+    assert final_state_data.get("final_status") == "SUCCESS"
     
-    print(f"\n  [Test Output] Final Code: {final_state.get('code_string')}\n")
+    # The audit log length should be at least 4 (Write, Test, Judge, Correct, Test, Judge)
+    assert len(audit_log) >= 6 
+    
+    print(f"\n  [Test Output] Final Code: {final_state_data.get('code_string')}\n")
