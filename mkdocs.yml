@@ -9,8 +9,8 @@ theme:
   name: material
   palette:
     - scheme: slate
-      primary: black
-      accent: grey
+      primary: black  
+      accent: grey     
   features:
     - navigation.tabs
     - navigation.top
