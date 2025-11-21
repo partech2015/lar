@@ -19,18 +19,18 @@ Do not modify log structures in a breaking way.
 
 ### 5. Submit a PR  
 Include:
-•⁠  ⁠What the feature does  
-•⁠  ⁠Why it’s needed  
-•⁠  ⁠Before/After behavior  
-•⁠  ⁠Example usage  
+- ⁠What the feature does  
+- Why it’s needed  
+- ⁠Before/After behavior  
+- Example usage  
 
 We review PRs weekly.
 
 ## Code Style  
-•⁠  ⁠Python 3.10+  
-•⁠  ⁠Pydantic for schemas  
-•⁠  ⁠Type hints required  
-•⁠  ⁠Avoid unnecessary abstraction  
-•⁠  ⁠Keep the “Glass Box” philosophy: everything should be inspectable  
+- ⁠Python 3.10+  
+- ⁠Pydantic for schemas  
+- ⁠Type hints required  
+- ⁠Avoid unnecessary abstraction  
+- ⁠Keep the “Glass Box” philosophy: everything should be inspectable  
 
 Thanks again — you’re shaping the future of agents.
