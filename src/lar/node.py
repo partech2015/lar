@@ -55,7 +55,6 @@ class LLMNode(BaseNode):
     This is the agent's "brain." It calls the Gemini LLM.
     It is "resilient" and will retry on rate-limit errors.
     """
-    _model_client = None
     
     def __init__(self, 
                  model_name: str, 
@@ -64,7 +63,7 @@ class LLMNode(BaseNode):
                  next_node: BaseNode = None,
                  max_retries: int = 3,
                  system_instruction: Optional[str] = None, 
-                 #generation_config: Optional[Dict[str, Any]] = None 
+                 generation_config: Optional[Dict[str, Any]] = None 
                  ):
         
         self.model_name = model_name
@@ -73,37 +72,36 @@ class LLMNode(BaseNode):
         self.next_node = next_node
         self.max_retries = max_retries
         self.system_instruction = system_instruction
-        #self.generation_config_dict = generation_config or {}
+        self.generation_config_dict = generation_config or {}
 
-        if LLMNode._model_client is None:
-            print("  [LLMNode]: Initializing Gemini model client...")
-            genai.configure() 
-            LLMNode._model_client = genai.GenerativeModel(self.model_name)
+        # Initialize the model instance
+        # Note: genai.configure() should be called once globally, but calling it here is safe/idempotent usually.
+        # We rely on GOOGLE_API_KEY env var.
+        print(f"  [LLMNode]: Initializing Gemini model ({self.model_name})...")
+        genai.configure() 
+        self.model = genai.GenerativeModel(
+            model_name=self.model_name,
+            system_instruction=self.system_instruction
+        )
     
     def execute(self, state: GraphState):
         # 1. Build the prompt (the "contents")
         prompt = self.prompt_template.format(**state.get_all())
         print(f"  [LLMNode]: Sending prompt: '{prompt[:50]}...'")
         
-        # 2. Build the Generation Config object
-        # This combines our 'temperature' dict and our 'system_instruction' string
-        #config_args = self.generation_config_dict.copy()
-        #if self.system_instruction:
-        #    config_args["system_instruction"] = self.system_instruction
-            
-        #final_gen_config = types.GenerateContentConfig(**config_args)
-
         retries = 0
         base_delay = 1
         
         while retries < self.max_retries:
             try:
-                # 3. Call the API with the *new, official* structure
-                response = self._model_client.generate_content(
-                    contents=prompt, # <-- The user's prompt
-                    #generation_config=final_gen_config # <-- The config object
+                # 2. Call the API
+                # We pass the dictionary directly.
+                response = self.model.generate_content(
+                    contents=prompt,
+                    generation_config=self.generation_config_dict
                 )
-                 # Check if the response was blocked *before* trying to access .text
+                
+                # Check if the response was blocked *before* trying to access .text
                 if not response.candidates or not response.candidates[0].content or not response.candidates[0].content.parts:
                     # This means the response was empty or blocked
                     finish_reason = "Unknown"
