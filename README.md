@@ -344,7 +344,9 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 
 ## Contributing
 
-We welcome contributions to **`Làr`**. Please open an issue or submit a pull request for any bugs, features, or documentation improvements.
+We welcome contributions to **`Lár`**.
+
+To get started, please read our **[Contribution Guidelines](CONTRIBUTING.md)** on how to report bugs, submit pull requests, and propose new features.
 
 ## License
 
