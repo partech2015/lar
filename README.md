@@ -348,7 +348,7 @@ We welcome contributions to **`Làr`**. Please open an issue or submit a pull re
 
 ## License
 
-**`Làr`** is licensed under the `Apache License 2.0.`
+**`Làr`** is licensed under the `Apache License 2.0`
 
 This means:
 
