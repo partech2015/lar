@@ -1,20 +1,21 @@
 # Guide: Self-Correcting Loops
 
-This is the most powerful pattern in lar. You can build an agent that tests its own work and loops until it meets your quality standard.
+## This is the most powerful pattern in lar. You can build an agent that tests its own work and loops until it meets your quality standard.
 
-This "Code-Fixer" agent will:
+### This `"Code-Fixer"` agent will:
 
-Write a piece of code.
+- Write a piece of code.
 
-Test that code with a ToolNode.
+- Test that code with a ToolNode.
 
-Judge the result with a RouterNode.
+- Judge the result with a RouterNode.
 
-If the test fails, it loops back to a "Corrector" LLMNode with the exact error message and tries again.
+- If the test fails, it loops back to a "Corrector" LLMNode with the exact error message and tries again.
 
-The "Glass Box" Flowchart
 
-This is the "assembly line" for a self-correcting agent.
+### The "Glass Box" Flowchart
+
+**This is the "assembly line" for a self-correcting agent.**
 
 ```mermaid
 graph TD
