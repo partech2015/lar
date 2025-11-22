@@ -348,7 +348,7 @@ We welcome contributions to `lar`. Please open an issue or submit a pull request
 
 ## License
 
-Làr is licensed under the Apache License 2.0.
+Làr is licensed under the `Apache License 2.0.`
 
 This means:
 
@@ -358,7 +358,7 @@ This means:
 - If you distribute a modified version, you must document what you changed.
 - You receive a patent license for contributions made to the project.
 
-Apache 2.0 protects the original author `(SnathAI™)`
+`Apache 2.0` protects the original author `(SnathAI™)`
 while encouraging broad adoption and community collaboration.
 
 For developers building on Làr:
