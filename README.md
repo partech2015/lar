@@ -14,7 +14,7 @@
   </a>
 </p>
 
-# Lár: The PyTorch for Agents
+# Lár: The PyTorch for Agents.
 
 **Lár** by **SnathAI™** is an open source "define-by-run" agentic framework for building auditable, multi-provider and reliable AI systems.
 
@@ -358,7 +358,7 @@ This means:
 - If you distribute a modified version, you must document what you changed.
 - You receive a patent license for contributions made to the project.
 
-Apache 2.0 protects the original author (SnathAI)
+Apache 2.0 protects the original author `(SnathAI™)`
 while encouraging broad adoption and community collaboration.
 
 For developers building on Làr:
