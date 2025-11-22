@@ -3,7 +3,7 @@
 This policy outlines the supported versions of Lár Engine and the formal procedure for reporting security vulnerabilities.
 ## Reporting Security Vulnerabilities
 
-We take the security of the Lár Engine framework and its users seriously. If you discover a vulnerability, we ask that you follow the process of **responsible disclosure**.
+We take the security of the *Lár Engine* framework and its users seriously. If you discover a vulnerability, we ask that you follow the process of **responsible disclosure**.
 
 - **Reporting Channel**: Please report vulnerabilities exclusively via email to: **support@snath.ai**
 - **Response Time**: We commit to acknowledging receipt of your email within 24 hours and providing an initial assessment of the vulnerability within 48 hours.
@@ -19,6 +19,7 @@ We take the security of the Lár Engine framework and its users seriously. If yo
 
 Security patches and bug fixes are applied to the `latest minor release` of the Lár Engine framework.
 
-|Status|	|Version Format|	|Security Support|
-|Supported|	|Latest Minor Release (e.g., 0.7.x)|	|Full patches and critical bug fixes are provided.|
-|Unsupported|	|Previous Minor Releases (e.g., 0.6.x and older)|	|No new security patches will be issued. Users should upgrade immediately.|
+| Status      | Version Format                               | Security Support                                         |
+|-------------|-----------------------------------------------|-----------------------------------------------------------|
+| Supported   | Latest Minor Release (e.g., 0.7.x)            | Full patches and critical bug fixes are provided.         |
+| Unsupported | Previous Minor Releases (e.g., 0.6.x and older) | No new security patches will be issued. Users should upgrade immediately. |
