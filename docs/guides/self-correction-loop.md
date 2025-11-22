@@ -1,4 +1,5 @@
-## Guide: Self-Correcting Loops
+# Guide: Self-Correcting Loops
+
 **This is the most powerful pattern in lar. You can build an agent that tests its own work and loops until it meets your quality standard.**
 **This `"Code-Fixer"` agent will:**
 

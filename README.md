@@ -354,7 +354,7 @@ This means:
 
 - You are free to use Làr in personal, academic, or commercial projects.
 - You may modify and distribute the code.
-- You MUST retain the LICENSE and the NOTICE file.
+- You MUST retain the `LICENSE` and the `NOTICE` file.
 - If you distribute a modified version, you must document what you changed.
 - You receive a patent license for contributions made to the project.
 
@@ -362,5 +362,5 @@ Apache 2.0 protects the original author `(SnathAI™)`
 while encouraging broad adoption and community collaboration.
 
 For developers building on Làr:
-Please ensure that the LICENSE and NOTICE files remain intact
-to preserve full legal compatibility with the Apache 2.0 terms.
+Please ensure that the `LICENSE` and `NOTICE` files remain intact
+to preserve full legal compatibility with the `Apache 2.0` terms.
