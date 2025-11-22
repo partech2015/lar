@@ -4,10 +4,10 @@ We are committed to making the *Lár Engine* community a respectful and harassme
 
 We adopt and enforce the principles of the **Contributor Covenant** as a baseline for our community standards.
 
-1. **Our Pledge**  
+## **Our Pledge**  
 We pledge to act and interact in ways that contribute to an open, inclusive, diverse, and healthy community. This includes maintaining professionalism, fostering **constructive dialogue**, and prioritizing the **well-being** of our members.
 
-2. **Our Standards of Behavior**
+## **Our Standards of Behavior**
 
 The following behaviors are expected and mandatory in all community interactions:
 
@@ -19,7 +19,7 @@ The following behaviors are expected and mandatory in all community interactions
 
 - **Avoid Harassment and Discrimination**: We prohibit all forms of harassment, including offensive verbal comments related to gender identity, sexual orientation, disability, physical appearance, body size, race, religion, or technical ability.
 
-3. **Reporting and Enforcement**
+## **Reporting and Enforcement**
 
 **A. Reporting Violations**
 
