@@ -55,6 +55,8 @@ class LLMNode(BaseNode):
     This is the agent's "brain." It calls the Gemini LLM.
     It is "resilient" and will retry on rate-limit errors.
     """
+    # Class variable to store the shared models
+    _model_cache: Dict[str, genai.GenerativeModel] = {}
     
     def __init__(self, 
                  model_name: str, 
@@ -66,6 +68,7 @@ class LLMNode(BaseNode):
                  generation_config: Optional[Dict[str, Any]] = None 
                  ):
         
+        # 1. Store configuration as instance variables
         self.model_name = model_name
         self.prompt_template = prompt_template
         self.output_key = output_key
@@ -73,16 +76,22 @@ class LLMNode(BaseNode):
         self.max_retries = max_retries
         self.system_instruction = system_instruction
         self.generation_config_dict = generation_config or {}
-
-        # Initialize the model instance
-        # Note: genai.configure() should be called once globally, but calling it here is safe/idempotent usually.
-        # We rely on GOOGLE_API_KEY env var.
-        print(f"  [LLMNode]: Initializing Gemini model ({self.model_name})...")
-        genai.configure() 
-        self.model = genai.GenerativeModel(
-            model_name=self.model_name,
-            system_instruction=self.system_instruction
-        )
+        
+        # 2. Check Cache Key (Identifies the unique model configuration)
+        # We use the model name and system instruction to define the unique model instance.
+        cache_key = f"{self.model_name}:{self.system_instruction}" 
+        
+        # 3. Initialize and Cache the Model (Only once per unique configuration)
+        if cache_key not in LLMNode._model_cache:
+            print(f"  [LLMNode]: Caching new Gemini model ({self.model_name})...")
+            genai.configure() 
+            LLMNode._model_cache[cache_key] = genai.GenerativeModel(
+                model_name=self.model_name,
+                system_instruction=self.system_instruction
+            )
+        
+        # 4. Assign the shared, cached instance to the object
+        self.model = LLMNode._model_cache[cache_key]
     
     def execute(self, state: GraphState):
         # 1. Build the prompt (the "contents")

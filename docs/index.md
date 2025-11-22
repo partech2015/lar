@@ -8,6 +8,8 @@ Lár is engineered as a direct solution to the "black box" problem. While other 
 
 This "glass box" philosophy gives you a complete, step-by-step "flight data recorder" for every agent run, allowing you to build systems you can actually trust.
 
+## Why Lár?
+
 **The Problem: The "Black Box"**
 
 You're a solo developer or a team lead. You've built an agent using a "magic" framework. It works in your notebook, but in production, it fails.
