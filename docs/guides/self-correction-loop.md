@@ -97,7 +97,7 @@ clear_error_node = ClearErrorNode(
 )
 
 corrector_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="Your last attempt failed. Fix this code: {code_string}. Error: {last_error}",
     output_key="code_string",
     next_node=clear_error_node
@@ -119,7 +119,7 @@ tester_node.error_node = judge_node
 
 # --- The "Start" Node (The Planner/Writer) ---
 planner_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="Write a Python function `add_five(x)` that returns x + 5.",
     output_key="code_string",
     next_node=tester_node # After writing, go to the Tester

@@ -13,16 +13,19 @@ You can install the core Lár engine directly from PyPI:
 ```bash
 pip install lar-engine
 ```
-### 2. Configure Your API Key
+### 2. **Set Up Environment Variables**
+`Lár` uses a unified adapter `(LiteLLM)`. Depending on the models you run, you must set the corresponding API keys in your `.env` file:
 
-Lár reads your Google API key from an environment variable.
-Create a `.env` file in the root of your project:
---- 
+Create a `.env` file:
+
 ```bash
-GOOGLE_API_KEY="YOUR_API_KEY_HERE"
+# Required for running Gemini models:
+GEMINI_API_KEY="YOUR_GEMINI_KEY_HERE" 
+# Required for running OpenAI models (e.g., gpt-4o):
+OPENAI_API_KEY="YOUR_OPENAI_KEY_HERE"
+# Required for running Anthropic models (e.g., Claude):
+ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 ```
-
-Make sure your environment is configured to load variables from .env.
 
 ### 3. Create Your First “Glass Box” Agent
 
@@ -59,14 +62,14 @@ success_node = AddValueNode(
 )
 
 chatbot_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a helpful assistant. Answer the user's task: {task}",
     output_key="final_response",
     next_node=success_node # After answering, go to success
 )
 
 code_writer_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="Write a Python function for this task: {task}",
     output_key="code_string",
     next_node=success_node 
@@ -84,7 +87,7 @@ master_router_node = RouterNode(
 
 # --- 3. Define the "Start" (The Planner) ---
 planner_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="""
     Analyze this task: "{task}"
     Does it require writing code or just a text answer?

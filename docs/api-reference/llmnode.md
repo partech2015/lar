@@ -17,7 +17,7 @@ It automatically formats your prompt with data from the `GraphState` and writes 
 ```python
 # The LLMNode reads `task` from the state
 planner_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a planner. Your task is: {task}",
     output_key="plan", # Saves the result to state["plan"]
     next_node=...

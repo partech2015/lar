@@ -72,19 +72,19 @@ critical_fail_node = AddValueNode(key="final_status", value="CRITICAL_FAILURE", 
 
 # --- The "Specialist" Agents ---
 billing_agent = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a BILLING expert. Answer '{task}' using ONLY this context: {retrieved_context}",
     output_key="agent_answer",
     next_node=final_node
 )
 tech_agent = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a TECH SUPPORT expert. Answer '{task}' using ONLY this context: {retrieved_context}",
     output_key="agent_answer",
     next_node=final_node
 )
 general_agent = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a GENERAL assistant. Answer '{task}' using ONLY this context: {retrieved_context}",
     output_key="agent_answer",
     next_node=final_node
@@ -113,7 +113,7 @@ retrieve_node = ToolNode(
     
 # --- The "Planner" (LLM) ---
 planner_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a search query machine. Convert this task to a search query: {task}. Respond with ONLY the query.",
     output_key="search_query",
     next_node=retrieve_node
@@ -121,7 +121,7 @@ planner_node = LLMNode(
     
 # --- The "Triage" Node (The *real* start) ---
 triage_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="You are a triage bot. Classify this task: \"{task}\". Respond ONLY with: BILLING, TECH_SUPPORT, or GENERAL.",
     output_key="category",
     next_node=planner_node
