@@ -1,4 +1,4 @@
-# Code of Conduct — Lár by SnathAI™️
+# Code of Conduct — Lár by SnathAI™
 
 We are committed to making the *Lár Engine* community a respectful and harassment-free experience for everyone, regardless of background. This Code of Conduct applies to all project spaces, including GitHub repositories, discussion forums, and community events.
 
