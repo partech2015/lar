@@ -354,7 +354,7 @@ This means:
 
 - You are free to use Làr in personal, academic, or commercial projects.
 - You may modify and distribute the code.
-- You MUST retain the copyright notice and the NOTICE file.
+- You MUST retain the LICENSE and the NOTICE file.
 - If you distribute a modified version, you must document what you changed.
 - You receive a patent license for contributions made to the project.
 
