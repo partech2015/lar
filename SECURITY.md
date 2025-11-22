@@ -1,4 +1,4 @@
-# Security Policy — Lár by SnathAI™️
+# Security Policy — Lár by SnathAI™
 
 This policy outlines the supported versions of Lár Engine and the formal procedure for reporting security vulnerabilities.
 ## Reporting Security Vulnerabilities
