@@ -12,13 +12,13 @@ Developers cannot:
 **`Lár` exists to fix this.**
 
 ### Our Core Beliefs  
-1.⁠ ⁠*Agents must be transparent*  
-2.⁠ ⁠*State must be inspectable*  
-3.⁠ ⁠*Execution must be reproducible*  
-4.⁠ ⁠*Errors must be first-class citizens*  
-5.⁠ ⁠*Agents should be engineered, not summoned*  
+- ⁠*Agents must be transparent*  
+- ⁠*State must be inspectable*  
+- ⁠*Execution must be reproducible*  
+- ⁠*Errors must be first-class citizens*  
+- ⁠*Agents should be engineered, not summoned*  
 
-### We are building the *Glass Box ecosystem*.
+### We are building the *Glass Box* ecosystem.
 
 - Lár = The open-source engine  
 - SnathAI™ = The commercial observability layer  
