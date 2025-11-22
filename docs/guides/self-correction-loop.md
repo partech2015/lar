@@ -126,10 +126,10 @@ planner_node = LLMNode(
 )
 
 # 3. Run the Agent
-# executor = GraphExecutor()
-# initial_state = {"task": "Write a function to add 5"}
-# result_log = list(executor.run_step_by_step(
-#     start_node=planner_node, 
-#     initial_state=initial_state
-# ))
+executor = GraphExecutor()
+initial_state = {"task": "Write a function to add 5"}
+result_log = list(executor.run_step_by_step(
+    start_node=planner_node, 
+    initial_state=initial_state
+))
 ```
