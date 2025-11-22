@@ -10,7 +10,7 @@ This "glass box" philosophy gives you a complete, step-by-step "flight data reco
 
 ## **Why Lár?**
 
-### **The Problem: The "Black Box"**
+### The Problem: The "Black Box"
 
 You're a solo developer or a team lead. You've built an agent using a "magic" framework. It works in your notebook, but in production, it fails.
 
@@ -22,7 +22,7 @@ You're a solo developer or a team lead. You've built an agent using a "magic" fr
 
 You get a 100-line stack trace from deep inside the framework's code. You are completely blind. Debugging is a nightmare. This is the "black box" problem, and it's what stops 99% of agent projects from ever reaching production.
 
-## **The Solution: The "Glass Box"**
+### The Solution: The "Glass Box"
 
 `Lár` is built on a simple premise: **the "magic" is the enemy of reliability.**
 
