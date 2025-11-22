@@ -1,0 +1,32 @@
+[
+  {
+    "step": 0,
+    "node": "ToolNode",
+    "state_before": {},
+    "state_diff": {
+      "added": {
+        "last_error": "This tool was designed to fail"
+      },
+      "removed": {},
+      "modified": {}
+    },
+    "run_metadata": {},
+    "outcome": "success"
+  },
+  {
+    "step": 1,
+    "node": "AddValueNode",
+    "state_before": {
+      "last_error": "This tool was designed to fail"
+    },
+    "state_diff": {
+      "added": {
+        "status": "failed"
+      },
+      "removed": {},
+      "modified": {}
+    },
+    "run_metadata": null,
+    "outcome": "success"
+  }
+]

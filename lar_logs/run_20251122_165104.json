@@ -1,0 +1,53 @@
+[
+  {
+    "step": 0,
+    "node": "LLMNode",
+    "state_before": {
+      "topic": "AI agents"
+    },
+    "state_diff": {
+      "added": {
+        "llm_response": "AI agents are autonomous programs that can perceive their environment, make decisions, and take actions to achieve a specific goal."
+      },
+      "removed": {},
+      "modified": {}
+    },
+    "run_metadata": {
+      "prompt_tokens": 12,
+      "output_tokens": 1274,
+      "total_tokens": 1286,
+      "model": "gemini/gemini-2.5-pro"
+    },
+    "outcome": "success"
+  },
+  {
+    "step": 1,
+    "node": "AddValueNode",
+    "state_before": {
+      "topic": "AI agents",
+      "llm_response": "AI agents are autonomous programs that can perceive their environment, make decisions, and take actions to achieve a specific goal.",
+      "__last_run_metadata": {
+        "prompt_tokens": 12,
+        "output_tokens": 1274,
+        "total_tokens": 1286,
+        "model": "gemini/gemini-2.5-pro"
+      }
+    },
+    "state_diff": {
+      "added": {
+        "completion_marker": true
+      },
+      "removed": {
+        "__last_run_metadata": {
+          "prompt_tokens": 12,
+          "output_tokens": 1274,
+          "total_tokens": 1286,
+          "model": "gemini/gemini-2.5-pro"
+        }
+      },
+      "modified": {}
+    },
+    "run_metadata": null,
+    "outcome": "success"
+  }
+]

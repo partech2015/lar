@@ -34,6 +34,10 @@ jobs:
         # FIX: Removes --no-root and adds --sync --with dev to install the local 
         # lar-engine package in editable mode, ensuring tests can 'import lar'.
         run: poetry install --sync --with dev 
+      
+      - name: Load Secrets for Tests
+        run: |
+            echo "GEMINI_API_KEY=${{ secrets.TEST_LLM_KEY }}" >> $GITHUB_ENV
 
       - name: Run PyTest
         run: poetry run pytest

@@ -1,64 +1,68 @@
 # tests/test_llm.py
 
 import pytest
-import os
-from dotenv import load_dotenv
-# Removed PrintStateNode import
-from lar import GraphExecutor, LLMNode, AddValueNode, GraphState, apply_diff
+from unittest.mock import patch, MagicMock
+from lar import GraphExecutor, LLMNode, AddValueNode, GraphState, apply_diff 
 
-# --- Load .env file for testing ---
-load_dotenv()
+# --- Mock Response Data ---
+MOCK_LLM_RESPONSE = MagicMock()
+MOCK_LLM_RESPONSE.choices = [
+    MagicMock(message=MagicMock(content="Mocked response for testing purposes."))
+]
+MOCK_LLM_RESPONSE.usage = MagicMock(
+    prompt_tokens=10,
+    completion_tokens=20,
+    total_tokens=30 
+)
 
-# Check if the API key is actually set
-API_KEY_IS_PRESENT = os.getenv("GOOGLE_API_KEY") is not None
+# NOTE: The helper functions (run_generated_code, judge_function) are NOT needed here.
 
-# --- Your Existing Test ---
-
-@pytest.mark.skipif(not API_KEY_IS_PRESENT, reason="GOOGLE_API_KEY not found in .env file")
-def test_llm_node_integration():
+# --- Tests ---
+# CRITICAL FIX: The patch needs to target the function where it is imported (litellm.completion)
+@patch('lar.node.completion', return_value=MOCK_LLM_RESPONSE)
+def test_llm_node_integration(mock_completion):
     """
-    Tests that the LLMNode can:
-    1. Be initialized.
-    2. Format a prompt from the state.
-    3. Call the Gemini API.
-    4. Save the response back to the state.
+    Tests that the LLMNode correctly builds the prompt and extracts the response
+    text and token metadata, without hitting the actual API.
     """
     
-    # 1. Arrange: Set up the graph and executor
+    # 1. Arrange: Setup the graph
+    
+    # FIX: Clear the cache *before* creating the LLMNode instances to ensure the mock is loaded.
+    LLMNode._model_cache.clear() 
+
     initial_state = {"topic": "AI agents"}
-    
-    # Node B: The end of the graph (replaces PrintStateNode)
     end_node = AddValueNode(key="completion_marker", value=True, next_node=None)
     
-    # Node A: The start of the graph (our new LLMNode)
     start_node = LLMNode(
-        model_name="gemini-2.5-pro",
+        model_name="gemini/gemini-2.5-pro",
         prompt_template="Explain the topic of {topic} in one short sentence.",
-        output_key="llm_response",  
-        next_node=end_node # Wires to the new end_node
+        output_key="llm_response",
+        next_node=end_node
     )
     
     executor = GraphExecutor()
-
-    # 2. Act: Run the graph
-    audit_log = list(executor.run_step_by_step(start_node=start_node, initial_state=initial_state))
     
-    # Reconstruct the final state (optional, but good practice)
+    # 2. Act: Run the graph
+    audit_log = list(executor.run_step_by_step(
+        start_node=start_node, 
+        initial_state=initial_state 
+    ))
+    
     final_state_data = initial_state
     for step in audit_log:
         final_state_data = apply_diff(final_state_data, step["state_diff"])
 
-
-    # 3. Assert: Check if the graph did its job
+    # 3. Assert: Check logic and mocking integrity
     
-    # Check that the final state is what we expect
-    assert final_state_data is not None
+    # Assert that the mock function was called once (no real API call)
+    mock_completion.assert_called_once()
     
-    # Check that the LLM response was added
+    # Check that the mocked response was added to the state
     llm_response = final_state_data.get("llm_response")
-    assert llm_response is not None
-    assert isinstance(llm_response, str)
-    assert len(llm_response) > 10  # Check that it's a real sentence
+    assert llm_response == "Mocked response for testing purposes."
     
-    print(f"\n  [Test Output] LLM Response: {llm_response}\n")
-
+    # Check that the token metadata was correctly logged by the LLMNode
+    llm_step = audit_log[0]
+    assert llm_step['run_metadata']['total_tokens'] == 30
+    assert final_state_data.get("completion_marker") == True
