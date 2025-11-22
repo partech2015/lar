@@ -22,7 +22,7 @@ This is how your agent interacts with the world:
 
 - **Auditable**: If your tool fails, the `ToolNode` automatically catches the exception and saves the error message to `state.set("last_error", ...)` for your other nodes to read.
 
-Example Usage
+## Example Usage
 
 First, define your "tool." It's just a simple Python function:
 

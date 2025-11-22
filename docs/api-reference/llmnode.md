@@ -12,7 +12,7 @@ It automatically formats your prompt with data from the `GraphState` and writes 
 
 - Stateful: Uses Python's `format()` string method to dynamically populate your prompt with any value from the `GraphState`.
 
-# Example Usage
+## Example Usage
 
 ```python
 # The LLMNode reads `task` from the state
