@@ -35,12 +35,8 @@ jobs:
         # lar-engine package in editable mode, ensuring tests can 'import lar'.
         run: poetry install --sync --with dev 
       
-      - name: Load Secrets for Tests
-        run: |
-            echo "GEMINI_API_KEY=${{ secrets.TEST_LLM_KEY }}" >> $GITHUB_ENV
-
       - name: Run PyTest
-        run: poetry run pytest
+        run: poetry run pytest tests
 
       - name: Build Package
         # Creates the .whl and .tar.gz distribution files
