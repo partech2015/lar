@@ -1,14 +1,14 @@
 name: Publish Package to PyPI
 
-# 1. Trigger the workflow only when a new release is published
+# Triggers the workflow only when a new release is published
 on:
   release:
     types: [published]
 
-# 2. Permissions required for PyPI Trusted Publishing (OIDC)
+# Permissions required for PyPI Trusted Publishing (OIDC)
 permissions:
   contents: read
-  id-token: write # <-- CRITICAL for OIDC security
+  id-token: write # CRITICAL: Allows GitHub to generate the temporary authentication token
 
 jobs:
   build_and_test:
@@ -22,20 +22,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11" # Match the version you use locally
+          python-version: "3.11" # Specify your Python version
 
-      - name: Install Poetry and Dependencies
-        uses: snok/install-poetry@v1
+      - name: Install Poetry and Set PATH
+        # This action reliably installs Poetry and adds it to the PATH
+        uses: snok/install-poetry@v1 
         with:
-          version: 1.8.2 # Specify a modern Poetry version
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+          version: 1.8.2
           
-      - name: Install Project Dependencies
-        run: poetry install --sync --no-root
+      - name: Install Project Dependencies (for Testing)
+        # FIX: Removes --no-root and adds --sync --with dev to install the local 
+        # lar-engine package in editable mode, ensuring tests can 'import lar'.
+        run: poetry install --sync --with dev 
 
       - name: Run PyTest
-        # Runs your unit tests before building the release package
         run: poetry run pytest
 
       - name: Build Package
@@ -43,7 +43,6 @@ jobs:
         run: poetry build
       
       - name: Store Distribution Files
-        # Uploads the built package files so the next job can access them
         uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
@@ -51,20 +50,18 @@ jobs:
           
   pypi_publish:
     name: Publish to PyPI
-    needs: [build_and_test] # This job only runs if the 'build_and_test' job succeeds
+    needs: [build_and_test] # This job only runs if the tests succeed
     runs-on: ubuntu-latest
     
-    # 3. Environment configuration (Best Practice)
     environment:
       name: pypi
-      url: https://pypi.org/p/lar-engine/ # Update 'lar-engine' if necessary
+      url: https://pypi.org/p/lar-engine/
       
     permissions:
-      id-token: write # Must be set again at the job level
+      id-token: write # Must be set again for the publishing job
 
     steps:
       - name: Download Distribution Files
-        # Downloads the packages built in the previous job
         uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
@@ -72,7 +69,4 @@ jobs:
 
       - name: Publish Package to PyPI
         # Uses the official PyPA action for secure publishing via OIDC
-        uses: pypa/gh-action-pypi-publish@release/v1 
-        with:
-          # This action uses the OIDC token automatically, no secrets needed!
-          passphrase: ${{ secrets.PUBLISH_PASSWORD }} # Placeholder for legacy use, OIDC bypasses it.
+        uses: pypa/gh-action-pypi-publish@release/v1
