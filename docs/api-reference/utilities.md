@@ -57,7 +57,7 @@ my_plan = state.get("plan")
 
 ## Utility Nodes
 
-### `3. AddValueNode`**
+### **`3. AddValueNode`**
 
 A simple node to write or copy data. It's "state-aware."
 
@@ -78,7 +78,7 @@ copy_answer_node = AddValueNode(
 )
 ```
 
-### `4. ClearErrorNode`**
+### **`4. ClearErrorNode`**
 
 A "janitor" node. Its only job is to clean up the `last_error` key, which is critical for self-correcting loops.
 
