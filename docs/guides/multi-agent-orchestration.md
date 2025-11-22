@@ -1,14 +1,13 @@
 # Guide: Multi-Agent Orchestration
 
-The real power of lar is building "multi-agent" systems.
+## The real power of lar is building "multi-agent" systems.
 
 Other frameworks use a "chaotic chat room" model, where agents talk to each other and you hope for a good result. `lar` is a deterministic "assembly line." You are the architect. You build a "glass box" graph that routes a task to specialized agents, guaranteeing order and auditing every step.
 
-This guide builds a "Customer Support Bot" that routes tasks to different "specialist" agents.
+### This guide builds a "Customer Support Bot" that routes tasks to different "specialist" agents.
 
-The "Glass Box" Flowchart
+### The "Glass Box" Flowchart
 
-This is the lar assembly line in action.
 ```mermaid
 graph TD
     A[Start] --> B(LLMNode<br/>'Agent 1: Triage');
