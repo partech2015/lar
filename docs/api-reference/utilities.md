@@ -4,7 +4,7 @@
 
 These are the "scaffolding" components that hold the framework together: the `GraphExecutor`, the `GraphState`, and our simple helper nodes.
 
-**`1. GraphExecutor`**
+### **`1. GraphExecutor`**
 
 This is the "engine" that runs your graph. You only interact with this at the beginning of a run.
 ```python
@@ -30,7 +30,7 @@ result_log = list(executor.run_step_by_step(
 
 - It also contains the master `try...except` block that catches critical, unhandled errors from nodes (like the `LLMNode` failing after all its retries).
 
-**`2. GraphState`**
+### **`2. GraphState`**
 
 This is the "memory" or "clipboard" of your agent. It's a simple Python object that is automatically passed to every node's `execute` method.
 
@@ -57,7 +57,7 @@ my_plan = state.get("plan")
 
 ## Utility Nodes
 
-**`3. AddValueNode`**
+### `3. AddValueNode`**
 
 A simple node to write or copy data. It's "state-aware."
 
@@ -78,7 +78,7 @@ copy_answer_node = AddValueNode(
 )
 ```
 
-**`4. ClearErrorNode`**
+### `4. ClearErrorNode`**
 
 A "janitor" node. Its only job is to clean up the `last_error` key, which is critical for self-correcting loops.
 

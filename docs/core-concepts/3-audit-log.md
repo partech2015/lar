@@ -1,6 +1,6 @@
 # The "Glass Box" Audit Log
 
-The `GraphExecutor`'s "killer feature" is the `history` log it generates. This is not just a `print` statement; it's a structured **Event Sourced** log that gives you a complete audit trail of every agent run.
+**The `GraphExecutor`'s "killer feature" is the `history` log it generates. This is not just a `print` statement; it's a structured **Event Sourced** log that gives you a complete audit trail of every agent run.**
 
 Your app (like the `Snath` UI) doesn't just get a final answer. It gets a **receipt** for how the agent "thought."
 
