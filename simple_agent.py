@@ -76,7 +76,7 @@ We create our *last* node, the "Packager."
 
 # --- Station 1: The "Writer" (The Start) ---
 story_writer_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini/gemini-2.5-pro",
     prompt_template="Write a short, one-paragraph story about: {topic}",
     output_key="story_text",
     next_node=finish_node,

@@ -1,10 +1,12 @@
 import time
-import google.generativeai as genai
 from abc import ABC, abstractmethod
 from .state import GraphState
 from typing import Callable, Dict, List, Optional, Any 
-from google.api_core import exceptions as google_exceptions
-from google.genai import types
+# --- Multi-Provider Imports ---
+from litellm import completion, ModelResponse, utils
+from litellm.exceptions import APIError
+# ------------------------------
+from .state import GraphState
 # --- The Core API "Contract" ---
 class BaseNode(ABC):
     """
@@ -52,11 +54,11 @@ class AddValueNode(BaseNode):
 
 class LLMNode(BaseNode):
     """
-    This is the agent's "brain." It calls the Gemini LLM.
-    It is "resilient" and will retry on rate-limit errors.
+    This is the agent's "brain." It supports multiple LLM providers (Gemini, OpenAI, Anthropic, etc.) 
+     via the LiteLLM adapter for consistent usage, logging, and error handling.
     """
-    # Class variable to store the shared models
-    _model_cache: Dict[str, genai.GenerativeModel] = {}
+    # Class variable to store shared model configurations (caching)
+    _model_cache: Dict[str, str] = {}
     
     def __init__(self, 
                  model_name: str, 
@@ -76,85 +78,86 @@ class LLMNode(BaseNode):
         self.max_retries = max_retries
         self.system_instruction = system_instruction
         self.generation_config_dict = generation_config or {}
-        
+
         # 2. Check Cache Key (Identifies the unique model configuration)
-        # We use the model name and system instruction to define the unique model instance.
+        # The key includes model name and system instruction for unique caching
         cache_key = f"{self.model_name}:{self.system_instruction}" 
         
-        # 3. Initialize and Cache the Model (Only once per unique configuration)
+        # 3. Cache the model name for faster access (LiteLLM handles the actual client instantiation)
         if cache_key not in LLMNode._model_cache:
-            print(f"  [LLMNode]: Caching new Gemini model ({self.model_name})...")
-            genai.configure() 
-            LLMNode._model_cache[cache_key] = genai.GenerativeModel(
-                model_name=self.model_name,
-                system_instruction=self.system_instruction
-            )
+            print(f"  [LLMNode]: Caching new model configuration for {self.model_name}...")
+            # We skip genai.configure() here; LiteLLM handles all key loading via environment variables.
+            LLMNode._model_cache[cache_key] = self.model_name
         
-        # 4. Assign the shared, cached instance to the object
-        self.model = LLMNode._model_cache[cache_key]
+        # 4. Assign the model identifier from the cache
+        self.model_identifier = LLMNode._model_cache[cache_key]
+
     
     def execute(self, state: GraphState):
         # 1. Build the prompt (the "contents")
         prompt = self.prompt_template.format(**state.get_all())
-        print(f"  [LLMNode]: Sending prompt: '{prompt[:50]}...'")
+        print(f"  [LLMNode]: Sending prompt to {self.model_identifier}: '{prompt[:50]}...'")
         
         retries = 0
         base_delay = 1
         
+        # Prepare LiteLLM messages format (required for all chat-based models)
+        messages = [{"role": "user", "content": prompt}]
+        
+        # Build LiteLLM optional parameters
+        litellm_kwargs = self.generation_config_dict.copy()
+        if self.system_instruction:
+             # LiteLLM handles system instructions by injecting a system message
+             messages.insert(0, {"role": "system", "content": self.system_instruction})
+
         while retries < self.max_retries:
             try:
-                # 2. Call the API
-                # We pass the dictionary directly.
-                response = self.model.generate_content(
-                    contents=prompt,
-                    generation_config=self.generation_config_dict
+                # 2. Call the LiteLLM completion API
+                response: ModelResponse = completion(
+                    model=self.model_identifier, 
+                    messages=messages,
+                    **litellm_kwargs
                 )
                 
-                # Check if the response was blocked *before* trying to access .text
-                if not response.candidates or not response.candidates[0].content or not response.candidates[0].content.parts:
-                    # This means the response was empty or blocked
-                    finish_reason = "Unknown"
-                    safety_ratings = "Unknown"
-                    if response.candidates:
-                        finish_reason = response.candidates[0].finish_reason
-                        safety_ratings = response.candidates[0].safety_ratings
-                    
-                    # This is a critical, non-retriable error
-                    raise ValueError(
-                        f"LLM response was blocked or empty. "
-                        f"Finish Reason: {finish_reason}. "
-                        f"Safety Ratings: {safety_ratings}"
-                    )
-                state.set(self.output_key, response.text)
+                # 3. Extract the response text
+                if not response.choices or not response.choices[0].message.content:
+                    raise ValueError("LLM response was empty or blocked by safety filters.")
+                
+                llm_response_text = response.choices[0].message.content
+                state.set(self.output_key, llm_response_text)
                 print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
                 
-                if hasattr(response, 'usage_metadata'):
-                    prompt_count = response.usage_metadata.prompt_token_count
-                    output_count = response.usage_metadata.candidates_token_count
-                    
+                # 4. Extract and Log Unified Metadata (CRITICAL for Glass Box)
+                if response.usage:
+                    # LiteLLM provides a unified usage object
                     usage = {
-                        "prompt_tokens": prompt_count,
-                        "output_tokens": output_count,
+                        "prompt_tokens": response.usage.prompt_tokens,
+                        "output_tokens": response.usage.completion_tokens,
                         # FIX: Enforce correct total token sum for transparency
-                        "total_tokens": prompt_count + output_count, 
+                        "total_tokens": response.usage.prompt_tokens + response.usage.completion_tokens, 
+                        "model": self.model_identifier # Log the model used
                     }
                     state.set("__last_run_metadata", usage)
                     print(f"  [LLMNode]: Logged {usage['total_tokens']} tokens.")
 
                 return self.next_node
 
-            except google_exceptions.ResourceExhausted as e:
-                retries += 1
-                print(f"  [LLMNode] WARN: Rate limit hit. (Attempt {retries}/{self.max_retries}). Retrying in {base_delay}s...")
-                time.sleep(base_delay)
-                base_delay *= 2
+            except APIError as e:
+                # LiteLLM APIError handles rate limits (429) from ALL providers uniformly.
+                if "429" in str(e):
+                    retries += 1
+                    print(f"  [LLMNode] WARN: Rate limit hit. (Attempt {retries}/{self.max_retries}). Retrying in {base_delay}s...")
+                    time.sleep(base_delay)
+                    base_delay *= 2
+                else:
+                    raise e
             
             except Exception as e:
                 print(f"  [LLMNode] CRITICAL ERROR: {e}")
                 raise e
 
         print(f"  [LLMNode] FATAL: Failed after {self.max_retries} retries.")
-        raise google_exceptions.ResourceExhausted(f"LLMNode failed after {self.max_retries} retries.")
+        raise APIError(f"LLMNode failed after {self.max_retries} retries.", status_code=429)
 
 class RouterNode(BaseNode):
     """
