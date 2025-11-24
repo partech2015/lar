@@ -8,33 +8,41 @@ Lár is engineered as a direct solution to the "black box" problem. While other 
 
 This "glass box" philosophy gives you a complete, step-by-step "flight data recorder" for every agent run, allowing you to build systems you can actually trust.
 
-## **Why Lár?**
+## Why We Built Lár?
 
-### The Problem: The "Black Box"
+### The Problem: The "Black Box" Tax
 
-You're a solo developer or a team lead. You've built an agent using a "magic" framework. It works in your notebook, but in production, it fails.
+You are a developer launching a **mission-critical AI agent**. It works flawlessly on your machine. You push it to production, and it instantly fails.
 
 - Why did it fail? You don't know.
 
-- Which step failed? You can't tell.
+- Which node failed? You can't tell.
 
-- What data was it processing? You have to guess.
+- What was the cost? You have to guess.
 
-You get a 100-line stack trace from deep inside the framework's code. You are completely blind. Debugging is a nightmare. This is the "black box" problem, and it's what stops 99% of agent projects from ever reaching production.
+Instead of a solution, you get a **100-line stack trace** from deep inside a monolithic framework's core, pointing to an error you cannot debug. This is the **"Black Box Tax"**—the **price you pay** for using systems that **hide** their logic.
 
-### The Solution: The "Glass Box"
+For too long, developers have been told that **auditing agents is a premium feature**. If you want to know *why* your agent spent $50, or *why* it got stuck in a loop, you had to integrate an external, complex, and **paid tracing tool** like LangSmith.
 
-`Lár` is built on a simple premise: **the "magic" is the enemy of reliability.**
+We got fed up. We believe that **auditing the reasoning flow of an AI agent should be easy, built-in, and free.**
 
-Our `GraphExecutor` is a simple `generator` that `yields` the execution log after every single step. The audit trail isn't a paid add-on; it's the **core output of the engine.**
+### The Lár Solution: Your Agent's Flight Recorder
 
-This means you can:
+We built the **Lár Engine** as a direct antidote to the **"Black Box Tax."**
 
-1. **Instantly Find Failures**: Your log shows you the exact node, the exact error (`429 Rate Limit`), and the exact data that caused it.
+**Lár's core output is not just an answer; it is a full, immutable Flight Log.**
 
-2. **Audit Costs**: Our `LLMNode` logs token usage per step. You can see exactly which node is costing you money.
+Lár's **"define-by-run" architecture** forces transparency: the `GraphExecutor` is designed as a simple generator that runs one node, **logs the exact state change**, and then pauses, producing a verifiable record for every step.
 
-3. **Build Deterministic Systems** : You are not in a "chaotic chat room." You are building a "deterministic assembly line." You have 100% control over the flow.
+This means you can always:
+
+- **Pinpoint Failure**: See the **exact node** (`ToolNode`) that failed, the **exact error** (e.g., `APIConnectionError`), and the full state of the agent at the moment of collapse.
+
+- **Audit Costs**: Track token usage per node, ensuring you can justify and optimize every single API call.
+
+- **Build Trust**: Move your agent from a chaotic chat loop to a predictable, testable assembly line that your team and your company can actually trust in production.
+
+**We are not selling magic; we are selling trust.**
 
 **Stop guessing. Start building agents you can trust!**
 
