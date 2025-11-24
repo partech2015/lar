@@ -238,7 +238,7 @@ graph TD
 
 ### 1. Graph Flow (Execution Sequence)
 
-The agent executes in a fixed, 6-step sequence. The graph is defined backwards in the code, but the execution runs forwards:
+The agent executes in a fixed, 6-step sequence. The graph is `defined backwards` in the code, but the execution runs forwards:
 
 | Step        | Node Name         | Lár Primitive | Action                                                                                   | State Output       |
 |-------------|-------------------|---------------|-------------------------------------------------------------------------------------------|--------------------|
