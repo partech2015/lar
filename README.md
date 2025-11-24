@@ -232,11 +232,52 @@ graph TD
     I --> J[END];
 ```
 
-## The "Lego Bricks" in Action (The Code)
+# Lár Engine Architecture: The Multi-Agent Assembly Line
+
+### The core of this application is a Multi-Agent Orchestration Graph. `Lár` forces you to define the assembly line, which guarantees predictable, auditable results.
+
+### 1. Graph Flow (Execution Sequence)
+
+The agent executes in a fixed, 6-step sequence. The graph is defined backwards in the code, but the execution runs forwards:
+
+| Step        | Node Name         | Lár Primitive | Action                                                                                   | State Output       |
+|-------------|-------------------|---------------|-------------------------------------------------------------------------------------------|--------------------|
+| 0 (Start)   | triage_node       | LLMNode       | Classifies the user's input (`{task}`) into a service category (BILLING, TECH, etc.).     | category           |
+| 1           | planner_node      | LLMNode       | Converts the task into a concise, high-quality search query.                              | search_query       |
+| 2           | retrieve_node     | ToolNode      | Executes the local FAISS vector search and retrieves the relevant context.                | retrieved_context  |
+| 3           | specialist_router | RouterNode    | Decision point. Reads the category and routes the flow to the appropriate specialist.     | (No change; routing) |
+| 4           | billing/tech_agent| LLMNode       | The chosen specialist synthesizes the final answer using the retrieved context.           | agent_answer       |
+| 5 (End)     | final_node        | AddValueNode  | Saves the synthesized answer as `final_response` and terminates the graph.                | final_response     |
+
+### 2. Architectural Primitives Used
+
+This demo relies on the core Lár primitives to function:
+
+- `LLMNode`: Used 5 times (Triage, Plan, and the 3 Specialists) for all reasoning and synthesis steps.
+
+- `RouterNode`: Used once (specialist_router) for the deterministic if/else branching logic.
+
+- `ToolNode`: Used once (retrieve_node) to securely execute the local RAG database lookup.
+
+- `GraphExecutor`: The engine that runs this entire sequence and produces the complete audit log
 
 ### This is the full logic from `support_app.py`. It's just a clean, explicit Python script.
 
 ```python 
+'''
+====================================================================
+    ARCHITECTURE NOTE: Defining the Graph Backwards
+    
+    The Lár Engine uses a "define-by-run" philosophy. Because a node 
+    references the *next_node* object (e.g., next_node=planner_node),
+    the nodes MUST be defined in Python in the REVERSE order of execution 
+    to ensure the next object already exists in memory.
+    
+    Execution runs: START (Triage) -> END (Final)
+    Definition runs: END (Final) -> START (Triage)
+====================================================================
+
+'''
 from lar import *
 from lar.utils import compute_state_diff # (Used by executor)
 
@@ -318,18 +359,17 @@ triage_node = LLMNode(
 # 3. Run the Agent
 executor = GraphExecutor()
 initial_state = {"task": "How do I reset my password?"}
-result_log = 
-    list(executor.run_step_by_step(
-        start_node=triage_node, 
-        initial_state=initial_state
+result_log = list(executor.run_step_by_step(
+    start_node=triage_node, 
+    initial_state=initial_state
 ))
 '''
-The "glass box" log for Step 0 will show:
-"state_diff": {"added": {"category": "TECH_SUPPORT"}}
+ The "glass box" log for Step 0 will show:
+ "state_diff": {"added": {"category": "TECH_SUPPORT"}}
 
-The log for Step 1 will show:
-"Routing to LLMNode" (the tech_support_agent)
-'''
+ The log for Step 1 will show:
+ "Routing to LLMNode" (the tech_support_agent)
+ '''
 ```
 -----
 
