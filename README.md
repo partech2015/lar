@@ -382,6 +382,16 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 - **[snath-ai/support-demo](https://github.com/snath-ai/customer-support-demo)**:The Customer Support agent described above.
 
 
+## Show an Audited Badge to your project:
+[![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
+
+
+**Badge Markdown:**
+
+```markdown
+[![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
+```
+
 ## Contributing
 
 We welcome contributions to **`Lár`**.
