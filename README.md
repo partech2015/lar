@@ -388,7 +388,7 @@ If you build an agent using the Lár Engine, you are building a **dependable, ve
 
 By adopting this badge, you signal to users and collaborators that your agent is built for **production reliability and auditability.**
 
-**Show an Audited Badge to your project:**
+**Show an Auditable Badge to your project:**
 [![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
 
 
