@@ -382,9 +382,9 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 - **[snath-ai/support-demo](https://github.com/snath-ai/customer-support-demo)**:The Customer Support agent described above.
 
 
-###  Show Your Code is Auditable
+###  Show Your Agents are Auditable
 
-If you build an agent using the Lár Engine, you are building a **dependable, verifiable system**. Help us spread the philosophy of the "Glass Box" by displaying the badge below in your project's README.
+If you build an agent using the Lár Engine, you are building a **dependable, verifiable system**. Help us spread the philosophy of the **"Glass Box"** by displaying the badge below in your project's README.
 
 By adopting this badge, you signal to users and collaborators that your agent is built for **production reliability and auditability.**
 
