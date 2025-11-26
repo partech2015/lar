@@ -123,8 +123,7 @@ You can build any agent with four core components:
 
 -----
 
-### Example: The "Glass Box" Audit Trail
-
+## Example "Glass Box" Audit Trail
 
 You don't need to guess why an agent failed. `lar` is a "glass box" that provides a complete, auditable log for every run, especially failures.
 
