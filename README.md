@@ -176,18 +176,6 @@ ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 
 -----
 
-## The Lár Primitives (The "Lego Bricks")
-
-You can build any agent with 6 core components. `lar` is a "glass box" because you see *exactly* how these components connect.
-
-* **`GraphState`**: The "Memory." A simple Python object that is passed to every node, allowing them to share data.
-* **`GraphExecutor`**: The "Engine." A simple `generator` that runs one node at a time and `yields` the `history` log.
-* **`LLMNode`**: The "Brain." It calls the Gemini API to think, write, or critique. It's resilient and auto-retries on rate limits.
-* **`ToolNode`**: The "Hands." It runs any Python function (like `run_code` or `search_web`) and has separate `success` and `error` paths.
-* **`RouterNode`**: The "Choice." Your `if/else` statement. It runs a simple Python function to decide which node to run next.
-* **`AddValueNode` / `ClearErrorNode`**: "Utility" nodes that clean up the state, copy values, and keep your graph running smoothly.
-
----
 ## Example: Multi-Agent Orchestration (A Customer Support Agent)
 
 The *real* power of `lar` is not just loops, but **multi-agent orchestration.**
@@ -384,9 +372,9 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 
 ###  Show Your Agents are Auditable
 
-If you build an agent using the Lár Engine, you are building a **dependable, verifiable system**. Help us spread the philosophy of the **"Glass Box"** by displaying the badge below in your project's README.
+- If you build an agent using the Lár Engine, you are building a **dependable, verifiable system**. Help us spread the philosophy of the **"Glass Box"** by displaying the badge below in your project's README.
 
-By adopting this badge, you signal to users and collaborators that your agent is built for **production reliability and auditability.**
+- By adopting this badge, you signal to users and collaborators that your agent is built for **production reliability and auditability.**
 
 **Show an Auditable Badge to your project:**
 [![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
