@@ -19,6 +19,5 @@ Developers cannot:
 - ⁠*Agents should be engineered, not summoned*  
 
 ### We are building the *Glass Box* ecosystem.
-
 - Lár = The open-source engine  
 - SnathAI™ = The commercial observability layer  
