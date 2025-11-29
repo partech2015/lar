@@ -13,7 +13,7 @@
     <img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-snathai-0077B5?style=for-the-badge&logo=linkedin">
   </a>
   <a href="https://github.com/sponsors/axdithyaxo">
-    <img alt="Sponsor" src="https://img.shields.io/badge/Support-GitHub%20Sponsors-pink">
+    <img alt="Sponsor" src="https://img.shields.io/badge/Support-GitHub%20Sponsors-pink?style=for-the-badge&logo=github">
   </a>
 </p>
 
@@ -388,7 +388,7 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 [![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
 ```
 
-## ⭐ Support the Project
+## Support the Project
 
 Lár is an open-source agent framework built to be clear, debuggable, and developer-friendly.
 If this project helps you, consider supporting its development through GitHub Sponsors.
