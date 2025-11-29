@@ -24,12 +24,20 @@ class GraphExecutor:
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
 
-    def _save_log(self, history: list, run_id: str):
+    def _save_log(self, history: list, run_id: str, summary: dict = None):
         """Saves the execution history to a JSON file."""
         filename = f"{self.log_dir}/run_{run_id}.json"
+        
+        log_data = {
+            "run_id": run_id,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "steps": history,
+            "summary": summary or {}
+        }
+
         try:
             with open(filename, "w") as f:
-                json.dump(history, f, indent=2)
+                json.dump(log_data, f, indent=2)
             print(f"\n✅ [GraphExecutor] Audit log saved to: {filename}")
         except Exception as e:
             print(f"\n⚠️ [GraphExecutor] Failed to save log: {e}")
@@ -47,6 +55,11 @@ class GraphExecutor:
         run_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         history = [] # We keep a local copy to save at the end
         
+        # Initialize token counters
+        total_prompt_tokens = 0
+        total_completion_tokens = 0
+        total_tokens = 0
+
         step_index = 0
         while current_node is not None:
             node_name = current_node.__class__.__name__
@@ -78,8 +91,17 @@ class GraphExecutor:
             
              # Extract metadata
             if "__last_run_metadata" in state_after:
-                log_entry["run_metadata"] = state_after.pop("__last_run_metadata")
-
+                metadata = state_after.pop("__last_run_metadata")
+                log_entry["run_metadata"] = metadata
+                
+                # Aggregate tokens if present
+                if metadata and isinstance(metadata, dict):
+                    total_prompt_tokens += metadata.get("prompt_tokens", 0)
+                    total_completion_tokens += metadata.get("output_tokens", 0)
+                    total_tokens += metadata.get("total_tokens", 0)
+            
+            # 5. Clear metadata from the actual state so it doesn't persist
+            state.set("__last_run_metadata", None)
 
             # 6. Compute the diff (now on the *cleaned* state_after)
             state_diff = compute_state_diff(state_before, state_after)
@@ -96,5 +118,12 @@ class GraphExecutor:
             # 8. Resume on the next call
             current_node = next_node
             step_index += 1
-            # --- AUTO-SAVE LOG ON FINISH ---  
-        self._save_log(history, run_id)
+            
+        # --- AUTO-SAVE LOG ON FINISH ---
+        summary = {
+            "total_steps": step_index,
+            "total_prompt_tokens": total_prompt_tokens,
+            "total_completion_tokens": total_completion_tokens,
+            "total_tokens": total_tokens
+        }
+        self._save_log(history, run_id, summary)

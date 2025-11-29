@@ -49,7 +49,6 @@ class AddValueNode(BaseNode):
              print(f"  [AddValueNode]: Setting state['{self.key}'] = '{str(value_to_set)[:50]}...'")
 
         state.set(self.key, value_to_set)
-        state.set("__last_run_metadata", None)
         return self.next_node
 
 class LLMNode(BaseNode):
@@ -176,8 +175,6 @@ class RouterNode(BaseNode):
         print(f"  [RouterNode]: Decision function returned '{route_key}'")
         next_node = self.path_map.get(route_key)
 
-        state.set("__last_run_metadata", None)
-
         if next_node:
             print(f"  [RouterNode]: Routing to {next_node.__class__.__name__}")
             return next_node
@@ -213,8 +210,6 @@ class ToolNode(BaseNode):
             state.set(self.output_key, result)
             print(f"  [ToolNode]: Saved result to state['{self.output_key}']")
 
-            state.set("__last_run_metadata", None)
-            
             return self.next_node
         except Exception as e:
             print(f"  [ToolNode] ERROR: {self.tool_function.__name__} failed: {e}")

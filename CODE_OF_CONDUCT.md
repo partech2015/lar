@@ -25,7 +25,7 @@ The following behaviors are expected and mandatory in all community interactions
 
 If you witness or are subject to behavior that violates this Code of Conduct, please report it promptly and confidentially to the project maintainers:
 
-**Email**: `support@snath.ai`
+**Email**: [support@snath.ai](mailto:support@snath.ai)
 
 **Reporting**: Include the necessary context, names of individuals involved, and any evidence (screenshots, links) to help the maintainers investigate the situation efficiently.
 
