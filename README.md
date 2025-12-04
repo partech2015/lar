@@ -405,7 +405,7 @@ You've built your graph. Now you need observability, rate limiting, and persiste
 Because Lár is stateful and serializable, you don't need to rewrite your code for the cloud. The engine is designed to be "Write Once, Run Anywhere."
 
 * **Serialize:** `executor.save_to_file("agent.json")`
-* **Deploy:** Upload to [Snath Cloud](https://snath.ai) (Enterprise Edition).
+* **Deploy:** Upload to [Snath Cloud](https://snath.ai/cloud) (Enterprise Edition).
 
 Snath Cloud instantly visualizes your JSON definition, providing a "Mission Control" dashboard with token tracking, cost analysis, and historical "Flight Recorder" logs for every run.
 
