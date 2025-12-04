@@ -52,6 +52,10 @@ The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" En
 | Resilience & Cost | Wasteful & Brittle. If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | Efficient & Resilient. If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your LLMNode's built-in retry handles transient errors silently. |
 | Core Philosophy | Sells "Magic." | Sells "Trust." |
 
+> **Visualizing the Difference:**
+> * **Others:** A tangled web of implicit dependencies ("Spaghetti Code").
+> * **Lár:**  A linear, distinct assembly line of logic.
+
 ## Key Features
 
   * **Define-by-Run Architecture:** The execution graph is created dynamically, step-by-step. This naturally enables complex, stateful logic like loops and self-correction.
@@ -156,7 +160,7 @@ This project is managed with [Poetry](https://python-poetry.org/).
     ```
 
 2. **Set Up Environment Variables**
-`Lár` uses a unified adapter `(LiteLLM)`. Depending on the models you run, you must set the corresponding API keys in your `.env` file:
+Lár uses the unified LiteLLM adapter under the hood. This means if a model is supported by LiteLLM (100+ providers including Azure, Bedrock, VertexAI), it is supported by Lár.
 
 Create a `.env` file:
 
@@ -292,19 +296,19 @@ critical_fail_node = AddValueNode(key="final_status", value="CRITICAL_FAILURE", 
 
 # --- The "Specialist" Agents ---
 billing_agent = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini-1.5-pro",
     prompt_template="You are a BILLING expert. Answer '{task}' using ONLY this context: {retrieved_context}",
     output_key="agent_answer",
     next_node=final_node
 )
 tech_agent = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini-1.5-pro",
     prompt_template="You are a TECH SUPPORT expert. Answer '{task}' using ONLY this context: {retrieved_context}",
     output_key="agent_answer",
     next_node=final_node
 )
 general_agent = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini-1.5-pro",
     prompt_template="You are a GENERAL assistant. Answer '{task}' using ONLY this context: {retrieved_context}",
     output_key="agent_answer",
     next_node=final_node
@@ -332,7 +336,7 @@ retrieve_node = ToolNode(
     
 # --- The "Planner" (LLM) ---
 planner_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini-1.5-pro",
     prompt_template="You are a search query machine. Convert this task to a search query: {task}. Respond with ONLY the query.",
     output_key="search_query",
     next_node=retrieve_node
@@ -340,7 +344,7 @@ planner_node = LLMNode(
     
 # --- The "Triage" Node (The *real* start) ---
 triage_node = LLMNode(
-    model_name="gemini-2.5-pro",
+    model_name="gemini-1.5-pro",
     prompt_template="You are a triage bot. Classify this task: \"{task}\". Respond ONLY with: BILLING, TECH_SUPPORT, or GENERAL.",
     output_key="category",
     next_node=planner_node
@@ -353,6 +357,12 @@ result_log = list(executor.run_step_by_step(
     start_node=triage_node, 
     initial_state=initial_state
 ))
+
+# 4. The "Deploy Anywhere" Feature
+# Serialize your entire graph logic to a portable JSON schema.
+# This file can be versioned in git or imported into Snath Cloud.
+executor.save_to_file("support_agent_v1.json")
+print("Agent serialized successfully. Ready for deployment.")
 '''
  The "glass box" log for Step 0 will show:
  "state_diff": {"added": {"category": "TECH_SUPPORT"}}
@@ -387,6 +397,17 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 ```markdown
 [![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
 ```
+
+## 🚀 Go to Production
+
+You've built your graph. Now you need observability, rate limiting, and persistent logs.
+
+Because Lár is stateful and serializable, you don't need to rewrite your code for the cloud. The engine is designed to be "Write Once, Run Anywhere."
+
+* **Serialize:** `executor.save_to_file("agent.json")`
+* **Deploy:** Upload to [Snath Cloud](https://snath.ai) (Enterprise Edition).
+
+Snath Cloud instantly visualizes your JSON definition, providing a "Mission Control" dashboard with token tracking, cost analysis, and historical "Flight Recorder" logs for every run.
 
 ## Support the Project
 
