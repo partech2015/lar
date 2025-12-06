@@ -1,0 +1,92 @@
+{
+  "run_id": "2886198c-4d3d-487f-8453-2272df8f6e56",
+  "user_id": null,
+  "timestamp": "2025-12-06T20:40:15.572026",
+  "steps": [
+    {
+      "step": 0,
+      "node": "PlannerNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001"
+      },
+      "state_diff": {
+        "added": {
+          "plan": [
+            "Define function",
+            "Implement logic",
+            "Add type hints"
+          ]
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "success",
+      "signature": "655dc1d44f515d4bb111da776c03c20d4d88c70022b4786143e2ad5d6bbf460f"
+    },
+    {
+      "step": 1,
+      "node": "CoderNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "code": "def add(a, b):\n    return a - b  # Oops, wrong operator",
+          "attempt": 1
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "aaf8bcd9f180c293e067e6d6639d269df37a61aad296928bf9d094c35cdf826e"
+    },
+    {
+      "step": 2,
+      "node": "TesterNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null,
+        "code": "def add(a, b):\n    return a - b  # Oops, wrong operator",
+        "attempt": 1
+      },
+      "state_diff": {
+        "added": {
+          "status": "failed",
+          "test_error": "AssertionError: Expected 5, got -1 (add(2, 3))"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "error",
+      "error": "RouterNode.__init__() missing 2 required positional arguments: 'decision_function' and 'path_map'",
+      "signature": "dc4f2a6def5c19bc5c8b050f383816fe11824e8782ca2c0bf3f82bcaaa4c17a6"
+    }
+  ],
+  "summary": {
+    "total_steps": 3,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

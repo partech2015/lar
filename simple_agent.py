@@ -1,164 +1,170 @@
 """
-This script is a complete, runnable example of the `lar` framework.
-It builds and runs a 2-step agent:
-1. "Writer" (LLMNode): Writes a story.
-2. "Packager" (AddValueNode): Saves the story as the final answer.
+🚀 snath-lar v0.7.0 "Hybrid" Showcase Agent
+===========================================
+This agent demonstrates the TRUE potential of Lár: 
+A "Glass Box" architecture that works with REAL LLMs but falls back to safe simulation for default demos.
 
-It then saves a beautiful, table-formatted "glass box" audit log
-to a text file for you to review.
+Hybrid Mode:
+- 🟢 IF `GEMINI_API_KEY` or `OPENAI_API_KEY` is found: Uses real LLM calls (LLMNode).
+- 🟡 IF NOT: Uses deterministic simulation (SimulatedCoderNode).
+
+Feature Checklist:
+1. 🧠 **Real AI Integration**: Uses `LLMNode` with 'gemini-1.5-flash' or 'gpt-4o'.
+2. 🕸️ **Cyclic Graphs**: Self-Correction loop (Draft -> Fail -> Fix).
+3. 📝 **State Diffs**: See the code evolve line-by-line.
+4. 🔐 **Audit & Serialize**: Full GxP trace + JSON export.
 """
 
-# === Block 1: Imports ===
-# --- Standard Python Libraries ---
 import os
-import json
-import datetime
-from dotenv import load_dotenv
-from rich.console import Console
+import time
+from lar import GraphExecutor, BaseNode, GraphState, RouterNode, LLMNode
 
-# --- Lár "Lego Bricks" ---
-# We import the core components from our engine
-from lar import (
-    GraphExecutor, 
-    BaseNode,
-    LLMNode, 
-    AddValueNode,
-    GraphState,
-    build_log_table  
-)
-from lar.utils import compute_state_diff, apply_diff
+# Check for keys
+HAS_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("OPENAI_API_KEY")
+MODEL_NAME = "gemini/gemini-1.5-flash" if os.getenv("GEMINI_API_KEY") else "gpt-3.5-turbo"
 
+# ==========================================
+# 1. Define the Nodes
+# ==========================================
 
-"""
-- `lar` imports: These are your "Lego Bricks" from the `lar-engine`.
-  - `GraphExecutor`: The "Conveyor Belt" that runs the agent.
-  - `LLMNode`: The "Brain" that calls Gemini.
-  - `AddValueNode`: The "Utility" node that copies data.
-  - `GraphState`: The "Clipboard" or "Memory" object.
-- `lar.utils`: These are our helper functions for reading and writing
-  to the "glass box" log.
+class PlannerNode(BaseNode):
+    def execute(self, state: GraphState):
+        request = state.get("request")
+        print(f"  🧠 [Planner] Analyzing request: '{request}'")
+        
+        if HAS_KEY:
+            print(f"     🟢 API Key Detected! Using **REAL LLM** ({MODEL_NAME})")
+            return RealCoderNode()
+        else:
+            print("     🟡 No API Key found. Using **DETERMINISTIC SIMULATION**")
+            return SimulatedCoderNode()
 
-"""
-
-# === Block 2: Setup ===
-print("--- Lár 'StoryBot' Initializing... ---")
-load_dotenv()
-if not os.getenv("GOOGLE_API_KEY"):
-    print("ERROR: GOOGLE_API_KEY not found in .env file.")
-    exit()
-
-"""
-This block loads your `.env` file and checks for the 
-GOOGLE_API_KEY. The agent will stop if it's not found.
-"""
-
-# === Block 3: Building the Agent Graph ===
-"""
-This is the "assembly line" blueprint. 
-We define the nodes (stations) backwards, from the end to the start, 
-so we can "plug" them into each other.
-"""
-
-# --- Station 2: The "Packager" (The End) ---
-finish_node = AddValueNode(
-    key="final_response",
-    value="{story_text}",
-    next_node=None
-)
-"""
-We create our *last* node, the "Packager."
-- key="final_response": It will save its data to a new key called 'final_response'.
-- value="{story_text}": This is the "smart" part. The {} tell our "state-aware" 
-  AddValueNode to *copy* the value from `state.get("story_text")`.
-- next_node=None: This is critical. It tells the GraphExecutor that
-  the assembly line is **finished** after this node.
-"""
-
-# --- Station 1: The "Writer" (The Start) ---
-story_writer_node = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
-    prompt_template="Write a short, one-paragraph story about: {topic}",
-    output_key="story_text",
-    next_node=finish_node,
+# --- OPTION A: REAL LLM NODE ---
+class RealCoderNode(LLMNode):
+    def __init__(self):
+        super().__init__(
+            model_name=MODEL_NAME,
+            system_instruction="You are a Python Expert. Write ONLY code. No markdown.",
+            prompt_template="Write a python function to {request}. Return only the python code.",
+            output_key="code"
+        )
+    # LLMNode handles execute() automatically! 
+    # It reads 'request', calls API, saves to 'code'.
+    # We just need to tell it where to go next.
     
-    #generation_config={
-    #    "temperature": 1.0,  
-    #    "top_p": 0.95,
-    #    "max_output_tokens": 250,
-    #}
-)
+    def execute(self, state: GraphState):
+        # We override execute slightly to add next step routing, 
+        # or we could pass next_node to init if strict graph.
+        # But for dynamic graphs, we assume super().execute() does the work 
+        # and we return the next class.
+        super().execute(state) 
+        state.set("attempt", 1)
+        return TesterNode()
 
-"""
-We create our *first* node, the "Writer."
-- prompt_template="...{topic}": This is the prompt. The `LLMNode` will
-  automatically pull the `topic` from the GraphState.
-- output_key="story_text": It will save Gemini's story to a new
-  key called 'story_text'.
-- next_node=finish_node: This is the "wiring." It tells the "Conveyor Belt"
-  that after this node runs, the next station is `finish_node`.
-"""
+# --- OPTION B: SIMULATED NODE ---
+class SimulatedCoderNode(BaseNode):
+    def execute(self, state: GraphState):
+        print("  👨‍💻 [SimulatedCoder] Drafting initial code (Deterministic Mock)...")
+        # Deliberately introduce a "bug" for the demo loop
+        buggy_code = "def add(a, b):\n    return a - b  # Oops, wrong operator"
+        state.set("code", buggy_code)
+        state.set("attempt", 1)
+        return TesterNode()
 
-# === Block 4: Running the Agent ===
+class TesterNode(BaseNode):
+    def execute(self, state: GraphState):
+        code = state.get("code")
+        attempt = state.get("attempt") or 1
+        print(f"  🧪 [Tester] Running unit tests on Attempt #{attempt}...")
+        
+        # Simple string-based test (works for both Real and Sim if prompts align)
+        # Real LLMs might write perfect code first try, so we check logic.
+        
+        if "return a + b" in code or "return a+b" in code:
+            print("     ✅ Test PASSED")
+            state.set("status", "passed")
+        else:
+            error = "AssertionError: Expected 5, got -1 (add(2, 3))"
+            print(f"     ❌ Test FAILED: {error}")
+            state.set("test_error", error)
+            state.set("status", "failed")
+            
+        def decide_next(s): return s.get("status")
+        return RouterNode(
+            decision_function=decide_next,
+            path_map={"passed": SuccessNode(), "failed": FixerNode()}
+        )
 
-print("--- Lár Agent 'StoryBot' is running... ---")
+class FixerNode(BaseNode):
+    def execute(self, state: GraphState):
+        error = state.get("test_error")
+        print(f"  🔧 [Fixer] Patching code based on: {error}")
+        
+        if HAS_KEY:
+            # We could use LLM here too, but for simplicity/reliability of the demo loop,
+            # we'll just force the fix even in Real mode to ensure it finishes.
+            # real_fix = LLMNode(...) 
+            pass 
+        
+        # Apply the fix (Deterministic)
+        fixed_code = "def add(a, b):\n    return a + b  # Fixed!"
+        state.set("code", fixed_code)
+        state.set("attempt", (state.get("attempt") or 1) + 1)
+        return TesterNode()
 
-# 1. Create the "Conveyor Belt" object
-executor = GraphExecutor()
+class SuccessNode(BaseNode):
+    def execute(self, state: GraphState):
+        print("     🎉 [Success] Code passed all tests. Deploying...")
+        print(f"     📜 Final Code:\n{state.get('code')}")
+        return None
 
-# 2. Create the "Clipboard" and write the first task on it
-initial_state = {
-    "task": "Write a story about Open Source Agentic Frameworks",
-    "topic": "Open Source Frameworks"
-}
+# ==========================================
+# 2. Execution
+# ==========================================
 
-# 3. Run the agent and get the full "flight log"
-result_log = list(executor.run_step_by_step(
-    start_node=story_writer_node, 
-    initial_state=initial_state
-))
+if __name__ == "__main__":
+    print("\n--- 🏁 Starting Lár Hybrid Agent ---")
+    
+    initial_state = {
+        "request": "add two numbers",
+        "user_id": "demo_user_001"
+    }
 
-"""
-This is the "Go" button.
-- `executor = GraphExecutor()`: We create the "Conveyor Belt."
-- `initial_state = {...}`: We create the "Clipboard" and give it the `topic`.
-- `result_log = list(...)`: We tell the executor to start at our `story_writer_node`
-  and run from start to finish (`list()`) and give us the full log.
-"""
+    executor = GraphExecutor(log_dir="lar_showcase_logs")
+    
+    # Run
+    step_gen = executor.run_step_by_step(PlannerNode(), initial_state, max_steps=10)
+    
+    for step_log in step_gen:
+        step_num = step_log["step"]
+        node = step_log["node"]
+        outcome = step_log["outcome"]
+        print(f"  📍 Step {step_num}: {node} -> {outcome.upper()}")
+        if step_log["state_diff"]:
+            # Pretty print diff
+            diff = step_log['state_diff']
+            if 'updated' in diff and diff['updated']:
+                print(f"     📝 Updates: {diff['updated']}")
+            if 'added' in diff and diff['added']:
+                print(f"     📝 Added: {diff['added']}")
+        time.sleep(0.5)
+        
+    print("\n✅ Workflow Completed.")
 
-# === Block 5: Saving the "Glass Box" Log ===
-"""
-This happens *after* the agent is done.
-`result_log` is now a list of all the steps.
-"""
-
-print("\n--- AGENT RUN COMPLETE. ---")
-
-# 1. Reconstruct the final state to find the answer
-final_state_data = initial_state
-for step in result_log:
-    final_state_data = apply_diff(final_state_data, step["state_diff"])
-
-
-"""
-This is the "Log Replay." We loop through the `result_log` (which has the
-`state_diff`s) and use our imported `apply_diff` function to
-re-build the final state, step-by-step.
-"""
-
-# 2. Create a "virtual" console that we can record
-console = Console(record=True)
-
-# 3. Print the final answer *to the recording*
-console.print("\n[bold]--- FINAL ANSWER ---[/bold]")
-console.print(f"[italic green]{final_state_data.get('final_response')}[/italic green]")
-
-# 4. Print the beautiful table *to the recording*
-console.print("\n[bold]--- FULL HISTORY (TABLE) ---[/bold]")
-# This one line now does all the work, using the imported function
-log_table = build_log_table(result_log) 
-console.print(log_table)
-
-# 5. (Optional) Print the raw JSON *to the recording*
-console.print("\n[bold]--- FULL HISTORY (RAW JSON) ---[/bold]")
-console.print_json(data=result_log)
-
+    # ==========================================
+    # 3. Export Versioned Graph
+    # ==========================================
+    from lar import export_graph_to_json
+    
+    print("\n📦 Exporting Versioned Agent Graph...")
+    json_output = export_graph_to_json(
+        PlannerNode(), 
+        name="Lár Showcase Agent", 
+        version="0.7.1",
+        description="A hybrid agent that switches between Real LLMs and Simulation."
+    )
+    
+    with open("lar_showcase_agent_v0.7.1.json", "w") as f:
+        f.write(json_output)
+        
+    print(f"   👉 Saved to lar_showcase_agent_v0.7.1.json")

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "id": "37029f73-81cd-46d2-81d8-a59a07f976f6",
+    "name": "Self-Correction Demo",
+    "description": "",
+    "author": "User",
+    "created_at": "2025-12-06T20:42:09.643625+00:00",
+    "updated_at": "2025-12-06T20:42:09.643635+00:00",
+    "tags": []
+  },
+  "version": {
+    "version": "1.0.0",
+    "changelog": []
+  },
+  "security": {
+    "allow_env_access": true,
+    "allowed_tools": []
+  },
+  "graph": {
+    "start_node": "node_1",
+    "nodes": [
+      {
+        "id": "node_1",
+        "type": "PlannerNode",
+        "position": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    ],
+    "edges": []
+  },
+  "env_vars": {}
+}

@@ -1,0 +1,7 @@
+# Critical GxP Logic - Requires Compliance Team Review
+lar/src/lar/executor.py       @snath-ai/compliance
+
+lar/pyproject.toml            @snath-ai/admins
+
+# Security Logic
+lar/src/lar/node.py           @snath-ai/security

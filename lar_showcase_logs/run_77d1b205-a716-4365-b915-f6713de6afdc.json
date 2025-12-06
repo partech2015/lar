@@ -1,0 +1,49 @@
+{
+  "run_id": "77d1b205-a716-4365-b915-f6713de6afdc",
+  "user_id": null,
+  "timestamp": "2025-12-06T20:44:44.334534",
+  "steps": [
+    {
+      "step": 0,
+      "node": "PlannerNode",
+      "state_before": {
+        "request": "add two numbers",
+        "user_id": "demo_user_001"
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "success",
+      "signature": "071466fdb60bac26c119afc184f76f9872e81cec7dd919164f42b04525a86e0d"
+    },
+    {
+      "step": 1,
+      "node": "RealCoderNode",
+      "state_before": {
+        "request": "add two numbers",
+        "user_id": "demo_user_001",
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "error",
+      "error": "litellm.RateLimitError: RateLimitError: OpenAIException - You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+      "signature": "d7492716d999a548d9fd4c128ce401b6fbe198dfe9ddd576aabb03fcdb9bb18c"
+    }
+  ],
+  "summary": {
+    "total_steps": 2,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

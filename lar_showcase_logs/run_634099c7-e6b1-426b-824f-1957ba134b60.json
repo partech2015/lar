@@ -1,0 +1,216 @@
+{
+  "run_id": "634099c7-e6b1-426b-824f-1957ba134b60",
+  "user_id": null,
+  "timestamp": "2025-12-06T20:41:29.309856",
+  "steps": [
+    {
+      "step": 0,
+      "node": "PlannerNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001"
+      },
+      "state_diff": {
+        "added": {
+          "plan": [
+            "Define function",
+            "Implement logic",
+            "Add type hints"
+          ]
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "success",
+      "signature": "655dc1d44f515d4bb111da776c03c20d4d88c70022b4786143e2ad5d6bbf460f"
+    },
+    {
+      "step": 1,
+      "node": "CoderNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "attempt": 1,
+          "code": "def add(a, b):\n    return a - b  # Oops, wrong operator"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "aaf8bcd9f180c293e067e6d6639d269df37a61aad296928bf9d094c35cdf826e"
+    },
+    {
+      "step": 2,
+      "node": "TesterNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null,
+        "code": "def add(a, b):\n    return a - b  # Oops, wrong operator",
+        "attempt": 1
+      },
+      "state_diff": {
+        "added": {
+          "status": "failed",
+          "test_error": "AssertionError: Expected 5, got -1 (add(2, 3))"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "3eee9b01cbc9181a8e13dc697f8b27ad8a974fc03b8a5b254f703a8252d17763"
+    },
+    {
+      "step": 3,
+      "node": "RouterNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null,
+        "code": "def add(a, b):\n    return a - b  # Oops, wrong operator",
+        "attempt": 1,
+        "test_error": "AssertionError: Expected 5, got -1 (add(2, 3))",
+        "status": "failed"
+      },
+      "state_diff": {
+        "added": {
+          "_router_decision": "failed"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "809d460817266b67f6cef101db69bdeb06544bade4d8661aacedbbe654c3f395"
+    },
+    {
+      "step": 4,
+      "node": "FixerNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null,
+        "code": "def add(a, b):\n    return a - b  # Oops, wrong operator",
+        "attempt": 1,
+        "test_error": "AssertionError: Expected 5, got -1 (add(2, 3))",
+        "status": "failed",
+        "_router_decision": "failed"
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {
+          "attempt": 2,
+          "code": "def add(a, b):\n    return a + b  # Fixed!"
+        }
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "cbde9cc6b3db2924ad363f920eb894288b566c803a389bc53afbed40a8c62cb1"
+    },
+    {
+      "step": 5,
+      "node": "TesterNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null,
+        "code": "def add(a, b):\n    return a + b  # Fixed!",
+        "attempt": 2,
+        "test_error": "AssertionError: Expected 5, got -1 (add(2, 3))",
+        "status": "failed",
+        "_router_decision": "failed"
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {
+          "status": "passed",
+          "test_error": null
+        }
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "1a367c23cfe7513879abd418a0bd59ee2a5caab3e1523e57ff3370d4407bd655"
+    },
+    {
+      "step": 6,
+      "node": "RouterNode",
+      "state_before": {
+        "request": "Write a Python function to add two numbers",
+        "user_id": "demo_user_001",
+        "plan": [
+          "Define function",
+          "Implement logic",
+          "Add type hints"
+        ],
+        "__last_run_metadata": null,
+        "code": "def add(a, b):\n    return a + b  # Fixed!",
+        "attempt": 2,
+        "test_error": null,
+        "status": "passed",
+        "_router_decision": "failed"
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {
+          "_router_decision": "passed"
+        }
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "signature": "742edde2320b39c895c7e0539e17ab03abbb09f11aa1878f2ec5354084f46eef"
+    }
+  ],
+  "summary": {
+    "total_steps": 7,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}
