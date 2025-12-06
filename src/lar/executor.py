@@ -7,6 +7,10 @@ from .state import GraphState
 from .utils import compute_state_diff
 
 
+class SecurityError(Exception):
+    """Raised when a security policy (like Air-Gap) is violated."""
+    pass
+
 class GraphExecutor:
     """
     The "engine" that runs a Lár graph.
@@ -19,8 +23,9 @@ class GraphExecutor:
 
     NEW in v6.0: Now includes automatic logging to a file.
     """
-    def __init__(self, log_dir: str = "lar_logs"):
+    def __init__(self, log_dir: str = "lar_logs", offline_mode: bool = False):
         self.log_dir = log_dir
+        self.offline_mode = offline_mode
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
 
@@ -75,9 +80,27 @@ class GraphExecutor:
             }
             
             try:
-                # 2. Execute the node
+                # 2. Security Check (Air-Gap Enforcement)
+                if self.offline_mode and node_name == "LLMNode":
+                    # Check if model is local
+                    model = getattr(current_node, "model_name", "").lower()
+                    allowed_prefixes = ["ollama/", "local/", "test/", "mock/"]
+                    if not any(model.startswith(p) for p in allowed_prefixes):
+                        raise SecurityError(
+                            f"AIR-GAP VIOLATION: Attempted to call cloud model '{model}' in offline mode.\n"
+                            f"Allowed prefixes: {allowed_prefixes}"
+                        )
+
+                # 3. Execute the node
                 next_node = current_node.execute(state)
-                log_entry["outcome"] = "success"
+                
+                # Check if the node set an error in the state (graceful error handling)
+                if state.get("last_error"):
+                    log_entry["outcome"] = "error"
+                    log_entry["error"] = state.get("last_error")
+                    # If no error handler (next_node is None/ErrorNode), we consider it a failure step
+                else:
+                    log_entry["outcome"] = "success"
                 
             except Exception as e:
                 # 3. Handle a critical error
