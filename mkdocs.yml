@@ -43,6 +43,7 @@ nav:
     - 'The 6 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
   - 'Guides':
+    - 'Air-Gap Security (GxP)': guides/air-gap-security.md
     - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
     - 'Self-Correcting Loops': guides/self-correction-loop.md
   - 'API Reference':
