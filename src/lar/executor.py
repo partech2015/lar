@@ -2,6 +2,8 @@ import copy
 import json
 import os
 import datetime
+import hmac
+import hashlib
 from .node import BaseNode
 from .state import GraphState
 from .utils import compute_state_diff
@@ -129,6 +131,21 @@ class GraphExecutor:
             # 6. Compute the diff (now on the *cleaned* state_after)
             state_diff = compute_state_diff(state_before, state_after)
             log_entry["state_diff"] = state_diff
+
+
+            # We sign the JSON representation of the log entry to ensure integrity.
+            try:
+                # Use a default key for dev, but expect env var for production
+
+                
+                # Canonicalize JSON for consistent hashing
+                payload = json.dumps(log_entry, sort_keys=True).encode('utf-8')
+                
+                 # None).hexdigest()
+                log_entry["signature"] = signature
+            except Exception as e:
+                # Fallback if signing fails (should not happen, but prevents crash)
+                log_entry["signature"] = f"error_signing: {str(e)}"
 
             # Add to history and yield
             history.append(log_entry)

@@ -51,7 +51,7 @@ The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" En
 | Data Flow | Implicit & Messy. Agents pass data by "chatting." The ToolNode's output might be polluted by another agent's "thoughts." | Explicit & Hard-Coded. The data flow is defined by you: RAG Output -> Tweet Input. The "Tweeter" only sees the data it's supposed to. |
 | Resilience & Cost | Wasteful & Brittle. If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | Efficient & Resilient. If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your LLMNode's built-in retry handles transient errors silently. |
 | Core Philosophy | Sells "Magic." | Sells "Trust." |
-| **Compliance & security** | **Non-Compliant.** Cloud-dependent tracing. Non-deterministic execution makes FDA validation impossible. | **GxP-Ready.** 21 CFR Part 11 audit trails out of the box. **Air-Gap Capable** via JSON serialization for SCIF environments. |
+| **Compliance & security** | **Non-Compliant.** Cloud-dependent tracing. Non-deterministic execution makes FDA validation impossible. | **GxP-Ready.** Lár supports features needed for 21 CFR Part 11-aligned workflows. **Air-Gap Capable** via JSON serialization for SCIF environments. |
 
 > **Visualizing the Difference:**
 > * **Others:** A tangled web of implicit dependencies ("Spaghetti Code").
