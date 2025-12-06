@@ -10,21 +10,22 @@ This "glass box" philosophy gives you a complete, step-by-step "flight data reco
 
 ## Why We Built Lár?
 
-### The Problem: The "Black Box" Tax
+### The Problem: Compliance is Impossible with Black Boxes
 
-You are a developer launching a **mission-critical AI agent**. It works flawlessly on your machine. You push it to production, and it instantly fails.
+You are a developer building an agent for **Clinical Trials** or **Government Intelligence**.
+- **The FDA requires 21 CFR Part 11 audit trails.**
+- **The SCIF has no internet.**
 
-- Why did it fail? You don't know.
+Traditional frameworks fail both tests. They are non-deterministic "chatbots" that require cloud connectivity for tracing.
 
-- Which node failed? You can't tell.
+### The Lár Solution: The First GxP-Ready Framework
 
-- What was the cost? You have to guess.
+We built the **Lár Engine** to bring the **Scientific Method** to AI Agents.
 
-Instead of a solution, you get a **100-line stack trace** from deep inside a monolithic framework's core, pointing to an error you cannot debug. This is the **"Black Box Tax"**—the **price you pay** for using systems that **hide** their logic.
-
-For too long, developers have been told that **auditing agents is a premium feature**. If you want to know *why* your agent spent $50, or *why* it got stuck in a loop, you had to integrate an external, complex, and **paid tracing tool** like LangSmith.
-
-We got fed up. We believe that **auditing the reasoning flow of an AI agent should be easy, built-in, and free.**
+**Lár is:**
+1.  **Deterministic**: Same seed + Same Graph = Identical Execution.
+2.  **Auditable**: Generating a forensic flight log is the *default* behavior.
+3.  **Air-Gap Capable**: Build on a laptop -> Serialize to JSON -> Run offline.
 
 ### The Lár Solution: Your Agent's Flight Recorder
 

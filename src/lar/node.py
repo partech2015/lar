@@ -80,6 +80,21 @@ class LLMNode(BaseNode):
 
         # 2. Check Cache Key (Identifies the unique model configuration)
         # The key includes model name and system instruction for unique caching
+        
+        # --- FIX: Google Provider Conflict Resolution ---
+        # Problem: If the environment has GOOGLE_APPLICATION_CREDENTIALS (for Firestore),
+        # LiteLLM defaults to using Vertex AI for Gemini models.
+        # However, users often provide a GOOGLE_API_KEY expecting to use Google AI Studio.
+        # This causes a "Vertex AI API disabled" error if the project doesn't have it enabled.
+        #
+        # Solution: We detect if GOOGLE_API_KEY is present. If so, we force the 'gemini/' prefix,
+        # which tells LiteLLM to use the Google AI Studio provider instead of Vertex AI.
+        import os
+        if self.model_name.startswith("gemini") and "gemini/" not in self.model_name and "vertex_ai/" not in self.model_name:
+            if os.environ.get("GOOGLE_API_KEY"):
+                print(f"  [LLMNode]: Detected GOOGLE_API_KEY. Forcing AI Studio (gemini/) for model '{self.model_name}'...")
+                self.model_name = f"gemini/{self.model_name}"
+
         cache_key = f"{self.model_name}:{self.system_instruction}" 
         
         # 3. Cache the model name for faster access (LiteLLM handles the actual client instantiation)
@@ -94,7 +109,16 @@ class LLMNode(BaseNode):
     
     def execute(self, state: GraphState):
         # 1. Build the prompt (the "contents")
-        prompt = self.prompt_template.format(**state.get_all())
+        # Support both {var} and {{var}} syntax by normalizing double braces to single braces
+        # This is user-friendly for those used to Jinja2/Mustache
+        template = self.prompt_template.replace("{{", "{").replace("}}", "}")
+        try:
+            prompt = template.format(**state.get_all())
+        except KeyError as e:
+            # Fallback: If a key is missing, don't crash, just leave it as is or warn
+            print(f"  [LLMNode] WARN: Missing key {e} for prompt template. Using raw template.")
+            prompt = template
+
         print(f"  [LLMNode]: Sending prompt to {self.model_identifier}: '{prompt[:50]}...'")
         
         retries = 0
@@ -173,6 +197,10 @@ class RouterNode(BaseNode):
     def execute(self, state: GraphState):
         route_key = self.decision_function(state)
         print(f"  [RouterNode]: Decision function returned '{route_key}'")
+        
+        # Log the decision to state so it appears in the diff
+        state.set("_router_decision", route_key)
+        
         next_node = self.path_map.get(route_key)
 
         if next_node:
@@ -204,11 +232,23 @@ class ToolNode(BaseNode):
 
     def execute(self, state: GraphState):
         try:
-            inputs = [state.get(key) for key in self.input_keys]
+            # Special handling for full state access
+            if self.input_keys == ["__state__"]:
+                inputs = [state]
+            else:
+                inputs = [state.get(key) for key in self.input_keys]
+            
             print(f"  [ToolNode]: Running {self.tool_function.__name__} with inputs: {inputs}")
             result = self.tool_function(*inputs)
-            state.set(self.output_key, result)
-            print(f"  [ToolNode]: Saved result to state['{self.output_key}']")
+            
+            # Special handling for merging dict results
+            if self.output_key is None and isinstance(result, dict):
+                print(f"  [ToolNode]: Merging result dict into state: {list(result.keys())}")
+                for k, v in result.items():
+                    state.set(k, v)
+            elif self.output_key:
+                state.set(self.output_key, result)
+                print(f"  [ToolNode]: Saved result to state['{self.output_key}']")
 
             return self.next_node
         except Exception as e:

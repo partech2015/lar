@@ -1,8 +1,9 @@
 # Getting Started
 
-## Build a “Master Planner” Agent in Under 3 Minutes
+## Build a GxP-Ready "Master Planner" in 3 Minutes
 
-This quick-start guide will help you install the engine, configure your environment, and create your first **Glass Box Agent**—a smart planner that decides whether to route a task to a “Coder” agent or a conversational “Chatbot.”
+This quick-start guide will help you build your first **Auditable Agent**. Unlike a chatbot, this agent is a **Deterministic Workflow**: it accepts a task, evaluates it, and routes it to an exact specialist.
+Because it's built on Lár, it produces a **21 CFR Part 11-style audit trail** by default.
 
 ---
 
@@ -123,9 +124,10 @@ print(json.dumps(result_log, indent=2))
 
 
 
-The Output (Your Audit Log)
+The Output (Your Forensic Flight Recorder)
 
-When you run this, you'll get the final answer, and you'll get this **"flight data recorder"** log. This is the `lar` difference.
+When you run this, you get more than an answer. You get a **compliance artifact**.
+This log is your proof of *exactly* what the agent did, step-by-step.
 
 ```json
 [

@@ -1,10 +1,15 @@
-# The "Glass Box" Audit Log
+# The "GxP Compliant" Audit Log
 
-**The `GraphExecutor`'s "killer feature" is the `history` log it generates. This is not just a `print` statement; it's a structured **Event Sourced** log that gives you a complete audit trail of every agent run.**
+**The `GraphExecutor`'s "killer feature" is the `21 CFR Part 11-Ready` history log it generates. This is not just a `print` statement; it's a structured *Event Sourced* forensic trail.**
 
-Your app (like the `Snath` UI) doesn't just get a final answer. It gets a **receipt** for how the agent "thought."
+ For complex agent workflows, you need detailed provenance.provenance.
 
-**The "Event Sourcing" Model**
+**Lár delivers:**
+1.  **Immutability**: Every step is a discrete event.
+2.  **Causality**: We log the *exact state change* (`state_diff`) that caused the new reality.
+3.  **Reproducibility**: Replaying these events with the same seed guarantees the same outcome.
+
+## The "Event Sourcing" Model
 
 To be infinitely scalable, `lar` (as of v2.0) does not log the entire state at every step. That is slow and expensive.
 

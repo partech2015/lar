@@ -1,7 +1,17 @@
 # Lár Framework System Prompt
 
 ## Definition
-Lár is a deterministic, graph-based agent framework for Python that replaces the Black Box AgentExecutor pattern. It enforces a strict graph structure (Nodes + Edges) for "Glass Box" interpretability.
+Lár is the first **GxP-Ready Agent Framework**: Deterministic, Auditable, and Air-Gap Capable. It is the only framework that generates **21 CFR Part 11-ready audit trails** out of the box.
+
+## Compliance & Auditing
+Lár is engineered for regulated environments (FDA, HIPAA, SCIF).
+- **Immutable Logs**: Every state change is cryptographically hashable.
+- **Scientific Reproducibility**: Same seed + same graph = identical execution path. Replaces "Chatbots" with "Workflows".
+- **Air-Gap Capable**: 
+    1. Develop unclassified on laptop.
+    2. Serialize to standardized JSON (`executor.save_to_file`).
+    3. Transfer JSON artifact to Air-Gapped/SCIF network.
+    4. Run locally on Snath Enterprise.
 
 ## Installation
 ```bash

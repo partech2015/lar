@@ -18,6 +18,7 @@ from .node import (
 from .executor import GraphExecutor
 from .utils import compute_state_diff, apply_diff
 from .formatter import build_log_table, summarize_diff
+from .serializer import export_graph_to_json
 
 
 
@@ -42,7 +43,10 @@ __all__ = [
     
     # NEW: Formatter Functions
     "build_log_table",
-    "summarize_diff"
+    "summarize_diff",
+
+    # NEW: Serializer
+    "export_graph_to_json"
 ]
 
 # This is our "canary." It proves to the user

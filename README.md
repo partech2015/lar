@@ -17,13 +17,11 @@
   </a>
 </p>
 
-# Lár: The PyTorch for Agents.
+# Lár: The First GxP-Ready Agent Framework.
 
-**Lár** by **SnathAI™** is an open source "define-by-run" agentic framework for building auditable, multi-provider and reliable AI systems.
+**Lár** by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 
-**Lár** (Irish for "core" or "center") is engineered as a robust alternative to static, "black box" frameworks, which obscure logic, inhibit debugging, and fail unpredictably. Lár implements a **"glass box"** architecture, inspired by the dynamic graphs of PyTorch, where every step of an agent's reasoning process is explicit, inspectable, and logged by default.
-
-This framework provides a deterministic, stateful, and node-based system for orchestrating complex agentic behavior, including self-correction, dynamic branching, and tool-use loops.
+**Lár** (Irish for "core") is engineered for **Regulated Environments** (BioMed, Gov, FinTech). Unlike "chatbot" frameworks that offer "magic" black boxes, Lár implements a **"Glass Box"** architecture. It produces **21 CFR Part 11-ready audit trails** out of the box and essentially brings the **Scientific Method** to AI agents.
 
 -----
 **Full Documentation**
@@ -51,6 +49,7 @@ The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" En
 | Data Flow | Implicit & Messy. Agents pass data by "chatting." The ToolNode's output might be polluted by another agent's "thoughts." | Explicit & Hard-Coded. The data flow is defined by you: RAG Output -> Tweet Input. The "Tweeter" only sees the data it's supposed to. |
 | Resilience & Cost | Wasteful & Brittle. If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | Efficient & Resilient. If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your LLMNode's built-in retry handles transient errors silently. |
 | Core Philosophy | Sells "Magic." | Sells "Trust." |
+| **Compliance & security** | **Non-Compliant.** Cloud-dependent tracing. Non-deterministic execution makes FDA validation impossible. | **GxP-Ready.** 21 CFR Part 11 audit trails out of the box. **Air-Gap Capable** via JSON serialization for SCIF environments. |
 
 > **Visualizing the Difference:**
 > * **Others:** A tangled web of implicit dependencies ("Spaghetti Code").

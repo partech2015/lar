@@ -2,15 +2,25 @@
 
 The primary challenge in production-grade AI is a lack of traceability. When a multi-step agent fails, it's often impossible to determine why.
 
-## The **"Black Box" (Other Frameworks)**
+## The **"Black Box" (Chatbots)**
 
-Traditional agent frameworks rely on "magic" `AgentExecutor` objects that try to do everything at once. They are complex, monolithic, and hide their internal logic.
+Traditional agent frameworks build "Chatbots." A chatbot is probabilistic, messy, and hard to reproduce.
+- **Scientific Flaw**: If you run a chatbot twice with the same input, you might get different answers.
+- **Regulatory Nightmare**: You cannot audit a probability cloud. You cannot submit a chat log to the FDA.
 
-- When this "magic" fails, you get a 100-line stack trace from deep inside the framework's code.
+## **The "Glass Box" (Scientific Workflows)**
 
-- You have to guess what went wrong. Was it a bad prompt? A failed tool? A malformed JSON response?
+`Lár` is built for **Science**, not Chat. We believe that **reliability comes from deterministic reproducibility.**
 
-- Debugging becomes a frustrating, time-consuming nightmare. To get any visibility, you are forced to use external, often paid, tracing platforms.
+### 1. The GxP Standard
+Lár is **GxP-Ready** out of the box.
+- **Immutable Audit Trails**: Every state change is a cryptographic entry in a flight log.
+- **21 CFR Part 11**: We don't just "log" text; we log the *entire causal chain* of the agent's reasoning.
+
+### 2. Air-Gap Native
+Real research happens in SCIFs and secure labs (no internet).
+- **Other Frameworks**: Require cloud tracing (LangSmith) or constant API calls.
+- **Lár**: Designed to be serialized to a JSON artifact on a laptop, carried on a thumb drive, and run offline in a secure facility.
 
 ## **The "Glass Box" (The `Lár` Way)**
 
