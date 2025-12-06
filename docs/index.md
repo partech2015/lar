@@ -20,22 +20,16 @@ You are a developer building an agent for **Clinical Trials** or **Government In
 
 Traditional frameworks fail both tests. They are non-deterministic "chatbots" that require cloud connectivity for tracing.
 
-### The Lár Solution: The First GxP-Ready Framework
+### The Solution: The First GxP-Ready Flight Recorder
 
-We built the **Lár Engine** to bring the **Scientific Method** to AI Agents.
+We built the **Lár Engine** to bring the **Scientific Method** to AI Agents. It is not just about answers; it is about providing a full, immutable **Flight Log**.
 
 **Lár is:**
 1.  **Deterministic**: Same seed + Same Graph = Identical Execution.
 2.  **Auditable**: Generating a forensic flight log is the *default* behavior.
 3.  **Air-Gap Capable**: Build on a laptop -> Serialize to JSON -> Run offline.
 
-### The Lár Solution: Your Agent's Flight Recorder
-
-We built the **Lár Engine** as a direct antidote to the **"Black Box Tax."**
-
-**Lár's core output is not just an answer; it is a full, immutable Flight Log.**
-
-Lár's **"define-by-run" architecture** forces transparency: the `GraphExecutor` is designed as a simple generator that runs one node, **logs the exact state change**, and then pauses, producing a verifiable record for every step.
+Lár's **"define-by-run" architecture** forces transparency. The `GraphExecutor` runs one node, **logs the exact state change**, and then calculates the diff, producing a verifiable record for every single step.
 
 This means you can always:
 
