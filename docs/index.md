@@ -1,6 +1,8 @@
-# **Welcome to Lár: The Glass Box Agent Framework**
+# **Lár: The PyTorch for Agents**
+ 
+> **Need to run this in production with Auth, Air-Gap, and Human-in-the-Loop? Check out [Snath Cloud](https://snath.ai/cloud).**
 
-**Lár** (Irish for "core" or "center") by *SnathAI™*  is the open-source "PyTorch for Agents."
+**Lár** (Irish for "core" or "center") by *SnathAI™* is the open-source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 
 It is a "define-by-run" framework for building auditable, reliable, and production-ready AI agents.
 

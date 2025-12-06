@@ -207,3 +207,22 @@ This log is your proof of *exactly* what the agent did, step-by-step.
   }
 ]
 ```
+
+### 6. Move to Production (The "Glass Box" Guarantee)
+
+You've built and tested your agent locally. Now you need to deploy it to a secure environment (or just share it with a teammate).
+
+Because Lár is a **"Glass Box"**, you don't need to rewrite your code. You simply serialize the graph definition to a **portable JSON manifest**.
+
+```python
+# --- 6. Serialize for Production ---
+save_agent_to_file(planner_node, "my_agent.json")
+print("\n✅ Agent saved to 'my_agent.json'. Ready for Snath Cloud upload.")
+```
+
+**What now?**
+1.  **Version Control It**: Commit `my_agent.json` to Git. This is your "Source of Truth."
+2.  **Upload to [Snath Cloud](https://snath.ai/cloud)**: Drag and drop this JSON file to deploy an instant, air-gapped API endpoint with Auth, Rate Limiting, and nice UI.
+3.  **Run Offline**: Hand this file to your DevOps team to run in a pure Docker container.
+
+**That's it. You just built a GxP-ready agent.**
