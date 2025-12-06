@@ -4,6 +4,7 @@ import os
 import datetime
 import hmac
 import hashlib
+import uuid
 from .node import BaseNode
 from .state import GraphState
 from .utils import compute_state_diff
@@ -24,10 +25,12 @@ class GraphExecutor:
     run_metadata (like token counts) from nodes.
 
     NEW in v6.0: Now includes automatic logging to a file.
+     NEW in v7.0: Multi-Tenancy (user_id).
     """
-    def __init__(self, log_dir: str = "lar_logs", offline_mode: bool = False):
+    def __init__(self, log_dir: str = "lar_logs", offline_mode: bool = False, user_id: str = None):
         self.log_dir = log_dir
         self.offline_mode = offline_mode
+        self.user_id = user_id
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
 
@@ -37,6 +40,7 @@ class GraphExecutor:
         
         log_data = {
             "run_id": run_id,
+            "user_id": self.user_id,
             "timestamp": datetime.datetime.now().isoformat(),
             "steps": history,
             "summary": summary or {}
@@ -50,16 +54,19 @@ class GraphExecutor:
             print(f"\n⚠️ [GraphExecutor] Failed to save log: {e}")
 
 
-    def run_step_by_step(self, start_node: BaseNode, initial_state: dict):
+    def run_step_by_step(self, start_node: BaseNode, initial_state: dict, max_steps: int = 100):
         """
         Executes a graph step-by-step, yielding the history
         of each step as it completes.
+        
+        Args:
+            max_steps (int): Safety circuit breaker to prevent infinite loops (default 100).
         """
         state = GraphState(initial_state)
         current_node = start_node
 
-        # Generate a unique ID for this run
-        run_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Generate a unique ID for this run (UUIDv4)
+        run_id = str(uuid.uuid4())
         history = [] # We keep a local copy to save at the end
         
         # Initialize token counters
@@ -159,6 +166,24 @@ class GraphExecutor:
             current_node = next_node
             step_index += 1
             
+            # --- CIRCUIT BREAKER ---
+            if step_index >= max_steps:
+                print(f"  [GraphExecutor] 🛑 CIRCUIT BREAKER TRIPPED: Exceeded {max_steps} steps.")
+                
+                # Log the termination event
+                log_entry = {
+                    "step": step_index,
+                    "node": "CircuitBreaker",
+                    "state_before": {},
+                    "state_diff": {}, 
+                    "run_metadata": {},
+                    "outcome": "error",
+                    "error": f"Maximum steps exceeded ({max_steps}). Infinite loop detected."
+                }
+                history.append(log_entry)
+                yield log_entry
+                break
+
         # --- AUTO-SAVE LOG ON FINISH ---
         summary = {
             "total_steps": step_index,
@@ -167,3 +192,17 @@ class GraphExecutor:
             "total_tokens": total_tokens
         }
         self._save_log(history, run_id, summary)
+
+    def save_to_file(self, filename: str, start_node: BaseNode, name: str = "My Agent"):
+        """
+        Serializes the graph logic starting from 'start_node' to a JSON file.
+        This enables 'Write Once, Run Anywhere' deployment.
+        """
+        from .serializer import export_graph_to_json
+        
+        json_output = export_graph_to_json(start_node, name=name)
+        
+        with open(filename, "w") as f:
+            f.write(json_output)
+        
+        print(f"\n📦 [GraphExecutor] Agent serialized to: {filename}")
