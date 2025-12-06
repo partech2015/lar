@@ -67,6 +67,13 @@ The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" En
 
   * **Testable Units:** Every node is a standalone class. You can unit test your `ToolNode` (your "hands") and your `RouterNode` (your "logic") completely independently of an LLM call.
 
+## 🏥 GxP Validation (IQ/OQ)
+
+
+
+
+> *"Lár supports features needed for 21 CFR Part 11-aligned workflows."*
+
   
 
 -----
