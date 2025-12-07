@@ -26,81 +26,44 @@
 
 **Lár** (Irish for "core" or "center") by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 
-It is a **"define-by-run"** framework for building auditable, reliable, and production-ready AI agents.
+It is a **"define-by-run"** framework that acts as a **Flight Recorder** for your agent, creating a complete audit trail for every single step.
 
-Lár is engineered as a direct solution to the **"Black Box"** problem. While other frameworks hide their logic in complex, "magic" executors that are impossible to debug, Lár is a simple, **"Dumb" Engine**. It runs one node at a time, logs exactly what happened, and then moves on.
+## The "Black Box" Problem
 
-This **"Glass Box"** philosophy gives you a complete, step-by-step **"Flight Data Recorder"** for every agent run, allowing you to build systems you can actually trust.
+You are a developer launching a **mission-critical AI agent**. It works on your machine, but in production, it fails.
+You don't know **why**, **where**, or **how much** it cost. You just get a 100-line stack trace from a "magic" framework.
 
-## Why We Built Lár?
+## The "Glass Box" Solution
 
-### The Problem: The "Black Box Tax"
+**Lár removes the magic.**
 
-You are a developer launching a **mission-critical AI agent**. It works flawlessly on your machine. You push it to production, and it instantly fails.
+It is a simple engine that runs **one node at a time**, logging every single step to a forensic **Flight Recorder**.
 
--   **Why did it fail?** You don't know.
--   **Which step failed?** You can't tell.
--   **Which node failed?** You can't tell.
--   **What data was it processing?** You have to guess.
--   **What was the cost?** You have to guess.
+This means you get:
+1.  **Instant Debugging**: See the exact node and error that caused the crash.
+2.  **Free Auditing**: A complete history of every decision and token cost, built-in by default.
+3.  **Total Control**: Build deterministic "assembly lines," not chaotic chat rooms.
 
-Instead of a solution, you get a **100-line stack trace** from deep inside a monolithic framework's core, pointing to an error you cannot debug. This is the **"Black Box Tax"**—the **price you pay** for using systems that **hide** their logic.
-
-### The Solution: The "Glass Box"
-
-For too long, developers have been told that **auditing agents is a premium feature**. If you want to know *why* your agent spent $50, or *why* it got stuck in a loop, you had to integrate an external, complex, and **paid tracing tool** like LangSmith.
-
-`Lár` is built on a simple premise: **the "magic" is the enemy of reliability.**
-
-We believed that **auditing the reasoning flow of an AI agent should be easy, built-in, and free.**
-
-Our `GraphExecutor` is a simple `generator` that `yields` the execution log after every single step. The audit trail isn't a paid add-on; it's the **core output of the engine.**
-
-### The Lár Solution: Your Agent's Flight Recorder
-
-We built the **Lár Engine** as a direct antidote to the **"Black Box Tax."**
-
-**Lár's core output is not just an answer; it is a full, immutable Flight Log.**
-
-Lár's **"define-by-run" architecture** forces transparency: the `GraphExecutor` runs one node, **logs the exact state change**, and then pauses, producing a verifiable record for every step.
-
-This means you can always:
-
-1.  **Instantly Find Failures**: Your log shows you the exact node, the exact error (`429 Rate Limit`), and the exact data that caused it.
-2.  **Audit Costs**: Our `LLMNode` logs token usage per step. You can see exactly which node is costing you money.
-3.  **Build Deterministic Systems**: You are not in a "chaotic chat room." You are building a "deterministic assembly line." You have 100% control over the flow.
-
-**We are not selling magic; we are selling trust.**
-
-*Stop guessing. Start building agents you can trust!*
+*Stop guessing. Start building agents you can trust.*
 
 > **Need Certified Validation?**
 > For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
 
-> **Visualizing the Difference:**
-> * **Others:** A tangled web of implicit dependencies ("Spaghetti Code").
-> * **Lár:**  A linear, distinct assembly line of logic.
+## Why Lár is Better: The "Glass Box" Advantage
 
-## Key Features
-
-  * **Define-by-Run Architecture:** The execution graph is created dynamically, step-by-step. This naturally enables complex, stateful logic like loops and self-correction.
-
-  * **Total Auditability:** The `GraphExecutor` produces a complete, step-by-step history of every node executed, the state *before* the run, and the state *after*.
-
-  * **Deterministic Logic:** Replace "prompt-chaining" with explicit, testable Python code. Use the `RouterNode` for clear, auditable "if/else" branching.
-
-  * **Testable Units:** Every node is a standalone class. You can unit test your `ToolNode` (your "hands") and your `RouterNode` (your "logic") completely independently of an LLM call.
-
-## 🏥 GxP Validation (IQ/OQ)
-
-
-
-
-> *"Lár supports features needed for 21 CFR Part 11-aligned workflows."*
+| Feature | The "Black Box" (LangChain / CrewAI) | The "Glass Box" (Lár) |
+| :--- | :--- | :--- |
+| **Debugging** | **A Nightmare.** When an agent fails, you get a 100-line stack trace from inside the framework's "magic" AgentExecutor. You have to guess what went wrong. | **Instant & Precise.** Your history log is the debugger. You see the exact node that failed (e.g., `ToolNode`), You see the exact error (`APIConnectionError`), and the exact state that caused it. |
+| **Auditability** | **External & Paid.** "What happened?" is a mystery. You need an external, paid tool like LangSmith to add a "flight recorder" to your "black box." | **Built-in & Free.** The **"Flight Log"** (history log) is the core, default, open-source output of the `GraphExecutor`. You built this from day one. |
+| **Multi-Agent Collaboration** | **Chaotic "Chat Room."** Agents are put in a room to "talk" to each other. It's "magic," but it's uncontrollable. You can't be sure who will talk next or if they'll get stuck in a loop. | **Deterministic "Assembly Line."** You are the architect. You define the exact path of collaboration using `RouterNode` and `ToolNode`. |
+| **Deterministic Control** | **None.** You can't guarantee execution order. The "Tweeter" agent might run before the "Researcher" agent is finished. | **Full Control.** The "Tweeter" (`LLMNode`) cannot run until the "RAG Agent" (`ToolNode`) has successfully finished and saved its result to the state. |
+| **Data Flow** | **Implicit & Messy.** Agents pass data by "chatting." The `ToolNode`'s output might be polluted by another agent's "thoughts." | **Explicit & Hard-Coded.** The data flow is defined by you: `RAG Output -> Tweet Input`. The "Tweeter" only sees the data it's supposed to. |
+| **Resilience & Cost** | **Wasteful & Brittle.** If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | **Efficient & Resilient.** If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your `LLMNode`'s built-in retry handles transient errors silently. |
+| **Core Philosophy** | Sells "Magic." | Sells "Trust." |
 
   
 
------
+---
 
 
 ### A Simple Self-Correcting Loop
@@ -140,7 +103,7 @@ graph TD
     class D decision;
 ```
 
------
+---
 
 
 ## The `Lár` Architecture: Core Primitives
@@ -160,7 +123,7 @@ You can build any agent with four core components:
       * **`RouterNode`**: The "Choice." Executes a simple Python function to inspect the state and returns a string key, which deterministically routes execution to the next node. This is your "if/else" statement.
       * **`ClearErrorNode`**: A utility node that cleans up state (e.g., removes `last_error`) to prevent infinite loops.
 
------
+---
 
 ## Example "Glass Box" Audit Trail
 
@@ -212,7 +175,7 @@ ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
     poetry install
     ```
 
------
+---
 
 ## Example: Multi-Agent Orchestration (A Customer Support Agent)
 
@@ -430,7 +393,7 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 [![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
 ```
 
-## 🚀 Go to Production
+## Go to Production
 
 You've built your graph. Now you need observability, rate limiting, and persistent logs.
 
@@ -446,7 +409,7 @@ Snath Cloud instantly visualizes your JSON definition, providing a "Mission Cont
 Lár is an open-source agent framework built to be clear, debuggable, and developer-friendly.
 If this project helps you, consider supporting its development through GitHub Sponsors.
 
-💜 Become a sponsor → [Sponsor on GitHub](https://github.com/sponsors/axdithyaxo)
+Become a sponsor → [Sponsor on GitHub](https://github.com/sponsors/axdithyaxo)
 
 Your support helps me continue improving the framework and building new tools for the community.
 
