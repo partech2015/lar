@@ -2,10 +2,9 @@
 
 Lár is "Write Once, Run Anywhere." The same agent graph you build on your laptop can be deployed to the **Snath Cloud** or an **Air-Gapped Enterprise Server**.
 
-> [!TIP]
-> **Production Platforms**
-> *   **[Snath Enterprise (Bunker)](https://snath.ai/enterprise)**: For GxP, HIPAA, and Air-Gapped workloads.
-> *   **[Snath Cloud (The Hive)](https://snath.ai/cloud)**: For high-scale, managed agent orchestration.
+!!! tip "Production Platforms"
+    *   **[Snath Enterprise (Bunker)](https://snath.ai/enterprise)**: For GxP, HIPAA, and Air-Gapped workloads.
+    *   **[Snath Cloud (The Hive)](https://snath.ai/cloud)**: For high-scale, managed agent orchestration.
 
 ---
 

@@ -1,9 +1,8 @@
 # **Lár: The PyTorch for Agents**
  
-> [!TIP]
-> **Production Ready?**
-> *   **[Snath Enterprise](https://snath.ai/enterprise)**: Self-hosted, air-gapped, GxP-compliant platform (The Bunker).
-> *   **[Snath Cloud](https://snath.ai/cloud)**: Managed control plane for 1M+ agents (The Hive).
+!!! tip "Production Ready?"
+    *   **[Snath Enterprise](https://snath.ai/enterprise)**: Self-hosted, air-gapped, GxP-compliant platform (The Bunker).
+    *   **[Snath Cloud](https://snath.ai/cloud)**: Managed control plane for 1M+ agents (The Hive).
 
 **Lár** (Irish for "core" or "center") by *SnathAI™* is the open-source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 

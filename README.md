@@ -34,18 +34,29 @@ This **"Glass Box"** philosophy gives you a complete, step-by-step **"Flight Dat
 
 ## Why We Built Lár?
 
-### The Problem: Compliance is Impossible with Black Boxes
+### The Solution: The First GxP-Aligned Flight Recorder
 
-You are a developer building an agent for **Clinical Trials** or **Government Intelligence**.
-*   The FDA requires **21 CFR Part 11** audit trails.
-*   The SCIF has **no internet**.
+We built the **Lár Engine** to bring the **Scientific Method** to AI Agents. It is not just about answers; it is about providing a full, immutable **Flight Log**.
 
-Traditional frameworks fail both tests. They are non-deterministic "chatbots" that require cloud connectivity for tracing.
+Lár is:
+1.  **Deterministic**: Same seed + Same Graph = Identical Execution.
+2.  **Auditable**: Generating a forensic flight log is the default behavior.
+3.  **Offline-First**: Zero dependencies. Runs entirely on your machine.
 
-### The Solution: The "Glass Box" Advantage
+Lár's **"define-by-run"** architecture forces transparency. The `GraphExecutor` runs one node, logs the exact state change, and then calculates the diff, producing a verifiable record for every single step.
 
-The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" Engine) |
-|------|-------------------------|-------------------|
+### This means you can always:
+
+*   **Pinpoint Failure**: See the exact node (`ToolNode`) that failed, the exact error (e.g., `APIConnectionError`), and the full state of the agent at the moment of collapse.
+*   **Audit Costs**: Track token usage per node, ensuring you can justify and optimize every single API call.
+*   **Build Trust**: Move your agent from a chaotic chat loop to a predictable, testable assembly line that your team and your company can actually trust in production.
+
+We are not selling magic; we are selling **trust**.
+
+*Stop guessing. Start building agents you can trust!*
+
+> **Need Certified Validation?**
+> For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
 | Debugging | A Nightmare. When an agent fails, you get a 100-line stack trace from inside the framework's "magic" AgentExecutor. You have to guess what went wrong.| Instant & Precise. Your history log is the debugger. You see the exact node that failed (e.g., ToolNode), You see the exact error (APIConnectionError), and the exact state that caused it. |
 | Auditability | External & Paid. "What happened?" is a mystery. You need an external, paid tool like LangSmith to add a "flight recorder" to your "black box." | Built-in & Free. The **"Flight Log"** (history log) is the core, default, open-source output of the GraphExecutor. You built this from day one. |
 | Multi-Agent Collaboration | Chaotic "Chat Room." Agents are put in a room to "talk" to each other. It's "magic," but it's uncontrollable. You can't be sure who will talk next or if they'll get stuck in a loop. | Deterministic "Assembly Line." You are the architect. You define the exact path of collaboration using RouterNode and ToolNode. |
@@ -53,7 +64,6 @@ The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" En
 | Data Flow | Implicit & Messy. Agents pass data by "chatting." The ToolNode's output might be polluted by another agent's "thoughts." | Explicit & Hard-Coded. The data flow is defined by you: RAG Output -> Tweet Input. The "Tweeter" only sees the data it's supposed to. |
 | Resilience & Cost | Wasteful & Brittle. If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | Efficient & Resilient. If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your LLMNode's built-in retry handles transient errors silently. |
 | Core Philosophy | Sells "Magic." | Sells "Trust." |
-| **Compliance & security** | **Non-Compliant.** Cloud-dependent tracing. Non-deterministic execution makes FDA validation impossible. | **GxP-Ready.** Lár supports features needed for 21 CFR Part 11-aligned workflows. **Air-Gap Capable** via JSON serialization for SCIF environments. |
 
 > **Visualizing the Difference:**
 > * **Others:** A tangled web of implicit dependencies ("Spaghetti Code").
