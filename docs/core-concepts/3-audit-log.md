@@ -1,8 +1,8 @@
-# The "GxP Compliant" Audit Log
+# The Event-Sourced Audit Log
 
-**The `GraphExecutor`'s "killer feature" is the `21 CFR Part 11-Ready` history log it generates. This is not just a `print` statement; it's a structured *Event Sourced* forensic trail.**
+**The `GraphExecutor`'s "killer feature" is the structured history log it generates. This is not just a `print` statement; it's a forensic trail.**
 
- For complex agent workflows, you need detailed provenance.provenance.
+For complex agent workflows, you need detailed provenance.
 
 **Lár delivers:**
 1.  **Immutability**: Every step is a discrete event.
