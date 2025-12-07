@@ -225,4 +225,4 @@ print("\n✅ Agent saved to 'my_agent.json'. Ready for Snath Cloud upload.")
 2.  **Upload to [Snath Cloud](https://snath.ai/cloud)**: Drag and drop this JSON file to deploy an instant, air-gapped API endpoint with Auth, Rate Limiting, and nice UI.
 3.  **Run Offline**: Hand this file to your DevOps team to run in a pure Docker container.
 
-**That's it. You just built a GxP-ready agent.**
+**That's it. You just built a GxP-Aligned agent.**

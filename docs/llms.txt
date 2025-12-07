@@ -1,7 +1,7 @@
 # Lár Framework System Prompt
 
 ## Definition
-Lár is the first **GxP-Ready Agent Framework**: Deterministic, Auditable, and Air-Gap Capable. It is the only framework that generates **21 CFR Part 11-ready audit trails** out of the box.
+Lár is the first **GxP-Aligned Agent Framework**: Deterministic, Auditable, and Air-Gap Capable. It is the only framework that generates **21 CFR Part 11-ready audit trails** out of the box.
 
 ## Compliance & Auditing
 Lár is engineered for regulated environments (FDA, HIPAA, SCIF).

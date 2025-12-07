@@ -34,36 +34,48 @@ This **"Glass Box"** philosophy gives you a complete, step-by-step **"Flight Dat
 
 ## Why We Built Lár?
 
-### The Solution: The First GxP-Aligned Flight Recorder
+### The Problem: The "Black Box Tax"
 
-We built the **Lár Engine** to bring the **Scientific Method** to AI Agents. It is not just about answers; it is about providing a full, immutable **Flight Log**.
+You are a developer launching a **mission-critical AI agent**. It works flawlessly on your machine. You push it to production, and it instantly fails.
 
-Lár is:
-1.  **Deterministic**: Same seed + Same Graph = Identical Execution.
-2.  **Auditable**: Generating a forensic flight log is the default behavior.
-3.  **Offline-First**: Zero dependencies. Runs entirely on your machine.
+-   **Why did it fail?** You don't know.
+-   **Which step failed?** You can't tell.
+-   **Which node failed?** You can't tell.
+-   **What data was it processing?** You have to guess.
+-   **What was the cost?** You have to guess.
 
-Lár's **"define-by-run"** architecture forces transparency. The `GraphExecutor` runs one node, logs the exact state change, and then calculates the diff, producing a verifiable record for every single step.
+Instead of a solution, you get a **100-line stack trace** from deep inside a monolithic framework's core, pointing to an error you cannot debug. This is the **"Black Box Tax"**—the **price you pay** for using systems that **hide** their logic.
 
-### This means you can always:
+### The Solution: The "Glass Box"
 
-*   **Pinpoint Failure**: See the exact node (`ToolNode`) that failed, the exact error (e.g., `APIConnectionError`), and the full state of the agent at the moment of collapse.
-*   **Audit Costs**: Track token usage per node, ensuring you can justify and optimize every single API call.
-*   **Build Trust**: Move your agent from a chaotic chat loop to a predictable, testable assembly line that your team and your company can actually trust in production.
+For too long, developers have been told that **auditing agents is a premium feature**. If you want to know *why* your agent spent $50, or *why* it got stuck in a loop, you had to integrate an external, complex, and **paid tracing tool** like LangSmith.
 
-We are not selling magic; we are selling **trust**.
+`Lár` is built on a simple premise: **the "magic" is the enemy of reliability.**
+
+We believed that **auditing the reasoning flow of an AI agent should be easy, built-in, and free.**
+
+Our `GraphExecutor` is a simple `generator` that `yields` the execution log after every single step. The audit trail isn't a paid add-on; it's the **core output of the engine.**
+
+### The Lár Solution: Your Agent's Flight Recorder
+
+We built the **Lár Engine** as a direct antidote to the **"Black Box Tax."**
+
+**Lár's core output is not just an answer; it is a full, immutable Flight Log.**
+
+Lár's **"define-by-run" architecture** forces transparency: the `GraphExecutor` runs one node, **logs the exact state change**, and then pauses, producing a verifiable record for every step.
+
+This means you can always:
+
+1.  **Instantly Find Failures**: Your log shows you the exact node, the exact error (`429 Rate Limit`), and the exact data that caused it.
+2.  **Audit Costs**: Our `LLMNode` logs token usage per step. You can see exactly which node is costing you money.
+3.  **Build Deterministic Systems**: You are not in a "chaotic chat room." You are building a "deterministic assembly line." You have 100% control over the flow.
+
+**We are not selling magic; we are selling trust.**
 
 *Stop guessing. Start building agents you can trust!*
 
 > **Need Certified Validation?**
 > For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
-| Debugging | A Nightmare. When an agent fails, you get a 100-line stack trace from inside the framework's "magic" AgentExecutor. You have to guess what went wrong.| Instant & Precise. Your history log is the debugger. You see the exact node that failed (e.g., ToolNode), You see the exact error (APIConnectionError), and the exact state that caused it. |
-| Auditability | External & Paid. "What happened?" is a mystery. You need an external, paid tool like LangSmith to add a "flight recorder" to your "black box." | Built-in & Free. The **"Flight Log"** (history log) is the core, default, open-source output of the GraphExecutor. You built this from day one. |
-| Multi-Agent Collaboration | Chaotic "Chat Room." Agents are put in a room to "talk" to each other. It's "magic," but it's uncontrollable. You can't be sure who will talk next or if they'll get stuck in a loop. | Deterministic "Assembly Line." You are the architect. You define the exact path of collaboration using RouterNode and ToolNode. |
-| Deterministic Control | None. You can't guarantee execution order. The "Tweeter" agent might run before the "Researcher" agent is finished. | Full Control. The "Tweeter" (LLMNode) cannot run until the "RAG Agent" (ToolNode) has successfully finished and saved its result to the state. |
-| Data Flow | Implicit & Messy. Agents pass data by "chatting." The ToolNode's output might be polluted by another agent's "thoughts." | Explicit & Hard-Coded. The data flow is defined by you: RAG Output -> Tweet Input. The "Tweeter" only sees the data it's supposed to. |
-| Resilience & Cost | Wasteful & Brittle. If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | Efficient & Resilient. If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your LLMNode's built-in retry handles transient errors silently. |
-| Core Philosophy | Sells "Magic." | Sells "Trust." |
 
 > **Visualizing the Difference:**
 > * **Others:** A tangled web of implicit dependencies ("Spaghetti Code").

@@ -9,7 +9,7 @@ Lár is "Write Once, Run Anywhere." The same agent graph you build on your lapto
 ---
 
 ## Path 1: Snath Enterprise ("The Bunker")
-**Self-Hosted | Air-Gapped | GxP Ready**
+**Self-Hosted | Air-Gapped | GxP Aligned**
 
 Strictly for regulated industries (Pharma, Finance, Defense).
 

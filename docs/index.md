@@ -14,35 +14,47 @@ This "glass box" philosophy gives you a complete, step-by-step "flight data reco
 
 ## Why We Built Lár?
 
-### The Problem: Compliance is Impossible with Black Boxes
+### The Problem: The "Black Box Tax"
 
-You are a developer building an agent for **Clinical Trials** or **Government Intelligence**.
-- **The FDA requires 21 CFR Part 11 audit trails.**
-- **The SCIF has no internet.**
+You are a developer launching a **mission-critical AI agent**. It works flawlessly on your machine. You push it to production, and it instantly fails.
 
-Traditional frameworks fail both tests. They are non-deterministic "chatbots" that require cloud connectivity for tracing.
+-   **Why did it fail?** You don't know.
+-   **Which step failed?** You can't tell.
+-   **Which node failed?** You can't tell.
+-   **What data was it processing?** You have to guess.
+-   **What was the cost?** You have to guess.
 
-### The Solution: The First GxP-Ready Flight Recorder
+Instead of a solution, you get a **100-line stack trace** from deep inside a monolithic framework's core, pointing to an error you cannot debug. This is the **"Black Box Tax"**—the **price you pay** for using systems that **hide** their logic.
 
-We built the **Lár Engine** to bring the **Scientific Method** to AI Agents. It is not just about answers; it is about providing a full, immutable **Flight Log**.
+### The Solution: The "Glass Box"
 
-**Lár is:**
-1.  **Deterministic**: Same seed + Same Graph = Identical Execution.
-2.  **Auditable**: Generating a forensic flight log is the *default* behavior.
-3.  **Air-Gap Capable**: Build on a laptop -> Serialize to JSON -> Run offline.
+For too long, developers have been told that **auditing agents is a premium feature**. If you want to know *why* your agent spent $50, or *why* it got stuck in a loop, you had to integrate an external, complex, and **paid tracing tool** like LangSmith.
 
-Lár's **"define-by-run" architecture** forces transparency. The `GraphExecutor` runs one node, **logs the exact state change**, and then calculates the diff, producing a verifiable record for every single step.
+`Lár` is built on a simple premise: **the "magic" is the enemy of reliability.**
+
+We believed that **auditing the reasoning flow of an AI agent should be easy, built-in, and free.**
+
+Our `GraphExecutor` is a simple `generator` that `yields` the execution log after every single step. The audit trail isn't a paid add-on; it's the **core output of the engine.**
+
+### The Lár Solution: Your Agent's Flight Recorder
+
+We built the **Lár Engine** as a direct antidote to the **"Black Box Tax."**
+
+**Lár's core output is not just an answer; it is a full, immutable Flight Log.**
+
+Lár's **"define-by-run" architecture** forces transparency: the `GraphExecutor` is designed as a simple generator that runs one node, **logs the exact state change**, and then pauses, producing a verifiable record for every step.
 
 This means you can always:
 
-- **Pinpoint Failure**: See the **exact node** (`ToolNode`) that failed, the **exact error** (e.g., `APIConnectionError`), and the full state of the agent at the moment of collapse.
-
-- **Audit Costs**: Track token usage per node, ensuring you can justify and optimize every single API call.
-
-- **Build Trust**: Move your agent from a chaotic chat loop to a predictable, testable assembly line that your team and your company can actually trust in production.
+1.  **Instantly Find Failures**: Your log shows you the exact node, the exact error (`429 Rate Limit`), and the exact data that caused it.
+2.  **Audit Costs**: Our `LLMNode` logs token usage per step. You can see exactly which node is costing you money.
+3.  **Build Deterministic Systems**: You are not in a "chaotic chat room." You are building a "deterministic assembly line." You have 100% control over the flow.
 
 **We are not selling magic; we are selling trust.**
 
-**Stop guessing. Start building agents you can trust!**
+*Stop guessing. Start building agents you can trust!*
+
+> **Need Certified Validation?**
+> For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
 
 Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)

@@ -13,7 +13,7 @@ Traditional agent frameworks build "Chatbots." A chatbot is probabilistic, messy
 `Lár` is built for **Science**, not Chat. We believe that **reliability comes from deterministic reproducibility.**
 
 ### 1. The GxP Standard
-Lár is **GxP-Ready** out of the box.
+Lár is **GxP-Aligned** out of the box.
 - **Immutable Audit Trails**: Every state change is a cryptographic entry in a flight log.
 - **21 CFR Part 11**: We don't just "log" text; we log the *entire causal chain* of the agent's reasoning.
 
