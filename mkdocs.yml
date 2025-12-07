@@ -46,6 +46,7 @@ nav:
     - 'Air-Gap Security (GxP)': guides/air-gap-security.md
     - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
     - 'Self-Correcting Loops': guides/self-correction-loop.md
+  - 'Commercial': production.md
   - 'API Reference':
     - 'LLMNode': api-reference/llmnode.md
     - 'ToolNode': api-reference/toolnode.md

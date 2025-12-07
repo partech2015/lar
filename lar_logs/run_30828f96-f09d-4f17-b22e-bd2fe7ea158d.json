@@ -1,0 +1,49 @@
+{
+  "run_id": "30828f96-f09d-4f17-b22e-bd2fe7ea158d",
+  "user_id": null,
+  "timestamp": "2025-12-07T01:00:31.242974",
+  "steps": [
+    {
+      "step": 0,
+      "node": "RouterNode",
+      "state_before": {
+        "number": 20
+      },
+      "state_diff": {
+        "added": {
+          "_router_decision": "greater"
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "success"
+    },
+    {
+      "step": 1,
+      "node": "AddValueNode",
+      "state_before": {
+        "number": 20,
+        "_router_decision": "greater",
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "result": "was_greater"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success"
+    }
+  ],
+  "summary": {
+    "total_steps": 2,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "run_id": "3eb23278-917d-4dda-8e37-d52bf3a31049",
+  "user_id": null,
+  "timestamp": "2025-12-07T01:00:31.240493",
+  "steps": [
+    {
+      "step": 0,
+      "node": "AddValueNode",
+      "state_before": {
+        "user": "Solo Developer"
+      },
+      "state_diff": {
+        "added": {
+          "message": "Hello L\u00e1r!"
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "success"
+    },
+    {
+      "step": 1,
+      "node": "AddValueNode",
+      "state_before": {
+        "user": "Solo Developer",
+        "message": "Hello L\u00e1r!",
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "test_status": "COMPLETED"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success"
+    }
+  ],
+  "summary": {
+    "total_steps": 2,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

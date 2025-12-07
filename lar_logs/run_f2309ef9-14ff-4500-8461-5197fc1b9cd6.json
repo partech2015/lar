@@ -1,0 +1,54 @@
+{
+  "run_id": "f2309ef9-14ff-4500-8461-5197fc1b9cd6",
+  "user_id": null,
+  "timestamp": "2025-12-07T01:00:31.241944",
+  "steps": [
+    {
+      "step": 0,
+      "node": "LLMNode",
+      "state_before": {
+        "topic": "AI agents"
+      },
+      "state_diff": {
+        "added": {
+          "llm_response": "Mocked response for testing purposes."
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {
+        "prompt_tokens": 10,
+        "output_tokens": 20,
+        "total_tokens": 30,
+        "model": "gemini/gemini-2.5-pro"
+      },
+      "outcome": "success"
+    },
+    {
+      "step": 1,
+      "node": "AddValueNode",
+      "state_before": {
+        "topic": "AI agents",
+        "llm_response": "Mocked response for testing purposes.",
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "completion_marker": true
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success"
+    }
+  ],
+  "summary": {
+    "total_steps": 2,
+    "total_prompt_tokens": 10,
+    "total_completion_tokens": 20,
+    "total_tokens": 30
+  }
+}

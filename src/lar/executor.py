@@ -137,8 +137,8 @@ class GraphExecutor:
             state_diff = compute_state_diff(state_before, state_after)
             log_entry["state_diff"] = state_diff
 
- Core
-            # See Snath Enterprise for GxP features.
+            # 7. Step Output Logging
+            # Log the step metadata
             pass
 
             # Add to history and yield
