@@ -10,7 +10,7 @@ firestore-key.json
 
 Bytecode and cache
 
-pycache/
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -44,4 +44,3 @@ PyCharm / IntelliJ
 .pytest_cache/
 coverage.xml
 htmlcov/
-
