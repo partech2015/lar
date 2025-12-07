@@ -24,28 +24,25 @@
 > *   **[Snath Enterprise](https://snath.ai/enterprise)**: Self-hosted, air-gapped, GxP-compliant platform (The Bunker).
 > *   **[Snath Cloud](https://snath.ai/cloud)**: Managed control plane for 1M+ agents (The Hive).
 
-**Lár** by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
+**Lár** (Irish for "core" or "center") by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 
-**Lár** by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
+It is a **"define-by-run"** framework for building auditable, reliable, and production-ready AI agents.
 
-**Lár** (Irish for "core") is engineered for **Regulated Environments** (BioMed, Gov, FinTech). Unlike "chatbot" frameworks that offer "magic" black boxes, Lár implements a **"Glass Box"** architecture. It produces **21 CFR Part 11-ready audit trails** out of the box and essentially brings the **Scientific Method** to AI agents.
+Lár is engineered as a direct solution to the **"Black Box"** problem. While other frameworks hide their logic in complex, "magic" executors that are impossible to debug, Lár is a simple, **"Dumb" Engine**. It runs one node at a time, logs exactly what happened, and then moves on.
 
------
-**Full Documentation**
-[https://docs.snath.ai](https://docs.snath.ai)
+This **"Glass Box"** philosophy gives you a complete, step-by-step **"Flight Data Recorder"** for every agent run, allowing you to build systems you can actually trust.
 
-## Core Philosophy: "Glass Box" vs. "Black Box"
+## Why We Built Lár?
 
-The primary challenge in production-grade AI is a lack of traceability. When a multi-step agent fails, it's often impossible to determine *why*.
+### The Problem: Compliance is Impossible with Black Boxes
 
-  * **The "Black Box" (Other Frameworks):** Relies on a "magic" `AgentExecutor` that tries to do everything at once. When this magic fails, it's a complex black box that is nearly impossible to debug.
+You are a developer building an agent for **Clinical Trials** or **Government Intelligence**.
+*   The FDA requires **21 CFR Part 11** audit trails.
+*   The SCIF has **no internet**.
 
-  * **The "Glass Box" (Lár):**  Lár is, by design, a simple, explicit loop. The `GraphExecutor` runs one node at a time, logs the exact state change, and then pauses. It supports all major LLMs (OpenAI, Anthropic, Gemini, etc.) via a unified adapter.
+Traditional frameworks fail both tests. They are non-deterministic "chatbots" that require cloud connectivity for tracing.
 
-This "define-by-run" approach transforms debugging from an art into a science. You can visually trace the execution, inspect the diff of the state at every transition, and pinpoint the exact node where logic failed. Lár's **"Flight Log"** (`history`) isn't an add-on; it's the core output of the engine.
-
-
-## Why `Lár` is Better: The "Glass Box" Advantage
+### The Solution: The "Glass Box" Advantage
 
 The Problem | "Black Box" Frameworks (e.g., LangChain)| Lár (The "Glass Box" Engine) |
 |------|-------------------------|-------------------|
