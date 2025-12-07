@@ -2,8 +2,6 @@ import copy
 import json
 import os
 import datetime
-import hmac
-import hashlib
 import uuid
 from .node import BaseNode
 from .state import GraphState
@@ -25,7 +23,7 @@ class GraphExecutor:
     run_metadata (like token counts) from nodes.
 
     NEW in v6.0: Now includes automatic logging to a file.
-     NEW in v7.0: Multi-Tenancy (user_id).
+    NEW in v7.0: Multi-Tenancy (user_id).
     """
     def __init__(self, log_dir: str = "lar_logs", offline_mode: bool = False, user_id: str = None):
         self.log_dir = log_dir
@@ -139,20 +137,9 @@ class GraphExecutor:
             state_diff = compute_state_diff(state_before, state_after)
             log_entry["state_diff"] = state_diff
 
-
-            # We sign the JSON representation of the log entry to ensure integrity.
-            try:
-                # Use a default key for dev, but expect env var for production
-
-                
-                # Canonicalize JSON for consistent hashing
-                payload = json.dumps(log_entry, sort_keys=True).encode('utf-8')
-                
-                 # None).hexdigest()
-                log_entry["signature"] = signature
-            except Exception as e:
-                # Fallback if signing fails (should not happen, but prevents crash)
-                log_entry["signature"] = f"error_signing: {str(e)}"
+ Core
+            # See Snath Enterprise for GxP features.
+            pass
 
             # Add to history and yield
             history.append(log_entry)
