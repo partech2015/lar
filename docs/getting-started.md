@@ -1,3 +1,4 @@
+[← Return to snath.ai](https://snath.ai)
 # Getting Started
 
 ## Build a GxP-Ready "Master Planner" in 3 Minutes

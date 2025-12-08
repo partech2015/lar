@@ -17,10 +17,11 @@ Lár is **GxP-Aligned** out of the box.
 - **Immutable Audit Trails**: Every state change is a cryptographic entry in a flight log.
 - **21 CFR Part 11**: We don't just "log" text; we log the *entire causal chain* of the agent's reasoning.
 
-### 2. Air-Gap Native
-Real research happens in SCIFs and secure labs (no internet).
+### 2. Audit-Ready Hooks
+Real research happens in SCIFs and secure labs.
 - **Other Frameworks**: Require cloud tracing (LangSmith) or constant API calls.
-- **Lár**: Designed to be serialized to a JSON artifact on a laptop, carried on a thumb drive, and run offline in a secure facility.
+- **Lár**: The engine is fully decoupled from the internet. It provides **hooks** for air-gapped environments.
+- **Enterprise**: For true "Air-Gap" enforcement (kernel-level firewalls), see **[Snath Enterprise](https://snath.ai/enterprise)**.
 
 ## **The "Glass Box" (The `Lár` Way)**
 

@@ -3,6 +3,9 @@
 Lár is designed for environments where data exfiltration is not just a risk—it's illegal.
 For high-security deployments (SCIFs, Clinical Trials, Financial Data), Lár provides a software-enforced **Air-Gap Mode**.
 
+!!! warning "Enterprise Feature"
+    The Open Source engine provides software-level hooks. For **Kernel-Level Enforcement** (blocking network drivers, syscall auditing) and **Offline Key Generation**, you need **[Snath Enterprise](https://snath.ai/enterprise)**.
+
 ## Enabling Offline Mode
 
 To prevent accidental calls to cloud providers (OpenAI, Anthropic, Google Vertx), initialize the executor with `offline_mode=True`:
