@@ -9,20 +9,29 @@ if os.getenv("GOOGLE_API_KEY"):
     os.environ["GEMINI_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
 # ==============================================================================
-# 9. THE CORPORATE SWARM (Dynamic Graph Pruning)
+# 9. THE CORPORATE SWARM (Hybrid Cognitive Architecture)
 # ==============================================================================
-# "THE TRUE POTENTIAL OF LÁR": HYBRID COGNITIVE ARCHITECTURE
 #
-# Most frameworks are "All LLM" (slow, expensive, hallucination-prone).
-# Lár allows you to mix 1% Intelligence (LLM) with 99% Structure (Code).
+# 🚀 WHY THIS IS A GAME CHANGER
+# -----------------------------
 #
-# In this example:
-# 1. The CEO (LLMNode) thinks ONCE. It sets a global "Strategic Directive".
-# 2. The Swarm (60+ Nodes) matches that strategy deterministically.
-#    - If Strategy is "BLITZSCALING": Every manager hires/works (Full Graph Execution).
-#    - If Strategy is "AUSTERITY": Managers aggressively prune branches (Dynamic Graph Pruning).
+# | Feature | Standard "Agent Builder" (LangChain/CrewAI) | Lár "Hybrid" Architecture |
+# | :--- | :--- | :--- |
+# | **composition** | 100% LLM Nodes. Every step is a "prompt". | **1% LLM (CEO) + 99% Code (Swarm).** |
+# | **Cost** | **$$$** (60 LLM calls for 60 steps). | **$** (1 LLM call controls 60 steps). |
+# | **Speed** | **Slow** (60s+ latency). | **Instant** (0.08s for 64 steps). |
+# | **Reliability** | **Low**. "Telephone Game" effect. | **High**. Deterministic execution. |
 #
-# Result: One expensive call controls a massive, cheap, reliable fleet.
+# The Problem:
+# Most frameworks treat every logic step as an LLM call. This doesn't scale.
+# You cannot build a 1,000-node process if every node costs $0.01 and takes 2s.
+#
+# The Lár Solution:
+# 1. **The Brain (CEO)**: Use the LLM *only* for high-level strategy/intent.
+# 2. **The Body (Swarm)**: Use deterministic `RouterNodes` and `ToolNodes` for execution.
+#
+# In this example, ONE LLM call ("AUSTERITY" vs "BLITZSCALING") instantly reconfigures
+# the behavior of a massive 60-node graph. This is how you build Enterprise AI.
 # ==============================================================================
 
 print("🏗️  Building Massive Graph (Corporate Swarm)...")

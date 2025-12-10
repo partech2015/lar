@@ -61,7 +61,20 @@ This means you get:
 | **Resilience & Cost** | **Wasteful & Brittle.** If the RAG agent fails, the Tweeter agent might still run with no data, wasting API calls and money. A loop of 5 agents all chatting can hit rate limits fast. | **Efficient & Resilient.** If the RAG agent fails, the Tweeter never runs. Your graph stops, saving you money and preventing a bad output. Your `LLMNode`'s built-in retry handles transient errors silently. |
 | **Core Philosophy** | Sells "Magic." | Sells "Trust." |
 
-  
+---
+
+## 🚀 The Game Changer: Hybrid Cognitive Architecture
+
+Most frameworks are "All LLM." They treat every step of logic as an expensive, slow, unreliable LLM call. This doesn't scale.
+
+**Lár allows you to mix 1% Intelligence (LLM) with 99% Structure (Code).**
+
+We prove this in **[`examples/9_corporate_swarm.py`](examples/9_corporate_swarm.py)**:
+1.  **The Brain (CEO)**: One LLM call sets a "Strategic Directive" (e.g., "Austerity" vs "Growth").
+2.  **The Body (Swarm)**: A massive **60+ Node Graph** instantly reconfigures itself based on that intent.
+3.  **The Result**: You control a fleet of 60 agents with the cost and latency of **one**.
+
+> "This is how you build 1M+ agents without going bankrupt."
 
 ---
 
