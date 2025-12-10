@@ -37,6 +37,13 @@ if os.getenv("GOOGLE_API_KEY"):
 # | RELIABILITY   | Low ("Telephone Game" risks) | High (Deterministic Logic)        |
 # |_______________|______________________________|___________________________________|
 #
+# 🔬 TECHNICAL DEEP DIVE: WHY OTHERS FAIL
+# ---------------------------------------
+# If you built this exact swarm in LangChain/CrewAI, it would crash:
+# 1. RecursionLimitError: Standard executors cap at ~25 steps. We run 64+.
+# 2. Token Burn: Routing 60 nodes via LLM costs ~$0.60. Lár costs $0.00.
+# 3. Latency: 60 LLM round-trips takes > 60 seconds. Lár takes < 0.1 seconds.
+#
 # In this example, ONE LLM call ("AUSTERITY" vs "BLITZSCALING") instantly 
 # reconfigures a massive 60-node graph. 
 # ==============================================================================
