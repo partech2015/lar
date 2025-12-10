@@ -1,10 +1,10 @@
-/* Hide the site name text in the header, leaving only the logo */
-.md-header__title > .md-header__ellipsis {
+/* Aggressively hide the site title text container */
+.md-header__title {
     display: none !important;
 }
 
-/* Ensure Logo is still clickable and visible */
+/* Ensure Logo remains visible and correctly spaced */
 .md-header__button.md-logo {
-    display: block;
-    margin-right: 0; 
+    display: block !important;
+    margin-right: 1rem;
 }
