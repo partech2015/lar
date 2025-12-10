@@ -63,12 +63,12 @@ This means you get:
 
 ---
 
-## 🚀 The Game Changer: Hybrid Cognitive Architecture
+## The Game Changer: Hybrid Cognitive Architecture
 
 **Most frameworks are "All LLM." This doesn't scale.**
 You cannot run 1,000 agents if every step costs $0.05 and takes 3 seconds.
 
-### 1. The "Construction Site" Metaphor 🏗️
+### 1. The "Construction Site" Metaphor
 
 *   **The Old Way (Standard Agents):**
     Imagine a construction site where **every single worker is a high-paid Architect**. To hammer a nail, they stop, "think" about the nail, write a poem about the nail, and charge you $5. It takes forever and costs a fortune.
@@ -92,9 +92,9 @@ We prove this in **[`examples/9_corporate_swarm.py`](examples/9_corporate_swarm.
 ### 3. Case Study: Why Standard Agents Fail This Test
 If you tried to build this exact "Corporate Swarm" in a standard framework, it would fail for three reasons:
 
-1.  **The "Recursion Limit" Crash 💥**: Standard executors have a safety limit (usually 25 steps). Our swarm runs **64+ steps**. It would crash halfway through.
-2.  **The "Token Burn" 💸**: Standard frameworks use an LLM to route every step. 60 managers x $0.01 = **$0.60 per run**. Lár uses Python `if` statements. Cost = **$0.00**.
-3.  **The "Telephone Game" 🐢**: Passing data through 60 LLM layers corrupts context. Lár passes explicit state objects, preserving perfect context.
+1.  **The "Recursion Limit" Crash**: Standard executors have a safety limit (usually 25 steps). Our swarm runs **64+ steps**. It would crash halfway through.
+2.  **The "Token Burn"**: Standard frameworks use an LLM to route every step. 60 managers x $0.01 = **$0.60 per run**. Lár uses Python `if` statements. Cost = **$0.00**.
+3.  **The "Telephone Game"**: Passing data through 60 LLM layers corrupts context. Lár passes explicit state objects, preserving perfect context.
 
 > "Lár turns Agents from 'Chatbot Prototyping' into 'High-Performance Software'."
 
