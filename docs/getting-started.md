@@ -217,7 +217,10 @@ Because Lár is a **"Glass Box"**, you don't need to rewrite your code. You simp
 
 ```python
 # --- 6. Serialize for Production ---
-save_agent_to_file(planner_node, "my_agent.json")
+json_output = export_graph_to_json(planner_node, name="My Production Agent")
+with open("my_agent.json", "w") as f:
+    f.write(json_output)
+    
 print("\n✅ Agent saved to 'my_agent.json'. Ready for Snath Cloud upload.")
 ```
 
