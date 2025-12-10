@@ -1,17 +1,28 @@
 import random
 import time
+import os
 from typing import Dict, List
 from lar import *
 
+# Fix for LiteLLM + Gemini (Maps GOOGLE_API_KEY to GEMINI_API_KEY)
+if os.getenv("GOOGLE_API_KEY"):
+    os.environ["GEMINI_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+
 # ==============================================================================
-# 9. THE CORPORATE SWARM (Programmatic Graph Generation)
+# 9. THE CORPORATE SWARM (Dynamic Graph Pruning)
 # ==============================================================================
-# This example demonstrates Lár's "Power User" feature:
-# Since Graphs are just Python Objects, you can generate massive, complex
-# agents using loops and recursive functions.
+# "THE TRUE POTENTIAL OF LÁR": HYBRID COGNITIVE ARCHITECTURE
 #
-# We will build a "Corporate Hierarchy" of ~63 nodes:
-# CEO -> 2 Presidents -> 4 VPs -> 8 Directors -> 16 Managers -> 32 Workers
+# Most frameworks are "All LLM" (slow, expensive, hallucination-prone).
+# Lár allows you to mix 1% Intelligence (LLM) with 99% Structure (Code).
+#
+# In this example:
+# 1. The CEO (LLMNode) thinks ONCE. It sets a global "Strategic Directive".
+# 2. The Swarm (60+ Nodes) matches that strategy deterministically.
+#    - If Strategy is "BLITZSCALING": Every manager hires/works (Full Graph Execution).
+#    - If Strategy is "AUSTERITY": Managers aggressively prune branches (Dynamic Graph Pruning).
+#
+# Result: One expensive call controls a massive, cheap, reliable fleet.
 # ==============================================================================
 
 print("🏗️  Building Massive Graph (Corporate Swarm)...")
@@ -19,99 +30,147 @@ print("🏗️  Building Massive Graph (Corporate Swarm)...")
 class HierarchyBuilder:
     def __init__(self):
         self.node_count = 0
-        self.nodes = []
 
     def create_worker(self, id: str, next_node: BaseNode) -> BaseNode:
-        """Creates a leaf node (Worker) that does actual work."""
+        """Leaf node: Actually does the work (if reached)."""
         self.node_count += 1
         
-        # A simple tool that "does work"
-        def worker_task(work_load: int) -> dict:
-            # Simulate work
-            return {"completed_units": work_load + 1}
+        def worker_task(total_completed: int) -> dict:
+            return {"total_completed": total_completed + 1}
 
         return ToolNode(
             tool_function=worker_task,
-            input_keys=["work_load"],
-            output_key=f"worker_{id}_result",
+            input_keys=["total_completed"],
+            output_key=f"res_{id}", # Dummy key
             next_node=next_node
         )
 
     def create_manager(self, id: str, level: int, max_depth: int, next_node_success: BaseNode) -> BaseNode:
         """
-        Recursively creates a manager and their subordinates.
-        Returns the 'Head' node of this branch.
+        Recursively creates a manager.
+        The Manager reads the CEO's 'strategy' to decide whether to run this branch or PRUNE it.
         """
         self.node_count += 1
         
-        # Base Case: If we are at the bottom, become a worker
+        # Base Case
         if level >= max_depth:
             return self.create_worker(id, next_node_success)
 
-        # Recursive Step: Create 2 subordinates (Left and Right branches)
-        # Note: In a linear execution flow, 'Left' must point to 'Right', 
-        # and 'Right' must point to 'Next Node' (Parent's successor).
-        # We are linearizing a tree traversal (Pre-order traversal).
-        
-        # 3. Create Right Branch (Executes second) -> Points to Manager's Successor
-        right_branch_head = self.create_manager(f"{id}_R", level + 1, max_depth, next_node_success)
-        
-        # 2. Create Left Branch (Executes first) -> Points to Right Branch Head
-        left_branch_head = self.create_manager(f"{id}_L", level + 1, max_depth, right_branch_head)
+        # Recursive Step: Build Children (Pre-order traversal linearization)
+        right_branch = self.create_manager(f"{id}_R", level + 1, max_depth, next_node_success)
+        left_branch  = self.create_manager(f"{id}_L", level + 1, max_depth, right_branch)
 
-        # 1. Create This Manager (Router/Logic) -> Points to Left Branch Head
-        # The Manager decides if work is needed.
+        # --- THE "INTELLIGENCE" LINK ---
+        # The Manager (Code) obeys the CEO (LLM)
         def manager_logic(state: GraphState) -> str:
-            # Randomly decide to skip work? (For variety)
-            # return "DELEGATE" if random.random() > 0.1 else "SKIP"
-            return "DELEGATE"
+            strategy = state.get("strategy", "NORMAL")
+            
+            if strategy == "BLITZSCALING":
+                return "EXECUTE" # Always run everything
+            elif strategy == "AUSTERITY":
+                # In austerity, we prune 50% of branches to save costs
+                return "EXECUTE" if random.random() > 0.5 else "PRUNE" 
+            else:
+                return "EXECUTE"
 
-        manager_node = RouterNode(
+        return RouterNode(
             decision_function=manager_logic,
             path_map={
-                "DELEGATE": left_branch_head,
-                "SKIP": next_node_success # Short-circuit this entire branch
+                "EXECUTE": left_branch,    # Run the sub-tree
+                "PRUNE": next_node_success # Skip the sub-tree entirely (Optimization)
             },
             default_node=next_node_success
         )
-        return manager_node
 
 # --- Build the Graph ---
 
-# 1. Define End Node
-end_node = AddValueNode(key="final_status", value="PROJECT_COMPLETE", next_node=None)
+# 1. End Node
+end_node = AddValueNode(key="final_status", value="MISSION_ACCOMPLISHED", next_node=None)
 
-# 2. Generate the Swarm (Depth 5 = 1 + 2 + 4 + 8 + 16 + 32 nodes)
+# 2. Build the Swarm (The deterministic army)
 builder = HierarchyBuilder()
-ceo_node = builder.create_manager("CEO", level=1, max_depth=6, next_node_success=end_node)
+head_manager = builder.create_manager("VP", level=1, max_depth=6, next_node_success=end_node)
 
-print(f"✅ Graph Built! Total Nodes: {builder.node_count}")
-print("   - This is structurally a Binary Tree.")
-print("   - Execution is flattened into a linear traversal.")
+# 3. The CEO (The Strategic Brain)
+# This is the ONLY LLM node. It effectively programming the rest of the graph.
+ceo_node = LLMNode(
+    model_name="gemini/gemini-1.5-pro", # Explicit provider prefix to avoid Vertex AI
+    prompt_template=(
+        "You are the CEO of a tech giant. The market is: {market_condition}.\n"
+        "Set the corporate strategy directives.\n"
+        "Respond ONLY with one word:\n"
+        "- BLITZSCALING (If market is favorable/booming)\n"
+        "- AUSTERITY (If market is crash/recession)"
+    ),
+    output_key="strategy",
+    next_node=head_manager
+)
+
+print(f"✅ Organization Built! Total Capacity: {builder.node_count} nodes.")
 
 # --- Run the Swarm ---
 
 executor = GraphExecutor()
-initial_state = {"work_load": 0}
 
-print("\n🚀 Starting Execution (This might take a moment)...")
-start_time = time.time()
+def run_scenario(name, market_condition, description):
+    print(f"\n{name}")
+    initial_state = {"market_condition": market_condition, "total_completed": 0}
 
-step_count = 0
-for step in executor.run_step_by_step(ceo_node, initial_state):
-    step_count += 1
-    node_type = type(step['node']).__name__
-    node_name = getattr(step['node'], 'output_key', 'Router/Manager')
+    start_time = time.time()
+    steps = []
     
-    # Print a minimal log for speed, full log for "Worker" nodes
-    if "ToolNode" in node_type:
-        print(f"  [Step {step_count}] 👷 Worker Finished")
-    elif "RouterNode" in node_type:
-        print(f"  [Step {step_count}] 👔 Manager Delegating...")
-    elif "AddValueNode" in node_type:
-        print(f"  [Step {step_count}] 🏁 {step['node'].value}")
+    # Graceful Fallback: If CEO (LLM) fails, we simulate the strategy
+    try:
+        # Run CEO Step Step-by-Step
+        gen = executor.run_step_by_step(ceo_node, initial_state)
+        
+        # Step 1: CEO Thinks
+        ceo_step = next(gen) 
+        steps.append(ceo_step)
+        
+        # Check if CEO failed
+        if ceo_step['node'].output_key == "strategy" and "error" in ceo_step.get('outcome', ''):
+             raise Exception("LLM Error")
+             
+    except Exception as e:
+        print(f"   ⚠️  CEO (LLM) Unavailable ({e}). Switching to **SIMULATION MODE**.")
+        # Simulate the decision based on the input
+        simulated_strategy = "AUSTERITY" if "crash" in market_condition else "BLITZSCALING"
+        print(f"   🤖 [SIMULATION] CEO Decided: {simulated_strategy}")
+        
+        # Manually inject strategy and continue from Head Manager
+        initial_state["strategy"] = simulated_strategy
+        gen = executor.run_step_by_step(head_manager, initial_state)
 
-duration = time.time() - start_time
-print(f"\n✨ DONE in {duration:.2f}s!")
-print(f"📊 Total Steps Executed: {step_count}")
-print(f"📈 Complexity: {builder.node_count} nodes in memory.")
+    # Run the rest of the swarm
+    for step in gen:
+        steps.append(step)
+        
+    duration = time.time() - start_time
+    
+    # Analysis
+    # Depending on fallback, strategy might differ where it's stored
+    strategy = steps[0].get('state_diff', {}).get('added', {}).get('strategy', initial_state.get('strategy'))
+    final_state = steps[-1].get('final_state', {})
+    work_done = final_state.get('total_completed', 0)
+    
+    print(f"   ⚡ Execution Time: {duration:.2f}s")
+    print(f"   💼 Work Units Completed: {work_done} ({description})")
+
+# Scenario 1: Recession
+run_scenario(
+    name="📉 SCENARIO 1: The Market Crashes...",
+    market_condition="Competitors are folding, stock market is down 20%, crash is coming.",
+    description="Graph Pruned!"
+)
+
+print("-" * 40)
+
+# Scenario 2: Boom
+run_scenario(
+    name="📈 SCENARIO 2: The AI Boom...",
+    market_condition="AI is eating the world. VC money is free. Capture market share.",
+    description="Full Utilization!"
+)
+
+print(f"\n✨ This demonstrates DYNAMIC COMPUTATION GRAPHS controlled by AI.")
