@@ -185,7 +185,14 @@ Common frameworks are messy. Lár is **designed for Agentic IDEs** (Cursor, Wind
 We provide a **Master System Prompt** that teaches your IDE exactly how to write valid, deterministic Lár graphs.
 
 ### 1. Optimize Your IDE
-Copy the content of **[`LAR_MASTER_PROMPT.md`](LAR_MASTER_PROMPT.md)** into your `.cursorrules` or System Prompt.  
+We provide a **Master System Prompt** (The "Lár Architect") that teaches your IDE exactly how to write valid, deterministic Lár graphs.
+
+**Step 1:** Open [**`prompt.txt`**](prompt.txt) (or `LAR_MASTER_PROMPT.md`).
+**Step 2:** Copy the entire text.
+**Step 3:** Paste it into your LLM or Agentic IDE (Cursor, Windsurf, Claude).
+**Step 4:** Ask it to generate a rough draft.
+**Step 5:** Refine the code in your IDE.
+
 *Result: Your AI will stop writing LangChain code and start writing strict Graph code.*
 
 ### 2. Learn by Example
@@ -428,9 +435,19 @@ You've built your graph. Now you need observability, rate limiting, and persiste
 Because Lár is stateful and serializable, you don't need to rewrite your code for the cloud. The engine is designed to be "Write Once, Run Anywhere."
 
 * **Serialize:** `executor.save_to_file("agent.json")`
-* **Deploy:** Upload to [Snath Cloud](https://snath.ai/cloud) (Enterprise Edition).
+* **Deploy:** Upload to **Snath Cloud** or your private **Snath Enterprise** instance.
 
-Snath Cloud instantly visualizes your JSON definition, providing a "Mission Control" dashboard with token tracking, cost analysis, and historical "Flight Recorder" logs for every run.
+### Option A: Snath Cloud (Managed)
+**[Snath Cloud](https://snath.ai/cloud)** is the managed control plane (The Hive).
+- Instantly visualize your JSON definition.
+- "Mission Control" dashboard with token tracking & cost analysis.
+- Historical "Flight Recorder" logs for every run.
+
+### Option B: Snath Enterprise (Self-Hosted)
+**[Snath Enterprise](https://snath.ai/enterprise)** is for air-gapped, GxP-compliant environments (The Bunker).
+- Self-host the entire platform on Kubernetes/Docker.
+- Offline License Keys & WORM Compliance Logging.
+- Zero-external-call guarantee.
 
 ## Support the Project
 
