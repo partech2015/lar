@@ -44,3 +44,6 @@ PyCharm / IntelliJ
 .pytest_cache/
 coverage.xml
 htmlcov/
+
+# Ignore agent audit logs
+lar_logs/
