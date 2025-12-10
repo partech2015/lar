@@ -12,7 +12,7 @@ if os.getenv("GOOGLE_API_KEY"):
 # 9. THE CORPORATE SWARM (Hybrid Cognitive Architecture)
 # ==============================================================================
 # 
-# 🏗️ THE CONSTRUCTION SITE METAPHOR
+# THE CONSTRUCTION SITE METAPHOR
 # ---------------------------------
 # 1. The "Old Way" (Standard Agents):
 #    Imagine a construction site where EVERY worker is a high-paid Architect.
@@ -25,7 +25,7 @@ if os.getenv("GOOGLE_API_KEY"):
 #    - The Robots (Swarm) execute thousands of steps instantly.
 #    Result: Fast, cheap, deterministic.
 #
-# 🚀 WHY THIS IS A GAME CHANGER
+# WHY THIS IS A GAME CHANGER
 # -----------------------------
 #
 #  __________________________________________________________________________________
@@ -37,14 +37,14 @@ if os.getenv("GOOGLE_API_KEY"):
 # | RELIABILITY   | Low ("Telephone Game" risks) | High (Deterministic Logic)        |
 # |_______________|______________________________|___________________________________|
 #
-# 🔬 TECHNICAL DEEP DIVE: WHY OTHERS FAIL
+# TECHNICAL DEEP DIVE: WHY OTHERS FAIL
 # ---------------------------------------
 # If you built this exact swarm in LangChain/CrewAI, it would crash:
 # 1. RecursionLimitError: Standard executors cap at ~25 steps. We run 64+.
 # 2. Token Burn: Routing 60 nodes via LLM costs ~$0.60. Lár costs $0.00.
 # 3. Latency: 60 LLM round-trips takes > 60 seconds. Lár takes < 0.1 seconds.
 #
-# 🔍 HOW IT WORKS: THE EXECUTION TRACE
+# HOW IT WORKS: THE EXECUTION TRACE
 # ------------------------------------
 # 1. SETUP: We build a recursive binary tree of 63 nodes in memory (Builder).
 # 2. STEP 1 (The Brain): The CEO `LLMNode` runs. It sees "Crash" -> Sets "AUSTERITY".
@@ -58,7 +58,7 @@ if os.getenv("GOOGLE_API_KEY"):
 # reconfigures a massive 60-node graph. 
 # ==============================================================================
 
-print("🏗️  Building Massive Graph (Corporate Swarm)...")
+print("Building Massive Graph (Corporate Swarm)...")
 
 class HierarchyBuilder:
     def __init__(self):
@@ -139,7 +139,7 @@ ceo_node = LLMNode(
     next_node=head_manager
 )
 
-print(f"✅ Organization Built! Total Capacity: {builder.node_count} nodes.")
+print(f"Organization Built! Total Capacity: {builder.node_count} nodes.")
 
 # --- Run the Swarm ---
 
@@ -166,10 +166,10 @@ def run_scenario(name, market_condition, description):
              raise Exception("LLM Error")
              
     except Exception as e:
-        print(f"   ⚠️  CEO (LLM) Unavailable ({e}). Switching to **SIMULATION MODE**.")
+        print(f"   [WARN] CEO (LLM) Unavailable ({e}). Switching to **SIMULATION MODE**.")
         # Simulate the decision based on the input
         simulated_strategy = "AUSTERITY" if "crash" in market_condition else "BLITZSCALING"
-        print(f"   🤖 [SIMULATION] CEO Decided: {simulated_strategy}")
+        print(f"   [SIMULATION] CEO Decided: {simulated_strategy}")
         
         # Manually inject strategy and continue from Head Manager
         initial_state["strategy"] = simulated_strategy
@@ -187,12 +187,12 @@ def run_scenario(name, market_condition, description):
     final_state = steps[-1].get('final_state', {})
     work_done = final_state.get('total_completed', 0)
     
-    print(f"   ⚡ Execution Time: {duration:.2f}s")
-    print(f"   💼 Work Units Completed: {work_done} ({description})")
+    print(f"   Execution Time: {duration:.2f}s")
+    print(f"   Work Units Completed: {work_done} ({description})")
 
 # Scenario 1: Recession
 run_scenario(
-    name="📉 SCENARIO 1: The Market Crashes...",
+    name="SCENARIO 1: The Market Crashes...",
     market_condition="Competitors are folding, stock market is down 20%, crash is coming.",
     description="Graph Pruned!"
 )
@@ -201,9 +201,9 @@ print("-" * 40)
 
 # Scenario 2: Boom
 run_scenario(
-    name="📈 SCENARIO 2: The AI Boom...",
+    name="SCENARIO 2: The AI Boom...",
     market_condition="AI is eating the world. VC money is free. Capture market share.",
     description="Full Utilization!"
 )
 
-print(f"\n✨ This demonstrates DYNAMIC COMPUTATION GRAPHS controlled by AI.")
+print(f"\nThis demonstrates DYNAMIC COMPUTATION GRAPHS controlled by AI.")
