@@ -44,6 +44,16 @@ if os.getenv("GOOGLE_API_KEY"):
 # 2. Token Burn: Routing 60 nodes via LLM costs ~$0.60. Lár costs $0.00.
 # 3. Latency: 60 LLM round-trips takes > 60 seconds. Lár takes < 0.1 seconds.
 #
+# 🔍 HOW IT WORKS: THE EXECUTION TRACE
+# ------------------------------------
+# 1. SETUP: We build a recursive binary tree of 63 nodes in memory (Builder).
+# 2. STEP 1 (The Brain): The CEO `LLMNode` runs. It sees "Crash" -> Sets "AUSTERITY".
+# 3. STEP 2 (The Routing): The Head Manager `RouterNode` runs. It sees "AUSTERITY".
+# 4. STEP 3 (The Pruning): It runs a logic check (Python). It decides to SKIP the Left Branch.
+#    -> instant deletion of 30 nodes from the queue.
+# 5. STEP 4 (The Work): It routes to the Right Branch. Workers `ToolNode` execute `1+1`.
+# 6. END: The graph converges on `final_node`. Mission Accomplished in 0.08s.
+#
 # In this example, ONE LLM call ("AUSTERITY" vs "BLITZSCALING") instantly 
 # reconfigures a massive 60-node graph. 
 # ==============================================================================
