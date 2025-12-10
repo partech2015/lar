@@ -14,12 +14,21 @@ from lar.node import LLMNode, ToolNode, RouterNode, ClearErrorNode
 from lar.executor import GraphExecutor
 ```
 
-## 3. Coding Rules
-1.  **Define Nodes First**: Instantiate all `LLMNode` and `ToolNode` objects.
-2.  **Define Logic Functions**: Write pure Python functions for Tools (`def my_tool(arg)`) and Routers (`def decide(state)`).
-3.  **Wire the Graph**: Explicitly set `.next_node` for every node.
-    - `node_a.next_node = node_b`
-4.  **Handle Errors**: Use `router` to check for `last_error` if you need a retry loop.
+## 3. Coding Rules (CRITICAL)
+1.  **Define Backwards**: You MUST define the graph from **End to Start**. 
+    - *Why?* Python requires `next_node=end_node` to be defined before `start_node` references it.
+    - Order: Define `AddValueNode` (End) -> `LLMNode` (Middle) -> `LLMNode` (Start).
+
+2.  **Tools are Pure Functions**:
+    - **Signature**: `def my_tool(arg1, arg2):` (Match `input_keys`).
+    - **FORBIDDEN**: `def my_tool(state):` (Do complex state logic in `RouterNode`, not Tools).
+    - **Return**: Must return a **flat dictionary** (e.g., `{"result": 42}`).
+
+3.  **Routers are Classifiers**:
+    - Function must return a **string key** (e.g., `"success"`, `"fail"`), NOT a node object.
+    - Map keys to nodes in `path_map`.
+
+4.  **Wire Explicitly**: Set `next_node=...` in the constructor. Do not use `.add_edge()`.
 
 ## 4. Cheat Sheet
 
