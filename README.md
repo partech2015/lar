@@ -185,13 +185,20 @@ Common frameworks are messy. Lár is **designed for Agentic IDEs** (Cursor, Wind
 We provide a **Master System Prompt** that teaches your IDE exactly how to write valid, deterministic Lár graphs.
 
 ### 1. Optimize Your IDE
-We provide a **Master System Prompt** (The "Lár Architect") that teaches your IDE exactly how to write valid, deterministic Lár graphs.
+We provide tools to generate valid, deterministic Lár graphs instantly.
+
+#### **Option A: The Lár Architect (Web)**
+Go to **[snath.ai/architect](https://snath.ai/architect)**.
+This tool generates a **rough code draft** for your agent, which you can then copy into your IDE and refine with your LLM of choice.
+
+#### **Option B: Manual System Prompt (The "Lár Architect")**
+Teach your IDE (Cursor, Windsurf) to write Lár code directly.
 
 **Step 1:** Open [**`prompt.txt`**](prompt.txt) (or `LAR_MASTER_PROMPT.md`).
 **Step 2:** Copy the entire text.
-**Step 3:** Paste it into your LLM or Agentic IDE (Cursor, Windsurf, Claude).
+**Step 3:** Paste it into your LLM context or `.cursorrules`.
 **Step 4:** Ask it to generate a rough draft.
-**Step 5:** Refine the code in your IDE.
+**Step 5:** Refine the code.
 
 *Result: Your AI will stop writing LangChain code and start writing strict Graph code.*
 
