@@ -11,27 +11,34 @@ if os.getenv("GOOGLE_API_KEY"):
 # ==============================================================================
 # 9. THE CORPORATE SWARM (Hybrid Cognitive Architecture)
 # ==============================================================================
+# 
+# 🏗️ THE CONSTRUCTION SITE METAPHOR
+# ---------------------------------
+# 1. The "Old Way" (Standard Agents):
+#    Imagine a construction site where EVERY worker is a high-paid Architect.
+#    To hammer a nail, they stop, "think" about the nail, write a poem, and charge $5.
+#    Result: Slow, expensive, chaos.
+#
+# 2. The "Lár Way" (Hybrid Swarm):
+#    Imagine ONE Architect and 1,000 Robots.
+#    - The Architect (CEO Node) yells ONCE: "Build the Skyscraper!"
+#    - The Robots (Swarm) execute thousands of steps instantly.
+#    Result: Fast, cheap, deterministic.
 #
 # 🚀 WHY THIS IS A GAME CHANGER
 # -----------------------------
 #
-# | Feature | Standard "Agent Builder" (LangChain/CrewAI) | Lár "Hybrid" Architecture |
-# | :--- | :--- | :--- |
-# | **composition** | 100% LLM Nodes. Every step is a "prompt". | **1% LLM (CEO) + 99% Code (Swarm).** |
-# | **Cost** | **$$$** (60 LLM calls for 60 steps). | **$** (1 LLM call controls 60 steps). |
-# | **Speed** | **Slow** (60s+ latency). | **Instant** (0.08s for 64 steps). |
-# | **Reliability** | **Low**. "Telephone Game" effect. | **High**. Deterministic execution. |
+#  __________________________________________________________________________________
+# | FEATURE       | STANDARD AGENT (Old Way)     | LÁR HYBRID SWARM (New Way)        |
+# |---------------|------------------------------|-----------------------------------|
+# | ARCHITECTURE  | 100% LLM Nodes (All Prompts) | 1% LLM (Brain) + 99% Code (Body)  |
+# | COST          | $$$ (60 API Calls)           | $ (1 API Call)                    |
+# | SPEED         | Slow (60s+ Latency)          | Instant (0.08s for 64 steps)      |
+# | RELIABILITY   | Low ("Telephone Game" risks) | High (Deterministic Logic)        |
+# |_______________|______________________________|___________________________________|
 #
-# The Problem:
-# Most frameworks treat every logic step as an LLM call. This doesn't scale.
-# You cannot build a 1,000-node process if every node costs $0.01 and takes 2s.
-#
-# The Lár Solution:
-# 1. **The Brain (CEO)**: Use the LLM *only* for high-level strategy/intent.
-# 2. **The Body (Swarm)**: Use deterministic `RouterNodes` and `ToolNodes` for execution.
-#
-# In this example, ONE LLM call ("AUSTERITY" vs "BLITZSCALING") instantly reconfigures
-# the behavior of a massive 60-node graph. This is how you build Enterprise AI.
+# In this example, ONE LLM call ("AUSTERITY" vs "BLITZSCALING") instantly 
+# reconfigures a massive 60-node graph. 
 # ==============================================================================
 
 print("🏗️  Building Massive Graph (Corporate Swarm)...")
