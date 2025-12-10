@@ -215,6 +215,7 @@ We have provided **8 robust patterns** in the **[`examples/`](examples/)** direc
 | 🔴 | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
 | 🔴 | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
 | 🟣 | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
+| ⚫ | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
 
 ---
 
