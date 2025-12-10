@@ -58,6 +58,22 @@ router = RouterNode(
 )
 ```
 
+### Add Value Node (Set/Copy State)
+```python
+# Set literal or copy from {other_key}
+node = AddValueNode(
+    key="final_status", 
+    value="SUCCESS", # or "{plan_result}"
+    next_node=end_node
+)
+```
+
+### Clear Error Node (Retry Loops)
+```python
+# Clears state['last_error'] before retrying
+cleaner = ClearErrorNode(next_node=retry_step)
+```
+
 ### The Executor
 ```python
 executor = GraphExecutor()
