@@ -1,13 +1,10 @@
-/* Custom styles for Lár framework documentation */
+/* Hide the site name text in the header, leaving only the logo */
+.md-header__title > .md-header__ellipsis {
+    display: none !important;
+}
 
-/* Make inline code elements stand out against the dark slate background */
-
-.md-typeset code {
-    /* Background: A slightly brighter, yet dark, color (e.g., dark blue/purple) */
-    background-color: #374151; 
-    /* Text Color: Use a light color for high contrast */
-    color: #e5e7eb; 
-    /* Add padding for readability */
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
+/* Ensure Logo is still clickable and visible */
+.md-header__button.md-logo {
+    display: block;
+    margin-right: 0; 
 }

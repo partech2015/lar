@@ -24,8 +24,8 @@ theme:
     - content.code.annotate
   custom_dir: theme_overrides
   favicon: 'assets/lar-logo.png'
-  #extra_css:
-  #  - assets/extra.css
+  extra_css:
+    - assets/extra.css
 
 markdown_extensions:
   - admonition
