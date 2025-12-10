@@ -1,5 +1,5 @@
 [← Return to snath.ai](https://snath.ai)
-# **Lár: The PyTorch for Agents**
+# **Ready to build Auditable AI Agents**
  
 !!! tip "Production Ready?"
     *   **[Snath Enterprise](https://snath.ai/enterprise)**: Self-hosted, air-gapped, GxP-compliant platform (The Bunker).
