@@ -89,12 +89,20 @@ We prove this in **[`examples/9_corporate_swarm.py`](examples/9_corporate_swarm.
 | **Speed** | **Slow** (60s+ latency). | **Instant** (0.08s for 64 steps). |
 | **Reliability** | **Low**. "Telephone Game" effect. | **High**. Deterministic execution. |
 
-### 3. Case Study: Why Standard Agents Fail This Test
-If you tried to build this exact "Corporate Swarm" in a standard framework, it would fail for three reasons:
+### 3. Case Study: The "Smoking Gun" Proof
+We built the generic "Corporate Swarm" in massive-scale LangChain/LangGraph (`examples/comparisons/langchain_swarm_fail.py`) to compare.
+**It crashed at Step 25.**
 
-1.  **The "Recursion Limit" Crash**: Standard executors have a safety limit (usually 25 steps). Our swarm runs **64+ steps**. It would crash halfway through.
-2.  **The "Token Burn"**: Standard frameworks use an LLM to route every step. 60 managers x $0.01 = **$0.60 per run**. Lár uses Python `if` statements. Cost = **$0.00**.
-3.  **The "Telephone Game"**: Passing data through 60 LLM layers corrupts context. Lár passes explicit state objects, preserving perfect context.
+```text
+-> Step 24
+💥 CRASH CONFIRMED: Recursion limit of 25 reached without hitting a stop condition.
+LangGraph Engine stopped execution due to Recursion Limit.
+```
+
+**Why this matters:**
+1.  **The "Recursion Limit" Crash**: Standard executors treat agents as loops. They cap at 25 steps to prevent infinite loops. Real work (like a 60-step swarm) triggers this safety switch.
+2.  **The "Token Burn"**: Standard frameworks use an LLM to route every step ($0.60/run). Lár uses code ($0.00/run).
+3.  **The "Telephone Game"**: Passing data through 60 LLM layers corrupts context. Lár passes explicit state objects.
 
 > "Lár turns Agents from 'Chatbot Prototyping' into 'High-Performance Software'."
 
@@ -251,6 +259,7 @@ We have provided **8 robust patterns** in the **[`examples/`](examples/)** direc
 | 🔴 | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
 | 🟣 | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
 | ⚫ | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
+| 🛡️ | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
 
 ---
 
