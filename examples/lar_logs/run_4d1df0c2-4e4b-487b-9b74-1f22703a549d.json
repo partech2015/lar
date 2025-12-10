@@ -1,0 +1,92 @@
+{
+  "run_id": "4d1df0c2-4e4b-487b-9b74-1f22703a549d",
+  "user_id": null,
+  "timestamp": "2025-12-10T01:21:33.269661",
+  "steps": [
+    {
+      "step": 0,
+      "node": "ToolNode",
+      "state_before": {
+        "topic": "AI Agents"
+      },
+      "state_diff": {
+        "added": {
+          "tweet_draft": "Use AI Agents to automate your workflows! #L\u00e1rFramework (AI Agents)"
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "success"
+    },
+    {
+      "step": 1,
+      "node": "ToolNode",
+      "state_before": {
+        "topic": "AI Agents",
+        "tweet_draft": "Use AI Agents to automate your workflows! #L\u00e1rFramework (AI Agents)",
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "status": "APPROVED"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success"
+    },
+    {
+      "step": 2,
+      "node": "RouterNode",
+      "state_before": {
+        "topic": "AI Agents",
+        "tweet_draft": "Use AI Agents to automate your workflows! #L\u00e1rFramework (AI Agents)",
+        "__last_run_metadata": null,
+        "status": "APPROVED"
+      },
+      "state_diff": {
+        "added": {
+          "_router_decision": "APPROVED"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success"
+    },
+    {
+      "step": 3,
+      "node": "ToolNode",
+      "state_before": {
+        "topic": "AI Agents",
+        "tweet_draft": "Use AI Agents to automate your workflows! #L\u00e1rFramework (AI Agents)",
+        "__last_run_metadata": null,
+        "status": "APPROVED",
+        "_router_decision": "APPROVED"
+      },
+      "state_diff": {
+        "added": {
+          "final_status": "Published: Use AI Agents to automate your workflows! #L\u00e1rFramework (AI Agents)"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success"
+    }
+  ],
+  "summary": {
+    "total_steps": 4,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

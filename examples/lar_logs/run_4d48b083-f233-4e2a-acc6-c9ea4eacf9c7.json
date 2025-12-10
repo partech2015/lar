@@ -1,0 +1,28 @@
+{
+  "run_id": "4d48b083-f233-4e2a-acc6-c9ea4eacf9c7",
+  "user_id": null,
+  "timestamp": "2025-12-10T01:15:39.121509",
+  "steps": [
+    {
+      "step": 0,
+      "node": "LLMNode",
+      "state_before": {
+        "input": "I was overcharged for my subscription."
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "error",
+      "error": "litellm.APIConnectionError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.\nTraceback (most recent call last):\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/main.py\", line 2943, in completion\n    model_response = vertex_chat_completion.completion(  # type: ignore\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/llms/vertex_ai/gemini/vertex_and_google_ai_studio_gemini.py\", line 2163, in completion\n    _auth_header, vertex_project = self._ensure_access_token(\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/llms/vertex_ai/vertex_llm_base.py\", line 268, in _ensure_access_token\n    return self.get_access_token(\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/llms/vertex_ai/vertex_llm_base.py\", line 497, in get_access_token\n    raise e\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/llms/vertex_ai/vertex_llm_base.py\", line 490, in get_access_token\n    _credentials, credential_project_id = self.load_auth(\n                                          ^^^^^^^^^^^^^^^\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/llms/vertex_ai/vertex_llm_base.py\", line 114, in load_auth\n    creds, creds_project_id = self._credentials_from_default_auth(\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/litellm/llms/vertex_ai/vertex_llm_base.py\", line 161, in _credentials_from_default_auth\n    return google_auth.default(scopes=scopes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/aadithya/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/auth/_default.py\", line 739, in default\n    raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)\ngoogle.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.\n"
+    }
+  ],
+  "summary": {
+    "total_steps": 1,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

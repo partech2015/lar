@@ -68,6 +68,18 @@ class LLMNode(BaseNode):
                  system_instruction: Optional[str] = None, 
                  generation_config: Optional[Dict[str, Any]] = None 
                  ):
+        """
+        Initialize an LLM Execution Node.
+
+        Args:
+            model_name (str): The model identifier (e.g., "gpt-4", "gemini/gemini-1.5-flash").
+            prompt_template (str): A string template using {variable} syntax for state substitution.
+            output_key (str): The key in the GraphState where the result will be stored.
+            next_node (BaseNode, optional): The next node to execute after this one.
+            max_retries (int, optional): Number of times to retry on API errors. Defaults to 3.
+            system_instruction (str, optional): System prompt to steer the model's behavior.
+            generation_config (dict, optional): LiteLLM-specific parameters (temperature, max_tokens, etc).
+        """
         
         # 1. Store configuration as instance variables
         self.model_name = model_name
@@ -190,6 +202,14 @@ class RouterNode(BaseNode):
                  decision_function: Callable[[GraphState], str],
                  path_map: Dict[str, BaseNode],
                  default_node: BaseNode = None):
+        """
+        Initialize a Router (Switch) Node.
+
+        Args:
+            decision_function (Callable[[GraphState], str]): A function that takes the state and returns a string key.
+            path_map (Dict[str, BaseNode]): A mapping of return keys to the respective Next Node.
+            default_node (BaseNode, optional): Fallback node if the returned key is not in path_map.
+        """
         self.decision_function = decision_function
         self.path_map = path_map
         self.default_node = default_node
@@ -223,6 +243,19 @@ class ToolNode(BaseNode):
                  output_key: str,
                  next_node: BaseNode,
                  error_node: BaseNode = None):
+        """
+        Initialize a Tool Execution Node.
+
+        Args:
+            tool_function (Callable): The Python function to execute.
+            input_keys (List[str]): List of state keys to extract as positional arguments.
+                Use ["__state__"] to pass the entire GraphState object.
+            output_key (str): The state key to store the return value.
+                If None, and the function returns a dict, the dict is merged into the state.
+            next_node (BaseNode): The next node to execute on success.
+            error_node (BaseNode, optional): The node to jump to if an exception occurs. To use this,
+                check 'last_error' in the state.
+        """
         
         self.tool_function = tool_function
         self.input_keys = input_keys

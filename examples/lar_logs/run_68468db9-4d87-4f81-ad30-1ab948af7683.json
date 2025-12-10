@@ -1,0 +1,28 @@
+{
+  "run_id": "68468db9-4d87-4f81-ad30-1ab948af7683",
+  "user_id": null,
+  "timestamp": "2025-12-10T01:16:41.210833",
+  "steps": [
+    {
+      "step": 0,
+      "node": "LLMNode",
+      "state_before": {
+        "input": "I was overcharged for my subscription."
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "error",
+      "error": "litellm.NotFoundError: GeminiException - {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n"
+    }
+  ],
+  "summary": {
+    "total_steps": 1,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

@@ -16,14 +16,8 @@ class GraphExecutor:
     """
     The "engine" that runs a Lár graph.
     
-    NEW in v2.0: The executor now logs state "diffs" instead of
-    full state snapshots, making it faster and more efficient.
-    
-    NEW in v2.1 (v5.0): The executor now also logs
-    run_metadata (like token counts) from nodes.
-
-    NEW in v6.0: Now includes automatic logging to a file.
-    NEW in v7.0: Multi-Tenancy (user_id).
+    For Air-Gap / Offline Mode support, please see Snath Enterprise:
+    https://snath.ai/enterprise
     """
     def __init__(self, log_dir: str = "lar_logs", offline_mode: bool = False, user_id: str = None):
         self.log_dir = log_dir
@@ -31,6 +25,17 @@ class GraphExecutor:
         self.user_id = user_id
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
+
+    def _check_enterprise_policy(self, node, node_name: str):
+        """
+        Hook for Enterprise Security Policies (Air-Gap, PII Masking, etc).
+        In OSS, this is a no-op.
+        In Snath Enterprise, this enforces 21 CFR Part 11 compliance.
+        """
+        # Enterprise Hooks go here.
+        # See: https://snath.ai/enterprise
+        pass
+
 
     def _save_log(self, history: list, run_id: str, summary: dict = None):
         """Saves the execution history to a JSON file."""
@@ -54,11 +59,22 @@ class GraphExecutor:
 
     def run_step_by_step(self, start_node: BaseNode, initial_state: dict, max_steps: int = 100):
         """
-        Executes a graph step-by-step, yielding the history
-        of each step as it completes.
-        
+        Executes a graph step-by-step, yielding the history of each step as it completes.
+        This generator pattern allows for real-time observability and "Flight Recording".
+
         Args:
-            max_steps (int): Safety circuit breaker to prevent infinite loops (default 100).
+            start_node (BaseNode): The entry point of the graph.
+            initial_state (dict): The initial dictionary to populate the GraphState.
+            max_steps (int, optional): Safety circuit breaker to prevent infinite loops. Defaults to 100.
+        
+        Yields:
+            dict: An audit log entry containing:
+                - step (int): Step index.
+                - node (str): Class name of the executed node.
+                - state_before (dict): Full state snapshot before execution.
+                - state_diff (dict): What changed in this step (added/updated/removed).
+                - run_metadata (dict): Token usage and model info.
+                - outcome (str): "success" or "error".
         """
         state = GraphState(initial_state)
         current_node = start_node
@@ -87,16 +103,8 @@ class GraphExecutor:
             }
             
             try:
-                # 2. Security Check (Air-Gap Enforcement)
-                if self.offline_mode and node_name == "LLMNode":
-                    # Check if model is local
-                    model = getattr(current_node, "model_name", "").lower()
-                    allowed_prefixes = ["ollama/", "local/", "test/", "mock/"]
-                    if not any(model.startswith(p) for p in allowed_prefixes):
-                        raise SecurityError(
-                            f"AIR-GAP VIOLATION: Attempted to call cloud model '{model}' in offline mode.\n"
-                            f"Allowed prefixes: {allowed_prefixes}"
-                        )
+                # 2. Enterprise Policy Hook
+                self._check_enterprise_policy(current_node, node_name)
 
                 # 3. Execute the node
                 next_node = current_node.execute(state)

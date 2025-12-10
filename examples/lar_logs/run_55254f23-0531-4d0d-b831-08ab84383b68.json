@@ -1,0 +1,28 @@
+{
+  "run_id": "55254f23-0531-4d0d-b831-08ab84383b68",
+  "user_id": null,
+  "timestamp": "2025-12-10T01:13:35.959409",
+  "steps": [
+    {
+      "step": 0,
+      "node": "LLMNode",
+      "state_before": {
+        "task": "prints the word 'error' (this will trigger the mock failure)"
+      },
+      "state_diff": {
+        "added": {},
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {},
+      "outcome": "error",
+      "error": "litellm.RateLimitError: RateLimitError: OpenAIException - You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors."
+    }
+  ],
+  "summary": {
+    "total_steps": 1,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  }
+}

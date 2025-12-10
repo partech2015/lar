@@ -175,7 +175,35 @@ ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
     poetry install
     ```
 
+
 ---
+
+## Ready to build with Lár? (Agentic IDEs)
+
+Common frameworks are messy. Lár is **designed for Agentic IDEs** (Cursor, Windsurf, Antigravity).
+
+We provide a **Master System Prompt** that teaches your IDE exactly how to write valid, deterministic Lár graphs.
+
+### 1. Optimize Your IDE
+Copy the content of **[`LAR_MASTER_PROMPT.md`](LAR_MASTER_PROMPT.md)** into your `.cursorrules` or System Prompt.  
+*Result: Your AI will stop writing LangChain code and start writing strict Graph code.*
+
+### 2. Learn by Example
+We have provided **8 robust patterns** in the **[`examples/`](examples/)** directory:
+
+| Level | Pattern | Concept |
+| :--- | :--- | :--- |
+| 🟢 | **[`1_simple_triage.py`](examples/1_simple_triage.py)** | Classification & Linear Routing |
+| 🟢 | **[`2_rag_researcher.py`](examples/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
+| 🟡 | **[`3_self_correction.py`](examples/3_self_correction.py)** | "Judge" Pattern & Error Loops |
+| 🟡 | **[`4_human_in_the_loop.py`](examples/4_human_in_the_loop.py)** | User Approval & Interrupts |
+| 🟡 | **[`5_parallel_execution.py`](examples/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
+| 🔴 | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
+| 🔴 | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
+| 🟣 | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
+
+---
+
 
 ## Example: Multi-Agent Orchestration (A Customer Support Agent)
 
