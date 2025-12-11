@@ -28,6 +28,10 @@
 
 It is a **"define-by-run"** framework that acts as a **Flight Recorder** for your agent, creating a complete audit trail for every single step.
 
+> [!NOTE]
+> **Lár is NOT a wrapper.**
+> It is a standalone, ground-up engine designed for reliability. It does not wrap LangChain, OpenAI Swarm, or any other library. It is pure, dependency-lite Python code optimized for "Code-as-Graph" execution.
+
 ## The "Black Box" Problem
 
 You are a developer launching a **mission-critical AI agent**. It works on your machine, but in production, it fails.
@@ -227,23 +231,20 @@ Common frameworks are messy. Lár is **designed for Agentic IDEs** (Cursor, Wind
 
 We provide a **Master System Prompt** that teaches your IDE exactly how to write valid, deterministic Lár graphs.
 
-### 1. Optimize Your IDE
-We provide tools to generate valid, deterministic Lár graphs instantly.
+### 1. Optimize Your IDE (The "Agentic Workflow")
+**Just open this repo in your IDE (Cursor, Windsurf) and ask:**
+> "Build a Lár agent that checks stocks."
 
-#### **Option A: The Lár Architect (Web)**
-Go to **[snath.ai/architect](https://snath.ai/architect)**.
-This tool generates a **rough code draft** for your agent, which you can then copy into your IDE and refine with your LLM of choice.
+**How it works:**
+1.  **The Rules (Textbook)**: The IDE reads `.cursorrules` (and `LAR_MASTER_PROMPT.md`) to learn *HOW* to write Lár code.
+2.  **The Mission (Assignment)**: You provide the goals.
 
-#### **Option B: Manual System Prompt (The "Lár Architect")**
-Teach your IDE (Cursor, Windsurf) to write Lár code directly.
+**Pro Tip:**
+To get the best result, **Copy & Paste** our blueprint:
+**[`IDE_PROMPT_TEMPLATE.md`](IDE_PROMPT_TEMPLATE.md)**
 
-**Step 1:** Open [**`prompt.txt`**](prompt.txt) (or `LAR_MASTER_PROMPT.md`).
-**Step 2:** Copy the entire text.
-**Step 3:** Paste it into your LLM context or `.cursorrules`.
-**Step 4:** Ask it to generate a rough draft.
-**Step 5:** Refine the code.
-
-*Result: Your AI will stop writing LangChain code and start writing strict Graph code.*
+Fill in the blanks (Goal, Inputs, Tools) and paste it into the chat.
+*Result: The IDE has the Rules and the Mission. You get perfect code.*
 
 ### 2. Learn by Example
 We have provided **8 robust patterns** in the **[`examples/`](examples/)** directory:
@@ -500,6 +501,9 @@ Because Lár is stateful and serializable, you don't need to rewrite your code f
 - Self-host the entire platform on Kubernetes/Docker.
 - Offline License Keys & WORM Compliance Logging.
 - Zero-external-call guarantee.
+
+## Author
+**Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
 
 ## Support the Project
 

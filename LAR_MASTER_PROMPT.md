@@ -15,20 +15,28 @@ from lar.executor import GraphExecutor
 ```
 
 ## 3. Coding Rules (CRITICAL)
-1.  **Define Backwards**: You MUST define the graph from **End to Start**. 
-    - *Why?* Python requires `next_node=end_node` to be defined before `start_node` references it.
-    - Order: Define `AddValueNode` (End) -> `LLMNode` (Middle) -> `LLMNode` (Start).
 
-2.  **Tools are Pure Functions**:
+### Pattern A: Forward Definition (Preferred for Agentic IDEs)
+1. **Define Nodes First**: Instantiate all your nodes without `next_node` (set `next_node=None`).
+2. **Link Later**: explicitly set connections using `node.next_node = target`.
+   - *Why?* This matches human thinking (Start -> End) and prevents "undefined variable" errors.
+
+### Pattern B: Reverse Definition (Compact)
+1. **Define Backwards**: Define End Node first, then Middle, then Start.
+   - * Why?* Allows `next_node=end_node` inline in the constructor.
+   - *Use case*: Short, linear chains.
+
+### General Rules
+1.  **Tools are Pure Functions**:
     - **Signature**: `def my_tool(arg1, arg2):` (Match `input_keys`).
     - **FORBIDDEN**: `def my_tool(state):` (Do complex state logic in `RouterNode`, not Tools).
     - **Return**: Must return a **flat dictionary** (e.g., `{"result": 42}`).
 
-3.  **Routers are Classifiers**:
+2.  **Routers are Classifiers**:
     - Function must return a **string key** (e.g., `"success"`, `"fail"`), NOT a node object.
     - Map keys to nodes in `path_map`.
 
-4.  **Wire Explicitly**: Set `next_node=...` in the constructor. Do not use `.add_edge()`.
+3.  **Strict Typing**: Always use Type Hints. Code is the documentation.
 
 ## 4. Cheat Sheet
 

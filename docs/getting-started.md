@@ -8,6 +8,18 @@ Because it's built on Lár, it produces a **21 CFR Part 11-style audit trail** b
 
 ---
 
+### 0. Optimize Your IDE (Agentic Workflow)
+
+**Using Cursor, Windsurf, or Antigravity?**
+Lár is designed to be written by AI.
+
+1.  **Open the Repo**: Open the `lar` folder in your IDE.
+2.  **Ask**: "Build a Lár agent that checks stocks."
+3.  **Result**: The IDE reads `.cursorrules` and `LAR_MASTER_PROMPT.md` to generate perfect graph code.
+
+*If the IDE hallucinates, tell it:*
+> "Read `lar/LAR_MASTER_PROMPT.md` and `lar/examples/` first."
+
 ### 1. Install the Engine
 
 You can install the core Lár engine directly from PyPI:

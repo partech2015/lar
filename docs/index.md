@@ -9,6 +9,10 @@
 
 It is a **"define-by-run"** framework that acts as a **Flight Recorder** for your agent, creating a complete audit trail for every single step.
 
+!!! info "Not a Wrapper"
+    **Lár is NOT a wrapper.**
+    It is a standalone, ground-up engine designed for reliability. It does not wrap LangChain, OpenAI Swarm, or any other library. It is pure, dependency-lite Python code optimized for "Code-as-Graph" execution.
+
 ## The "Black Box" Problem
 
 You are a developer launching a **mission-critical AI agent**. It works on your machine, but in production, it fails.
@@ -29,5 +33,8 @@ This means you get:
 
 > **Need Certified Validation?**
 > For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
+
+## Author
+**Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
 
 Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
