@@ -15,7 +15,6 @@ You are coding with **Lár**, a graph-based agent framework that treats "Code as
 1.  **Strict Typing**: Every Node and Function MUST have Pydantic/Python type hints.
 2.  **Explicit Linking**: Connect nodes using `.next_node = target` or `RouterNode(path_map={...})`.
 3.  **No "Magic"**: Do not assume global state. Use `state.get()` and `state.set()`.
-4.  **Vendor Awareness**: If inside `snath-enterprise`, import from `lar.node` (vendored). If inside `lar` OSS, import from `lar.node`.
 
 ## Code Patterns to Follow
 

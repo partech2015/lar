@@ -48,6 +48,8 @@ This means you get:
 2.  **Free Auditing**: A complete history of every decision and token cost, built-in by default.
 3.  **Total Control**: Build deterministic "assembly lines," not chaotic chat rooms.
 
+> *"This demonstrates that for a graph without randomness or external model variability, Lár executes deterministically and produces identical state traces."*
+
 *Stop guessing. Start building agents you can trust.*
 
 > **Need Certified Validation?**
@@ -236,15 +238,13 @@ We provide a **Master System Prompt** that teaches your IDE exactly how to write
 > "Build a Lár agent that checks stocks."
 
 **How it works:**
-1.  **The Rules (Textbook)**: The IDE reads `.cursorrules` (and `LAR_MASTER_PROMPT.md`) to learn *HOW* to write Lár code.
-2.  **The Mission (Assignment)**: You provide the goals.
+1.  **The Rules (Textbook)**: The IDE reads `.cursorrules` to learn Lár.
+2.  **The Mission (Assignment)**: The IDE will ask you for details or **Draft a Blueprint** for you.
 
 **Pro Tip:**
-To get the best result, **Copy & Paste** our blueprint:
-**[`IDE_PROMPT_TEMPLATE.md`](IDE_PROMPT_TEMPLATE.md)**
-
-Fill in the blanks (Goal, Inputs, Tools) and paste it into the chat.
-*Result: The IDE has the Rules and the Mission. You get perfect code.*
+You can either:
+*   **Paste the Blueprint**: Fill out `IDE_PROMPT_TEMPLATE.md` yourself.
+*   **Ask for a Draft**: Say *"Draft a blueprint for a stock agent"*, then confirm it.
 
 ### 2. Learn by Example
 We have provided **8 robust patterns** in the **[`examples/`](examples/)** directory:

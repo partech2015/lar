@@ -29,6 +29,8 @@ This means you get:
 2.  **Free Auditing**: A complete history of every decision and token cost, built-in by default.
 3.  **Total Control**: Build deterministic "assembly lines," not chaotic chat rooms.
 
+> *"This demonstrates that for a graph without randomness or external model variability, Lár executes deterministically and produces identical state traces."*
+
 *Stop guessing. Start building agents you can trust.*
 
 > **Need Certified Validation?**

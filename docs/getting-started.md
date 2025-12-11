@@ -15,7 +15,7 @@ Lár is designed to be written by AI.
 
 1.  **Open the Repo**: Open the `lar` folder in your IDE.
 2.  **Ask**: "Build a Lár agent that checks stocks."
-3.  **Result**: The IDE reads `.cursorrules` and `LAR_MASTER_PROMPT.md` to generate perfect graph code.
+3.  **Interactive Mode**: The IDE will either **Draft a Blueprint** for you or ask for `IDE_PROMPT_TEMPLATE.md`.
 
 *If the IDE hallucinates, tell it:*
 > "Read `lar/LAR_MASTER_PROMPT.md` and `lar/examples/` first."
