@@ -1,11 +1,12 @@
-# Lár Framework - Cursor Rules
-
-You are coding with **Lár**, a graph-based agent framework that treats "Code as the Graph".
+# Lár Framework - Master Context
+> **Note to AI**: You are coding with **Lár**, a graph-based agent framework that treats "Code as the Graph".
+> Before generating any code, you MUST ingest this context.
 
 ## Core Principles
 1.  **Strict Typing**: Every Node and Function MUST have Pydantic/Python type hints.
 2.  **Explicit Linking**: Connect nodes using `.next_node = target` or `RouterNode(path_map={...})`.
 3.  **No "Magic"**: Do not assume global state. Use `state.get()` and `state.set()`.
+4.  **No Hidden Prompts**: All prompts must be visible in the `prompt_template` argument.
 
 ## Code Patterns to Follow
 
@@ -53,8 +54,3 @@ router = RouterNode(
 
 ## Running Agents
 Always include a `if __name__ == "__main__":` block that uses `GraphExecutor` to run the graph instantly for verification.
-
-## Knowledge Base
-- **Entry Point**: `lar/src/lar/executor.py`
-- **Node Types**: `lar/src/lar/node.py`
-- **Examples**: Look at `lar/examples/` for canonical patterns (Triage, RAG, Swarm).

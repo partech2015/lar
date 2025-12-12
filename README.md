@@ -222,22 +222,19 @@ ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 
 ## Ready to build with Lár? (Agentic IDEs)
 
-Common frameworks are messy. Lár is **designed for Agentic IDEs** (Cursor, Windsurf, Antigravity).
+Lár is designed for **Agentic IDEs** (Cursor, Windsurf, Antigravity) and strict code generation.
 
-We provide a **Master System Prompt** that teaches your IDE exactly how to write valid, deterministic Lár graphs.
+We provide a **2-Step Workflow** directly in the repo to make your IDE an expert Lár Architect.
 
-### 1. Optimize Your IDE (The "Agentic Workflow")
-**Just open this repo in your IDE (Cursor, Windsurf) and ask:**
-> "Build a Lár agent that checks stocks."
+### 1. The Strategy: "Reference, Don't Copy"
+Instead of pasting massive prompts, simply **reference** the master files in the `lar/` directory.
 
-**How it works:**
-1.  **The Rules (Textbook)**: The IDE reads `.cursorrules` to learn Lár.
-2.  **The Mission (Assignment)**: The IDE will ask you for details or **Draft a Blueprint** for you.
+### 2. The Workflow
+1.  **Context (The Brain)**: In your IDE chat, reference `@lar/IDE_MASTER_PROMPT.md`. This loads the strict typing rules and "Code-as-Graph" philosophy.
+2.  **Scaffold (The Ask)**: Open `@lar/IDE_PROMPT_TEMPLATE.md`, fill in your agent's goal, and ask the IDE to "Implement this."
 
-**Pro Tip:**
-You can either:
-*   **Paste the Blueprint**: Fill out `IDE_PROMPT_TEMPLATE.md` yourself.
-*   **Ask for a Draft**: Say *"Draft a blueprint for a stock agent"*, then confirm it.
+**Example Prompt to Cursor/Windsurf:**
+> "Using the rules in @lar/IDE_MASTER_PROMPT.md, implement the agent described in @lar/IDE_PROMPT_TEMPLATE.md."
 
 ### 2. Learn by Example
 We have provided **8 robust patterns** in the **[`examples/`](examples/)** directory:

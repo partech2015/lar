@@ -35,3 +35,6 @@ This means you get:
 **Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
 
 Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
+
+## Power Your IDE
+Build faster with Cursor/Windsurf: [IDE Setup Guide](ide_setup.md)

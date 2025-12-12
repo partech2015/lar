@@ -1,30 +1,22 @@
-# Lár Agent Blueprint (User to Fill)
+# Lár Agent Request Template
 
-**Copy this file, fill in the blanks, and paste it into your IDE (Cursor/Windsurf).**
+**Goal**: [Describe what the agent should do, e.g., "Analyze a PDF and extract financial tables"]
+
+**Inputs**:
+- [e.g., PDF File Path]
+- [e.g., User Query]
+
+**Tools Needed**:
+- [e.g., PDF Parser]
+- [e.g., Search Tool]
+
+**Constraints**:
+- [ ] Use `gemini-1.5-pro` for reasoning.
+- [ ] Must be air-gap compatible (no external APIs besides the LLM).
+- [ ] Output must be valid JSON matching the `FinancialReport` schema.
 
 ---
-
-## 1. The Mission
-**Goal**: [Write 1 sentence describing what your agent does. e.g. "A stock market researcher"]
-**Input**: [What does the user type? e.g. "AAPL"]
-**Output**: [What does the agent return? e.g. "A markdown report"]
-
-**Rough Plan**:
-1.  [Step 1: e.g. Planner Node - Decompose request]
-2.  [Step 2: e.g. Tool Node - Search Google]
-3.  [Step 3: e.g. Writer Node - Summarize findings]
-
-## 2. The Tools
-*(Paste your python function signatures here so the AI knows how to call them)*
-
-```python
-# [PASTE YOUR TOOLS HERE]
-# Example:
-# def get_stock_price(ticker: str) -> dict:
-#     """Returns price for ticker"""
-#     pass
-```
-
-## 3. Configuration
-- **Model**: [e.g. gemini-1.5-pro, gpt-4o, claude-3-5-sonnet]
-- **Style**: Standard Lár Graph (Forward Definition).
+**Instruction to IDE**:
+Reference `@lar/IDE_MASTER_PROMPT.md` for the coding standards.
+Generate the `lar` code for this agent in a single file named `agent.py`.
+Include a verification block at the bottom to run it immediately.

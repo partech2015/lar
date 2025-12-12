@@ -2,8 +2,8 @@
 name = "lar-engine"
 version = "0.7.1"
 description = "Lár: The PyTorch for Agents. A 'define-by-run' agentic framework."
-authors = ["Aadithya Vishnu Sajeev <axdithya@snath.ai>"]
-maintainers = ["Aadithya Vishnu Sajeev <axdithya@snath.ai>"]
+authors = ["Aadithya Vishnu Sajeev <axdithya@snath.ai>", "Vinay S <vinay@snath.ai>"]
+maintainers = ["Aadithya Vishnu Sajeev <axdithya@snath.ai>", "Vinay S <vinay@snath.ai>"]
 license = "Apache-2.0"
 readme = "README.md"
 packages = [
