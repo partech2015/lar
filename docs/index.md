@@ -1,11 +1,9 @@
 [← Return to snath.ai](https://snath.ai)
 # **Ready to build Auditable AI Agents**
  
-!!! tip "Production Ready?"
-    *   **[Snath Enterprise](https://snath.ai/enterprise)**: Self-hosted, air-gapped, GxP-compliant platform (The Bunker).
-    *   **[Snath Cloud](https://snath.ai/cloud)**: Managed control plane for 1M+ agents (The Hive).
 
-**Lár** (Irish for "core" or "center") by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
+
+**Lár** (Irish for "core" or "center") is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 
 It is a **"define-by-run"** framework that acts as a **Flight Recorder** for your agent, creating a complete audit trail for every single step.
 
@@ -32,9 +30,6 @@ This means you get:
 > *"This demonstrates that for a graph without randomness or external model variability, Lár executes deterministically and produces identical state traces."*
 
 *Stop guessing. Start building agents you can trust.*
-
-> **Need Certified Validation?**
-> For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
 
 ## Author
 **Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.

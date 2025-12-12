@@ -15,7 +15,7 @@ Security patches and bug fixes are applied to the `latest minor release` of the 
 
 We take the security of the *Lár Engine* framework and its users seriously. If you discover a vulnerability, we ask that you follow the process of **responsible disclosure**.
 
-- **Reporting Channel**: Please report vulnerabilities exclusively via email to: [**security@snath.ai**](mailto:security@snath.ai)
+- **Reporting Channel**: Please report vulnerabilities exclusively via email to: [**axdithya@snath.ai**](mailto:axdithya@snath.ai)
 - **Response Time**: We commit to acknowledging receipt of your email within 24 hours and providing an initial assessment of the vulnerability within 48 hours.
 - **Public Disclosure**: **Do not open public GitHub Issues, Pull Requests, or discuss vulnerabilities on public forums (e.g., social media or Discord)**. Public disclosure before a fix is released endangers all users.
 

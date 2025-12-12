@@ -8,9 +8,6 @@
   </a>
   <a href="https://pypi.org/project/lar-engine/">
     <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/lar-engine?style=for-the-badge&color=blueviolet">
-
-  <a href="https://www.linkedin.com/company/snathai/">
-    <img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-snathai-0077B5?style=for-the-badge&logo=linkedin">
   </a>
   <a href="https://github.com/sponsors/axdithyaxo">
     <img alt="Sponsor" src="https://img.shields.io/badge/Support-GitHub%20Sponsors-pink?style=for-the-badge&logo=github">
@@ -19,12 +16,9 @@
 
 # Lár: The PyTorch for Agents
 
-> [!TIP]
-> **Production Ready?**
-> *   **[Snath Enterprise](https://snath.ai/enterprise)**: Self-hosted, air-gapped, GxP-compliant platform (The Bunker).
-> *   **[Snath Cloud](https://snath.ai/cloud)**: Managed control plane for 1M+ agents (The Hive).
 
-**Lár** (Irish for "core" or "center") by **SnathAI™** is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
+
+**Lár** (Irish for "core" or "center") is the open source standard for **Deterministic, Auditable, and Air-Gap Capable** AI agents.
 
 It is a **"define-by-run"** framework that acts as a **Flight Recorder** for your agent, creating a complete audit trail for every single step.
 
@@ -52,8 +46,7 @@ This means you get:
 
 *Stop guessing. Start building agents you can trust.*
 
-> **Need Certified Validation?**
-> For **FDA 21 CFR Part 11 Audit Trails**, **Air-Gap environments**, and **GxP Validation**, see **[Snath Enterprise](https://snath.ai/enterprise)**.
+
 
 ## Why Lár is Better: The "Glass Box" Advantage
 
@@ -81,7 +74,7 @@ You cannot run 1,000 agents if every step costs $0.05 and takes 3 seconds.
 
 *   **The Lár Way (Hybrid Swarm):**
     Imagine **One Architect** and **1,000 Robots**.
-    1.  **The Architect (CEO Node)**: Looks at the blueprint ONCE. Yells: *"Build the Skyscraper!"*
+    1.  **The Architect (Orchestrator Node)**: Looks at the blueprint ONCE. Yells: *"Build the Skyscraper!"*
     2.  **The Robots (Swarm)**: They hear the order. They don't "think." They don't charge $5. They just **execute** thousands of steps instantly.
 
 ### 2. The Numbers Don't Lie
@@ -90,7 +83,7 @@ We prove this in **[`examples/9_corporate_swarm.py`](examples/9_corporate_swarm.
 
 | Feature | Standard "Agent Builder" (LangChain/CrewAI) | Lár "Hybrid" Architecture |
 | :--- | :--- | :--- |
-| **Logic** | 100% LLM Nodes. Every step is a prompt. | **1% LLM (CEO) + 99% Code (Swarm)** |
+| **Logic** | 100% LLM Nodes. Every step is a prompt. | **1% LLM (Orchestrator) + 99% Code (Swarm)** |
 | **Cost** | **$$$** (60 LLM calls). | **$** (1 LLM call). |
 | **Speed** | **Slow** (60s+ latency). | **Instant** (0.08s for 64 steps). |
 | **Reliability** | **Low**. "Telephone Game" effect. | **High**. Deterministic execution. |
@@ -290,8 +283,8 @@ graph TD
     E -- "GENERAL_AGENT" --> H;
 
     %% Define what's INSIDE the subgraphs
-    subgraph "Billing Department"
-        F(LLMNode<br/>'Agent 3: Billing Specialist');
+    subgraph "Finance Department"
+        F(LLMNode<br/>'Agent 3: Finance Specialist');
     end
 
     subgraph "Tech Support Department"
@@ -481,26 +474,7 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 [![Glass Box Ready](https://img.shields.io/badge/Auditable-Glass%20Box%20Ready-54B848?style=flat&logo=checkmarx&logoColor=white)](https://docs.snath.ai)
 ```
 
-## Go to Production
 
-You've built your graph. Now you need observability, rate limiting, and persistent logs.
-
-Because Lár is stateful and serializable, you don't need to rewrite your code for the cloud. The engine is designed to be "Write Once, Run Anywhere."
-
-* **Serialize:** `executor.save_to_file("agent.json")`
-* **Deploy:** Upload to **Snath Cloud** or your private **Snath Enterprise** instance.
-
-### Option A: Snath Cloud (Managed)
-**[Snath Cloud](https://snath.ai/cloud)** is the managed control plane (The Hive).
-- Instantly visualize your JSON definition.
-- "Mission Control" dashboard with token tracking & cost analysis.
-- Historical "Flight Recorder" logs for every run.
-
-### Option B: Snath Enterprise (Self-Hosted)
-**[Snath Enterprise](https://snath.ai/enterprise)** is for air-gapped, GxP-compliant environments (The Bunker).
-- Self-host the entire platform on Kubernetes/Docker.
-- Offline License Keys & WORM Compliance Logging.
-- Zero-external-call guarantee.
 
 ## Author
 **Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
@@ -532,8 +506,7 @@ This means:
 - If you distribute a modified version, you must document what you changed.
 - You receive a patent license for contributions made to the project.
 
-`Apache 2.0` protects the original author `(SnathAI™)`
-while encouraging broad adoption and community collaboration.
+`Apache 2.0` protects the original author `(Aadithya Vishnu Sajeev)` from liability while allowing you to use this in commercial software.
 
 For developers building on Làr:
 Please ensure that the `LICENSE` and `NOTICE` files remain intact

@@ -1,7 +1,7 @@
 [← Return to snath.ai](https://snath.ai)
 # Getting Started
 
-## Build a GxP-Ready "Master Planner" in 3 Minutes
+## Build a Production-Ready "Master Planner" in 3 Minutes
 
 This quick-start guide will help you build your first **Auditable Agent**. Unlike a chatbot, this agent is a **Deterministic Workflow**: it accepts a task, evaluates it, and routes it to an exact specialist.
 Because it's built on Lár, it produces a **21 CFR Part 11-style audit trail** by default.
@@ -233,12 +233,12 @@ json_output = export_graph_to_json(planner_node, name="My Production Agent")
 with open("my_agent.json", "w") as f:
     f.write(json_output)
     
-print("\n✅ Agent saved to 'my_agent.json'. Ready for Snath Cloud upload.")
+print("\n✅ Agent saved to 'my_agent.json'. Ready for deployment.")
 ```
 
 **What now?**
 1.  **Version Control It**: Commit `my_agent.json` to Git. This is your "Source of Truth."
-2.  **Upload to [Snath Cloud](https://snath.ai/cloud)**: Drag and drop this JSON file to deploy an instant, air-gapped API endpoint with Auth, Rate Limiting, and nice UI.
+2.  **Deploy to Production**: Drag and drop this JSON file to deploy an API endpoint.
 3.  **Run Offline**: Hand this file to your DevOps team to run in a pure Docker container.
 
-**That's it. You just built a GxP-Aligned agent.**
+**That's it. You just built a Deterministic agent.**

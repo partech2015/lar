@@ -23,8 +23,8 @@ graph TD
     E -- "GENERAL_AGENT" --> H;
 
     %% Define what's INSIDE the subgraphs
-    subgraph "Billing Department"
-        F(LLMNode<br/>'Agent 3: Billing Specialist');
+    subgraph "Finance Department"
+        F(LLMNode<br/>'Agent 3: Finance Specialist');
     end
 
     subgraph "Tech Support Department"

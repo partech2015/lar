@@ -1,4 +1,4 @@
-# Critical GxP Logic - Requires Compliance Team Review
+# Critical Core Logic - Requires Core Maintainer Review
 lar/src/lar/executor.py       @snath-ai/compliance
 
 lar/pyproject.toml            @snath-ai/admins

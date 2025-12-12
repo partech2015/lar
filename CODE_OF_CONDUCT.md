@@ -1,4 +1,4 @@
-# Code of Conduct — Lár by SnathAI™
+# Code of Conduct — Lár
 
 We are committed to making the *Lár Engine* community a respectful and harassment-free experience for everyone, regardless of background. This Code of Conduct applies to all project spaces, including GitHub repositories, discussion forums, and community events.
 
@@ -25,7 +25,7 @@ The following behaviors are expected and mandatory in all community interactions
 
 If you witness or are subject to behavior that violates this Code of Conduct, please report it promptly and confidentially to the project maintainers:
 
-**Email**: [support@snath.ai](mailto:support@snath.ai)
+**Email**: [axdithya@snath.ai](mailto:axdithya@snath.ai)
 
 **Reporting**: Include the necessary context, names of individuals involved, and any evidence (screenshots, links) to help the maintainers investigate the situation efficiently.
 

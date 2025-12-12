@@ -1,5 +1,5 @@
 site_name: 'Lár - The PyTorch for Agents'
-site_author: SnathAI
+site_author: Lár Project
 site_url: https://snath-ai.github.io/lar/
 repo_name: snath-ai/lar
 repo_url: https://github.com/snath-ai/lar
@@ -43,10 +43,10 @@ nav:
     - 'The 6 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
   - 'Guides':
-    - 'Air-Gap Security (GxP)': guides/air-gap-security.md
+
     - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
     - 'Self-Correcting Loops': guides/self-correction-loop.md
-  - 'Commercial': production.md
+
   - 'API Reference':
     - 'LLMNode': api-reference/llmnode.md
     - 'ToolNode': api-reference/toolnode.md

@@ -1,4 +1,4 @@
-# Contributing to Lár by SnathAI™
+# Contributing to Lár
 
 First off — thank you!  
 Lár aims to become the *PyTorch of Agent Reasoning*, and community contributions are essential.

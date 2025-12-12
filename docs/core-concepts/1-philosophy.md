@@ -6,14 +6,14 @@ The primary challenge in production-grade AI is a lack of traceability. When a m
 
 Traditional agent frameworks build "Chatbots." A chatbot is probabilistic, messy, and hard to reproduce.
 - **Scientific Flaw**: If you run a chatbot twice with the same input, you might get different answers.
-- **Regulatory Nightmare**: You cannot audit a probability cloud. You cannot submit a chat log to the FDA.
+- **Regulatory Nightmare**: You cannot audit a probability cloud. You cannot submit a chat log to an **auditor**.
 
 ## **The "Glass Box" (Scientific Workflows)**
 
 `Lár` is built for **Science**, not Chat. We believe that **reliability comes from deterministic reproducibility.**
 
-### 1. The GxP Standard
-Lár is **GxP-Aligned** out of the box.
+### 1. The Reproducibility Standard
+Lár is **Deterministic** out of the box.
 - **Immutable Audit Trails**: Every state change is a cryptographic entry in a flight log.
 - **21 CFR Part 11**: We don't just "log" text; we log the *entire causal chain* of the agent's reasoning.
 
@@ -21,7 +21,7 @@ Lár is **GxP-Aligned** out of the box.
 Real research happens in SCIFs and secure labs.
 - **Other Frameworks**: Require cloud tracing (LangSmith) or constant API calls.
 - **Lár**: The engine is fully decoupled from the internet. It provides **hooks** for air-gapped environments.
-- **Enterprise**: For true "Air-Gap" enforcement (kernel-level firewalls), see **[Snath Enterprise](https://snath.ai/enterprise)**.
+- **Air-Gap**: Lár can run entirely offline for maximum security.
 
 ## **The "Glass Box" (The `Lár` Way)**
 
