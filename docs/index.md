@@ -36,5 +36,11 @@ This means you get:
 
 Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
 
-## Power Your IDE
-Build faster with Cursor/Windsurf: [IDE Setup Guide](ide_setup.md)
+## Power Your IDE (Cursor / Windsurf)
+
+Make your IDE an expert Lár Architect with this **2-Step Workflow**:
+
+1.  **Reference The Rules**: In your chat, type `@lar/IDE_MASTER_PROMPT.md`. This loads the strict typing rules.
+2.  **Use The Template**: Fill out `@lar/IDE_PROMPT_TEMPLATE.md` with your agent requirements.
+
+[Read the Full Guide](ide_setup.md)
