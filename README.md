@@ -192,7 +192,7 @@ This project is managed with [Poetry](https://python-poetry.org/).
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/snath-ai/lar.git
+    git clone https://github.com/axdithyaxo/lar.git
     cd lar
     ```
 
@@ -449,10 +449,10 @@ print("Agent serialized successfully. Ready for deployment.")
 ## Ready to Build a Real Agent?
 We have built two "killer demos" that prove this "glass box" model. You can clone, build, and run them today.
 
-- **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
+- **[axdithyaxo/rag-demo](https://github.com/axdithyaxo/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
 
 
-- **[snath-ai/support-demo](https://github.com/snath-ai/customer-support-demo)**:The Customer Support agent described above.
+- **[axdithyaxo/support-demo](https://github.com/axdithyaxo/customer-support-demo)**:The Customer Support agent described above.
 
 
 ###  Show Your Agents are Auditable

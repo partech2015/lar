@@ -77,4 +77,8 @@ if __name__ == "__main__":
     for step in executor.run_step_by_step(writer, {"topic": "The Moon"}, max_steps=6):
         print(f"Step {step['step']} ({step['node']}):")
         if step['node'] == "LLMNode":
-            print(f"  > Output: {list(step['state_diff']['added'].values())[0][:50]}...")
+            added_vals = list(step['state_diff']['added'].values())
+            if added_vals:
+                print(f"  > Output: {added_vals[0][:50]}...")
+            else:
+                print("  > Output: (No output / API Error)")
