@@ -503,7 +503,7 @@ This means:
 - If you distribute a modified version, you must document what you changed.
 - You receive a patent license for contributions made to the project.
 
-`Apache 2.0` protects the original author `(Aadithya Vishnu Sajeev)` from liability while allowing you to use this in commercial software.
+`Apache 2.0` protects the original author `(Aadithya Vishnu Sajeev)` while encouraging broad adoption and community collaboration.
 
 For developers building on Làr:
 Please ensure that the `LICENSE` and `NOTICE` files remain intact
