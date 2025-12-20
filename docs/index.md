@@ -31,6 +31,13 @@ This means you get:
 
 *Stop guessing. Start building agents you can trust.*
 
+## Demos & Examples
+
+Learn by building with our ready-made demos:
+
+*   **[RAG Agent Demo](https://github.com/snath-ai/rag-demo)**: A self-correcting RAG agent with local vector search.
+*   **[Customer Support Swarm](https://github.com/snath-ai/customer-support-demo)**: A multi-agent orchestration pattern.
+
 ## Power Your IDE (Cursor / Windsurf)
 
 Make your IDE an expert Lár Architect with this **2-Step Workflow**:
