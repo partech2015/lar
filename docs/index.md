@@ -35,8 +35,8 @@ This means you get:
 
 Learn by building with our ready-made demos:
 
-*   **[RAG Agent Demo](https://github.com/snath-ai/rag-demo)**: A self-correcting RAG agent with local vector search.
-*   **[Customer Support Swarm](https://github.com/snath-ai/customer-support-demo)**: A multi-agent orchestration pattern.
+*   **[RAG Agent Demo](https://github.com/axdithyaxo/rag-demo)**: A self-correcting RAG agent with local vector search.
+*   **[Customer Support Swarm](https://github.com/axdithyaxo/customer-support-demo)**: A multi-agent orchestration pattern.
 
 ## Power Your IDE (Cursor / Windsurf)
 
@@ -50,4 +50,4 @@ Make your IDE an expert Lár Architect with this **2-Step Workflow**:
 Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
 
 ## Author
-**Lár** was created by **Aadithya Vishnu Sajeev**.
+**[Lár](https://github.com/axdithyaxo/lar)** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
