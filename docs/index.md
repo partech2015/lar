@@ -31,11 +31,6 @@ This means you get:
 
 *Stop guessing. Start building agents you can trust.*
 
-## Author
-**Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
-
-Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
-
 ## Power Your IDE (Cursor / Windsurf)
 
 Make your IDE an expert Lár Architect with this **2-Step Workflow**:
@@ -44,3 +39,8 @@ Make your IDE an expert Lár Architect with this **2-Step Workflow**:
 2.  **Use The Template**: Fill out `@lar/IDE_PROMPT_TEMPLATE.md` with your agent requirements.
 
 [Read the Full Guide](ide_setup.md)
+
+Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
+
+## Author
+**Lár** was created by **Aadithya Vishnu Sajeev**.
