@@ -1,7 +1,7 @@
 # Critical Core Logic - Requires Core Maintainer Review
-lar/src/lar/executor.py       @snath-ai/compliance
+src/lar/executor.py       @axdithyaxo
 
-lar/pyproject.toml            @snath-ai/admins
+pyproject.toml            @axdithyaxo
 
 # Security Logic
-lar/src/lar/node.py           @snath-ai/security
+src/lar/node.py           @axdithyaxo
