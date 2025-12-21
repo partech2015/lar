@@ -221,24 +221,8 @@ This log is your proof of *exactly* what the agent did, step-by-step.
 ]
 ```
 
-### 6. Move to Production (The "Glass Box" Guarantee)
+### 6. Move to Production
 
-You've built and tested your agent locally. Now you need to deploy it to a secure environment (or just share it with a teammate).
-
-Because Lár is a **"Glass Box"**, you don't need to rewrite your code. You simply serialize the graph definition to a **portable JSON manifest**.
-
-```python
-# --- 6. Serialize for Production ---
-json_output = export_graph_to_json(planner_node, name="My Production Agent")
-with open("my_agent.json", "w") as f:
-    f.write(json_output)
-    
-print("\n✅ Agent saved to 'my_agent.json'. Ready for deployment.")
-```
-
-**What now?**
-1.  **Version Control It**: Commit `my_agent.json` to Git. This is your "Source of Truth."
-2.  **Deploy to Production**: Drag and drop this JSON file to deploy an API endpoint.
-3.  **Run Offline**: Hand this file to your DevOps team to run in a pure Docker container.
+You've built and tested your agent locally. Now you can deploy it by wrapping your `GraphExecutor` in a simple FastAPI or Flask app.
 
 **That's it. You just built a Deterministic agent.**
