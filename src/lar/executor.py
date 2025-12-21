@@ -187,17 +187,3 @@ class GraphExecutor:
             "total_tokens": total_tokens
         }
         self._save_log(history, run_id, summary)
-
-    def save_to_file(self, filename: str, start_node: BaseNode, name: str = "My Agent"):
-        """
-        Serializes the graph logic starting from 'start_node' to a JSON file.
-        This enables 'Write Once, Run Anywhere' deployment.
-        """
-        from .serializer import export_graph_to_json
-        
-        json_output = export_graph_to_json(start_node, name=name)
-        
-        with open(filename, "w") as f:
-            f.write(json_output)
-        
-        print(f"\n📦 [GraphExecutor] Agent serialized to: {filename}")
