@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # The "Glass Box" Philosophy
 
 The primary challenge in production-grade AI is a lack of traceability. When a multi-step agent fails, it's often impossible to determine why.

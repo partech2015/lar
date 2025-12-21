@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # API Reference: `LLMNode`
 
 The `LLMNode` is the "brain" of your agent. It is a resilient, state-aware node that calls a generative AI model (like Google's Gemini) to perform a reasoning task.

@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # The Event-Sourced Audit Log
 
 **The `GraphExecutor`'s "killer feature" is the structured history log it generates. This is not just a `print` statement; it's a forensic trail.**

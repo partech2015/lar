@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # The 6 Lár Primitives (The "Lego Bricks")
 
 **`Lár` is not a heavy, complex framework. It is a tiny, powerful engine with 6 core "primitives." You can combine these "Lego bricks" to build any agent, from a simple chatbot to a complex, multi-agent orchestrator.**

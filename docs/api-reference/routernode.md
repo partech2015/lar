@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # API Reference: `RouterNode`
 
 The `RouterNode` is the `"choice"` or `if/else` statement for your agent. It is a **100% deterministic** node that uses pure Python logic to decide where the agent should go next.

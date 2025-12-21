@@ -8,7 +8,7 @@ Because it's built on Lár, it produces a **21 CFR Part 11-style audit trail** b
 
 ---
 
-### 0. Optimize Your IDE (Agentic Workflow)
+### 1. Optimize Your IDE (Agentic Workflow)
 
 **Using Cursor, Windsurf, or Antigravity?**
 Lár is designed to be written by AI.
@@ -20,14 +20,14 @@ Lár is designed to be written by AI.
 *If the IDE hallucinates, tell it:*
 > "Read `lar/LAR_MASTER_PROMPT.md` and `lar/examples/` first."
 
-### 1. Install the Engine
+### 2. Install the Engine
 
 You can install the core Lár engine directly from PyPI:
 
 ```bash
 pip install lar-engine
 ```
-### 2. **Set Up Environment Variables**
+### 3. **Set Up Environment Variables**
 `Lár` uses a unified adapter `(LiteLLM)`. Depending on the models you run, you must set the corresponding API keys in your `.env` file:
 
 Create a `.env` file:
@@ -41,7 +41,7 @@ OPENAI_API_KEY="YOUR_OPENAI_KEY_HERE"
 ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 ```
 
-### 3. Create Your First “Glass Box” Agent
+### 4. Create Your First “Glass Box” Agent
 
 Now, build a simple Master Planner Agent that accepts a user’s task, evaluates it, and chooses the appropriate worker—either a coding agent or a lightweight chatbot.
 
@@ -221,7 +221,7 @@ This log is your proof of *exactly* what the agent did, step-by-step.
 ]
 ```
 
-### 6. Move to Production
+### 5. Move to Production
 
 You've built and tested your agent locally. Now you can deploy it by wrapping your `GraphExecutor` in a simple FastAPI or Flask app.
 

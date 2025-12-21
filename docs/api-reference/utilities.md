@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # API Reference: Utilities
 
 ## Graph Components

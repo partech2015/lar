@@ -1,3 +1,5 @@
+[← Return to snath.ai](https://snath.ai)
+
 # API Reference: `ToolNode`
 
 The `ToolNode` is the "hands" of your agent. It is a robust node that runs any plain Python function (a "tool").
