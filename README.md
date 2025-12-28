@@ -451,8 +451,9 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 
 - **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
 
+- **[snath-ai/customer-support-demo](https://github.com/snath-ai/customer-support-demo)**: The Customer Support agent described above.
 
-- **[snath-ai/support-demo](https://github.com/snath-ai/customer-support-demo)**:The Customer Support agent described above.
+- **[snath-ai/code-repair-demo](https://github.com/snath-ai/code-repair-demo)**: A Self-Healing CI/CD agent that writes tests, detects failures, and patches its own code in a loop.
 
 
 ###  Show Your Agents are Auditable
