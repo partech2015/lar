@@ -62,6 +62,36 @@ This means you get:
 
 ---
 
+## ⚡ Zero Friction: Switch from Cloud to Local in 1 Line
+
+Most frameworks make "Local Models" hard. You have to import `langchain_community.llms.Ollama`, refactor your classes, and change your API calls.
+
+With Lár (via LiteLLM), **the model is just a string**.
+
+| **Task** | **LangChain / CrewAI** | **Lár (The Easy Way)** |
+| :--- | :--- | :--- |
+| **Switching to Local** | 1. Import `Ollama` specific class.<br>2. Instantiate new object.<br>3. Refactor Chains. | **Change 1 string.**<br>`model="gemini-1.5"` → `model="ollama/phi4"` |
+| **Code Changes** | **High.** Different classes for different providers. | **Zero.** The API is identical for GPT-4 and Llama 3. |
+
+```python
+# Want to save money? Switch to local.
+# No imports to change. No logic to refactor.
+
+# Before (Cloud)
+node = LLMNode(
+    model_name="gpt-4o", 
+    prompt_template="Hello {name}"
+)
+
+# After (Local)
+node = LLMNode(
+    model_name="ollama/phi4:latest", # <--- ONE CHANGE
+    prompt_template="Hello {name}"
+)
+```
+
+---
+
 ## The Game Changer: Hybrid Cognitive Architecture
 
 **Most frameworks are "All LLM." This doesn't scale.**
