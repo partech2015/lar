@@ -267,7 +267,7 @@ Instead of pasting massive prompts, simply **reference** the master files in the
 > "Using the rules in @lar/IDE_MASTER_PROMPT.md, implement the agent described in @lar/IDE_PROMPT_TEMPLATE.md."
 
 ### 2. Learn by Example
-We have provided **8 robust patterns** in the **[`examples/`](examples/)** directory:
+We have provided **15 robust patterns** in the **[`examples/`](examples/)** directory:
 
 | Level | Pattern | Concept |
 | :--- | :--- | :--- |
