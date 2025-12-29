@@ -23,21 +23,21 @@ Concepts:
 
 # 1. Branch A: Fundamental Research
 researcher_a = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
+    model_name="ollama/phi4:latest",
     prompt_template="Define '{topic}' in one sentence.",
     output_key="result_a"
 )
 
 # 2. Branch B: Technical Analysis
 researcher_b = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
+    model_name="ollama/phi4:latest",
     prompt_template="Explain the technical difficulty of '{topic}' in one sentence.",
     output_key="result_b"
 )
 
 # 3. Branch C: Market Analysis
 researcher_c = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
+    model_name="ollama/phi4:latest",
     prompt_template="What is the market size for '{topic}'? Give one number.",
     output_key="result_c"
 )
