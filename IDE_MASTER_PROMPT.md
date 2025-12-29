@@ -52,5 +52,31 @@ router = RouterNode(
 )
 ```
 
+### 4. Defining a Parallel Batch
+```python
+from lar import BatchNode, LLMNode
+
+# 1. Define independent nodes (Fan-Out)
+worker_a = LLMNode(..., output_key="res_a")
+worker_b = LLMNode(..., output_key="res_b")
+
+# 2. Wrap them in a BatchNode
+# They run in parallel threads. State is cloned for each, then merged.
+batch = BatchNode(
+    nodes=[worker_a, worker_b],
+    next_node=aggregator_node
+)
+```
+
+### 5. Defining a Cleanup Node
+```python
+from lar import ClearErrorNode
+
+cleanup = ClearErrorNode(
+    error_key="error",
+    next_node=final_node
+)
+```
+
 ## Running Agents
 Always include a `if __name__ == "__main__":` block that uses `GraphExecutor` to run the graph instantly for verification.
