@@ -1,12 +1,15 @@
 import time
+import copy
+import concurrent.futures
 from abc import ABC, abstractmethod
-from .state import GraphState
 from typing import Callable, Dict, List, Optional, Any 
+ 
 # --- Multi-Provider Imports ---
 from litellm import completion, ModelResponse, utils
 from litellm.exceptions import APIError
 # ------------------------------
 from .state import GraphState
+
 # --- The Core API "Contract" ---
 class BaseNode(ABC):
     """
@@ -304,4 +307,74 @@ class ClearErrorNode(BaseNode):
         if state.get("last_error") is not None:
             print("  [ClearErrorNode]: Clearing 'last_error' from state.")
             state.set("last_error", None)
+        return self.next_node
+
+class BatchNode(BaseNode):
+    """
+    Executes a list of nodes in parallel using threads.
+    Useful for Fan-Out patterns where branches are independent.
+    Each node runs in its own thread with a *copy* of the state.
+    Non-conflicting updates are merged back into the main state.
+    """
+    def __init__(self, nodes: List[BaseNode], next_node: BaseNode = None):
+        """
+        Args:
+            nodes: List of nodes to execute in parallel.
+            next_node: The single node to execute after all parallel nodes finish.
+        """
+        self.nodes = nodes
+        self.next_node = next_node
+
+    def execute(self, state: GraphState):
+        print(f"  [BatchNode]: Starting parallel execution of {len(self.nodes)} nodes...")
+        
+        # Helper to run a single node with a cloned state
+        def run_node_safe(node, base_state_dict):
+            # Deep copy state for isolation safety in threads
+            local_state_dict = copy.deepcopy(base_state_dict)
+            local_state = GraphState(local_state_dict)
+            
+            # Execute the node logic
+            # Note: We ignore the 'next_node' return of the child node.
+            # BatchNode controls the flow, not the children.
+            node.execute(local_state)
+            
+            return local_state
+
+        # Snapshot current state
+        base_state_dict = state.get_all()
+        results = []
+        
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            # Launch all tasks
+            future_to_node = {
+                executor.submit(run_node_safe, node, base_state_dict): node 
+                for node in self.nodes
+            }
+            
+            for future in concurrent.futures.as_completed(future_to_node):
+                node = future_to_node[future]
+                try:
+                    local_state_result = future.result()
+                    results.append(local_state_result)
+                    print(f"  [BatchNode]: Node {node.__class__.__name__} ({getattr(node, 'output_key', 'unknown')}) completed.")
+                except Exception as e:
+                    print(f"  [BatchNode] ERROR in thread for {node.__class__.__name__}: {e}")
+                    state.set("last_error", str(e))
+
+        # Merge results back into the main state
+        print(f"  [BatchNode]: Merging results from {len(results)} threads...")
+        
+        updates_count = 0
+        for local_state in results:
+            local_dict = local_state.get_all()
+            for k, v in local_dict.items():
+                # If value is different from base, or new, we merge it.
+                # Logic: If multiple nodes update the SAME key, the last one wins (race condition).
+                # Users should avoid overlapping output_keys in BatchNode.
+                if k not in base_state_dict or base_state_dict[k] != v:
+                    state.set(k, v)
+                    updates_count += 1
+        
+        print(f"  [BatchNode]: Merged {updates_count} updates.")
         return self.next_node

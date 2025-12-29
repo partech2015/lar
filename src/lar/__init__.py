@@ -12,7 +12,8 @@ from .node import (
     LLMNode,
     RouterNode,
     ToolNode,
-    ClearErrorNode
+    ClearErrorNode,
+    BatchNode
 )
 from .executor import GraphExecutor
 from .utils import compute_state_diff, apply_diff
@@ -35,6 +36,7 @@ __all__ = [
     "RouterNode",
     "ToolNode",
     "ClearErrorNode",
+    "BatchNode",
     
     # Utility Functions
     "compute_state_diff",
