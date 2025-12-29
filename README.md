@@ -62,7 +62,7 @@ This means you get:
 
 ---
 
-## ⚡ Zero Friction: Switch from Cloud to Local in 1 Line
+## Zero Friction: Switch from Cloud to Local in 1 Line
 
 Most frameworks make "Local Models" hard. You have to import `langchain_community.llms.Ollama`, refactor your classes, and change your API calls.
 
@@ -271,16 +271,16 @@ We have provided **8 robust patterns** in the **[`examples/`](examples/)** direc
 
 | Level | Pattern | Concept |
 | :--- | :--- | :--- |
-| 🟢 | **[`1_simple_triage.py`](examples/1_simple_triage.py)** | Classification & Linear Routing |
-| 🟢 | **[`2_rag_researcher.py`](examples/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
-| 🟡 | **[`3_self_correction.py`](examples/3_self_correction.py)** | "Judge" Pattern & Error Loops |
-| 🟡 | **[`4_human_in_the_loop.py`](examples/4_human_in_the_loop.py)** | User Approval & Interrupts |
-| 🟡 | **[`5_parallel_execution.py`](examples/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
-| 🔴 | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
-| 🔴 | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
-| 🟣 | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
-| ⚫ | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
-| 🛡️ | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
+| | **[`1_simple_triage.py`](examples/1_simple_triage.py)** | Classification & Linear Routing |
+| | **[`2_rag_researcher.py`](examples/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
+| | **[`3_self_correction.py`](examples/3_self_correction.py)** | "Judge" Pattern & Error Loops |
+| | **[`4_human_in_the_loop.py`](examples/4_human_in_the_loop.py)** | User Approval & Interrupts |
+| | **[`5_parallel_execution.py`](examples/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
+| | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
+| | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
+| | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
+| | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
+| | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
 
 ---
 
