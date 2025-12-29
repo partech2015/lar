@@ -41,7 +41,7 @@ OPENAI_API_KEY="YOUR_OPENAI_KEY_HERE"
 ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 ```
 
-```
+
 
 ### 4. Zero Friction: Switch to Local Models
 Unlike other frameworks where you need to refactor your code to use local models, Lár (via LiteLLM) lets you switch by changing **one string**.
@@ -236,9 +236,5 @@ This log is your proof of *exactly* what the agent did, step-by-step.
   }
 ]
 ```
-
-### 5. Move to Production
-
-You've built and tested your agent locally. Now you can deploy it by wrapping your `GraphExecutor` in a simple FastAPI or Flask app.
 
 **That's it. You just built a Deterministic agent.**
