@@ -281,6 +281,11 @@ We have provided **8 robust patterns** in the **[`examples/`](examples/)** direc
 | 🟣 | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
 | ⚫ | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
 | 🛡️ | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
+| 🤖 | **[`11_reward_code_agent.py`](examples/11_reward_code_agent.py)** | **Code-First Agent**: Forward-Defined Logic |
+| 🔵 | **[`12_support_helper_agent.py`](examples/12_support_helper_agent.py)** | **Support Helper**: Lightweight Tool Assistant |
+| ⚫ | **[`13_mini_swarm_pruner.py`](examples/13_mini_swarm_pruner.py)** | **Mini Swarm**: Dynamic Graph Pruning |
+| 🚀 | **[`15_parallel_newsroom.py`](examples/15_parallel_newsroom.py)** | **True Parallelism**: Fan-Out / Fan-In (`BatchNode`) |
+| ⚡ | **[`16_parallel_corporate_swarm.py`](examples/16_parallel_corporate_swarm.py)** | **Parallel Swarm**: Concurrent Branch Execution |
 
 ---
 
