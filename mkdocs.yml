@@ -38,6 +38,7 @@ markdown_extensions:
 nav:
   - 'Home': index.md
   - 'Getting Started': getting-started.md
+  - 'IDE Setup': ide_setup.md
   - 'Core Concepts':
     - 'The "Glass Box" Philosophy': core-concepts/1-philosophy.md
     - 'The 7 Primitives': core-concepts/2-architecture.md
@@ -45,6 +46,7 @@ nav:
   - 'Guides':
 
     - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
+    - 'Just-in-Time Integrations': guides/integrations.md
     - 'Self-Correcting Loops': guides/self-correction-loop.md
 
   - 'API Reference':
