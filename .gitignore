@@ -47,3 +47,4 @@ htmlcov/
 
 # Ignore agent audit logs
 lar_logs/
+site/

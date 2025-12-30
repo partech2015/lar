@@ -57,4 +57,4 @@ linear_tool = ToolNode(
 *   **Zero Dependencies**: You don't need to install `lar-hubspot` or `lar-stripe`. Just `lar` and `hubspot-client`.
 
 ## Proof of Concept
-Check out [`examples/16_integration_test.py`](../../examples/16_integration_test.py) to see a generated integration for the CoinCap API.
+Check out [`examples/16_integration_test.py`](https://github.com/snath-ai/lar/blob/main/examples/16_integration_test.py) to see a generated integration for the CoinCap API.
