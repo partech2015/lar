@@ -14,7 +14,7 @@ SAVE_FILE = "lar_time_machine.json"
 
 # 1. Define Final Step (The destination)
 final_step_llm = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
+    model_name="ollama/phi4",
     prompt_template="Summarize this historical data: {data}",
     output_key="history_summary",
     next_node=None
@@ -40,7 +40,7 @@ crasher = ToolNode(
 )
 
 # 4. Define Step 1 Logic
-def step_1_logic(state):
+def step_1_logic():
     print("\n[Step 1] Executing initial logic...")
     return {"data": "Pre-Crash Data: The user visited page A."}
 

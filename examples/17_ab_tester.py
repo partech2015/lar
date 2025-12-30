@@ -13,7 +13,7 @@ from lar import GraphState, GraphExecutor, LLMNode, BatchNode
 # 1. Define the Judge (The Fan-In)
 # Must be defined first so it can be passed as 'next_node' to the BatchNode
 judge_node = LLMNode(
-    model_name="ollama/phi4:latest",
+    model_name="ollama/phi4",
     prompt_template="""
     You are an expert evaluator. Compare these two responses to the user's query and pick the best one.
     
@@ -31,7 +31,7 @@ judge_node = LLMNode(
 
 # 2. Define Prompt Variation A (Helpful)
 model_a = LLMNode(
-    model_name="ollama/phi4:latest",
+    model_name="ollama/phi4",
     prompt_template="You are a helpful customer service agent. Query: {customer_query}",
     output_key="response_a",
     next_node=None # BatchNode ignores individual next_nodes
@@ -39,7 +39,7 @@ model_a = LLMNode(
 
 # 3. Define Prompt Variation B (Sarcastic Pirate)
 model_b = LLMNode(
-    model_name="ollama/phi4:latest",
+    model_name="ollama/phi4",
     prompt_template="You are a sarcastic pirate. Answer this query: {customer_query}",
     output_key="response_b",
     next_node=None # BatchNode ignores individual next_nodes
