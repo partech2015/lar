@@ -193,6 +193,7 @@ You can build any agent with four core components:
       * **`LLMNode`**: The "Thinker." Calls any major LLM API (e.g., Gemini, GPT-4, Claude) to generate text... to generate text, modify plans, or correct code. **Now supports `generation_config` for controlling creativity (temperature, top_p).**
       * **`ToolNode`**: The "Actor." Executes any deterministic Python function (e.g., run code, search a database, call an API). It supports separate routing for `success` and `error`.
       * **`RouterNode`**: The "Choice." Executes a simple Python function to inspect the state and returns a string key, which deterministically routes execution to the next node. This is your "if/else" statement.
+      * **`BatchNode`**: The "Parallelizer." Fan-out multiple nodes to run concurrently on separate threads, then merge their results (fan-in). Essential for speed.
       * **`ClearErrorNode`**: A utility node that cleans up state (e.g., removes `last_error`) to prevent infinite loops.
 
 ---

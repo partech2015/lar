@@ -1,6 +1,6 @@
-# The 6 Lár Primitives (The "Lego Bricks")
+# The 7 Lár Primitives (The "Lego Bricks")
 
-`Lár` is not a heavy, complex framework. It is a tiny, powerful engine with 6 core "primitives." You can combine these "Lego bricks" to build any agent, from a simple chatbot to a complex, multi-agent orchestrator.
+`Lár` is not a heavy, complex framework. It is a tiny, powerful engine with 7 core "primitives." You can combine these "Lego bricks" to build any agent, from a simple chatbot to a complex, multi-agent orchestrator.
 
 - The `GraphExecutor`
 
@@ -33,6 +33,11 @@
 
 **Job**: This is your `if/else` statement. It runs a simple, deterministic Python function (a `decision_function`) that reads the `GraphState` and returns a string (e.g., `"success"`). The `RouterNode` then uses this string to pick the next node from its `path_map`.
 
+- The `BatchNode`
+
+**What it is**: The "Accelerator" or "Parallelizer."
+
+**Job**: Runs multiple nodes *concurrently* in separate threads. It creates a copy of the state for each thread (Fan-Out) and merges the results back into the main state (Fan-In). Essential for multi-agent swarms.
 
 - The `"Utility" Nodes`
 
