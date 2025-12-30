@@ -267,14 +267,15 @@ ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 
 Lár is designed for **Agentic IDEs** (Cursor, Windsurf, Antigravity) and strict code generation.
 
-We provide a **2-Step Workflow** directly in the repo to make your IDE an expert Lár Architect.
+We provide a **3-Step Workflow** directly in the repo to make your IDE an expert Lár Architect.
 
 ### 1. The Strategy: "Reference, Don't Copy"
 Instead of pasting massive prompts, simply **reference** the master files in the `lar/` directory.
 
 ### 2. The Workflow
 1.  **Context (The Brain)**: In your IDE chat, reference `@lar/IDE_MASTER_PROMPT.md`. This loads the strict typing rules and "Code-as-Graph" philosophy.
-2.  **Scaffold (The Ask)**: Open `@lar/IDE_PROMPT_TEMPLATE.md`, fill in your agent's goal, and ask the IDE to "Implement this."
+2.  **Integrations (The Hands)**: Reference `@lar/IDE_INTEGRATION_PROMPT.md` to generate production-ready API wrappers in seconds.
+3.  **Scaffold (The Ask)**: Open `@lar/IDE_PROMPT_TEMPLATE.md`, fill in your agent's goal, and ask the IDE to "Implement this."
 
 **Example Prompt to Cursor/Windsurf:**
 > "Using the rules in @lar/IDE_MASTER_PROMPT.md, implement the agent described in @lar/IDE_PROMPT_TEMPLATE.md."
