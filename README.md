@@ -281,7 +281,7 @@ Instead of pasting massive prompts, simply **reference** the master files in the
 > "Using the rules in @lar/IDE_MASTER_PROMPT.md, implement the agent described in @lar/IDE_PROMPT_TEMPLATE.md."
 
 ### 2. Learn by Example
-We have provided **16 robust patterns** in the **[`examples/`](examples/)** directory:
+We have provided **18 robust patterns** in the **[`examples/`](examples/)** directory:
 
 | Level | Pattern | Concept |
 | :--- | :--- | :--- |
@@ -301,6 +301,8 @@ We have provided **16 robust patterns** in the **[`examples/`](examples/)** dire
 | 🚀 | **[`14_parallel_newsroom.py`](examples/14_parallel_newsroom.py)** | **True Parallelism**: Fan-Out / Fan-In (`BatchNode`) |
 | ⚡ | **[`15_parallel_corporate_swarm.py`](examples/15_parallel_corporate_swarm.py)** | **Parallel Swarm**: Concurrent Branch Execution |
 | 🔌 | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
+| 🧪 | **[`17_ab_tester.py`](examples/17_ab_tester.py)** | **A/B Tester**: Parallel Prompts + Judge |
+| ⏳ | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
 
 ---
 
