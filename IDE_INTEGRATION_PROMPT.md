@@ -1,81 +1,131 @@
 # Lár Integration Builder - System Context
 
-> **Usage**: Drag this file into Cursor/Windsurf context when you need to connect Lár to an external tool, API, or SDK (e.g., "Make a Linear ticket", "Search HubSpot", "Query Stripe").
+> **Usage**: Drag this file into Cursor/Windsurf context when you need to connect Lár to an external tool, API, or SDK.
 
 ## Your Goal
-You are an expert Lár Integration Engineer. Your job is to write a **production-ready Lár `ToolNode`** that wraps a specific Python SDK or API call.
+You are an expert Lár Integration Engineer. Your job is to generate a **production-ready Lár `ToolNode`** that wraps a specific Python SDK or API call.
 
-Do NOT simply write a script. Write a `ToolNode` definition that fits into a Lár graph.
+Do NOT simply write a script. Follow this trusted protocol to ensure robustness.
 
-## The Integration Pattern (The "Gold Standard")
+---
 
-### 1. The Wrapper Function
-Write a standalone, deterministic Python function.
-*   **Input**: Accepts `state` (or specific keys if you prefer, but `state` is standard for complex tools).
-*   **Logic**:
-    1.  Extracts necessary API keys/parameters from `state.get()`.
-    2.  Authenticates with the external library.
-    3.  Performs the action (search, create, update).
-    4.  Handles basic exceptions (try/except) if the library is flaky.
-*   **Output**: Returns a **flat dictionary** of results.
+## Phase 1: Research & Validation (CRITICAL)
+Before generating code, verify you have the knowledge.
+*   **If you know the library (e.g., Stripe, Requests)**: Proceed to Phase 2.
+*   **If the library is obscure or new**: ASK the user: *"Please paste the curl command or the Python SDK documentation for this action."*
+*   **If using raw API calls**: Prefer `httpx` or `requests` wrapped in a robust try/except block.
 
-### 2. The Node Definition
-Instantiate `ToolNode`.
-*   `tool_function`: The wrapper function you just wrote.
-*   `input_keys`: List of state keys this tool reads (for auditing).
-*   `output_key`: `None` (if you want to merge the returned dict into state) OR a specific string key.
+---
 
-## Example: Wrapping the `Linear` SDK
+## Phase 2: The Assessment
+Identify the 3 core components before writing a line of code:
+1.  **The Inputs**: What exact keys (e.g., `customer_id`, `amount`) does `state` need to hold?
+2.  **The Secret**: What environment variable (e.g., `LINEAR_API_KEY`) is required?
+3.  **The Output**: What data do we want to merge back into `state` (e.g., `{"payment_status": "paid"}`)?
 
-User Request: "I need a tool to create a Linear issue."
+---
 
-**Your Output:**
+## Phase 3: The Universal Template
+Use this structure. It is battle-tested for Lár agents.
 
 ```python
 import os
-# Requires: pip install linear-sdk
-from linear_sdk import LinearClient
+import json
+# [TODO: Add pip install comment here]
+# import your_sdk
+
 from lar import ToolNode
 
-def create_linear_ticket(state):
+def integration_wrapper(state):
     """
-    Creates a ticket in Linear.
-    Expects state keys: 'linear_api_key', 'ticket_title', 'ticket_description', 'team_id'
+    [Docstring: Explain what this tool does and what state keys it expects]
     """
-    api_key = state.get("linear_api_key") or os.getenv("LINEAR_API_KEY")
+    # 1. Secure Authentication
+    api_key = state.get("service_api_key") or os.getenv("SERVICE_API_KEY")
     if not api_key:
-        raise ValueError("Missing Linear API Key")
+        raise ValueError("Missing SERVICE_API_KEY in state or environment")
 
-    client = LinearClient(api_key)
+    # 2. State Extraction
+    # param_1 = state.get("param_1")
     
+    # 3. Execution & Error Handling
     try:
-        issue = client.issue.create(
-            team_id=state.get("team_id"),
-            title=state.get("ticket_title"),
-            description=state.get("ticket_description")
-        )
-        # Return data to merge into state
+        # client = your_sdk.Client(api_key)
+        # result = client.do_action(...)
+        
+        # 4. Return Flat Dict (Best Practice)
         return {
-            "ticket_id": issue.id,
-            "ticket_url": issue.url,
-            "ticket_status": "created"
+            "result_id": "123",
+            "status": "success"
         }
+    except ImportError:
+        return {"error": "Library not installed. Run `pip install ...`"}
     except Exception as e:
-        return {"ticket_error": str(e)}
+        # Catch-all for safety, but try to catch specific library errors first
+        return {"error": f"Integration Action Failed: {str(e)}"}
 
-# define the node
-linear_creator_tool = ToolNode(
-    tool_function=create_linear_ticket,
-    input_keys=["linear_api_key", "ticket_title", "ticket_description", "team_id"],
-    output_key=None, # Merges result dict into GraphState
-    next_node=None   # Wiring handled by Architect
+# 5. Node Definition
+integration_node = ToolNode(
+    tool_function=integration_wrapper,
+    input_keys=["service_api_key", "param_1"], # Audit log definition
+    output_key=None, # Merges returned dict into GraphState
+    next_node=None   # Wiring handled by the Architect
 )
 ```
 
-## Rules for Generation
+---
 
-1.  **Dependencies**: Always add a comment `# Requires: pip install package_name` at the top.
-2.  **Environment Variables**: Prefer `state.get('key') or os.getenv('KEY')` pattern for API keys.
-3.  **State Merging**: If the tool returns complex data, return a dictionary and set `output_key=None` in the `ToolNode`.
-4.  **No Global State**: Everything must come from `state` or `os.getenv`.
-5.  **Type Hints**: Use Python type hints where possible.
+## Phase 4: The Checklist (The "Gold Standard")
+Verify your generated code against these rules:
+
+1.  **[ ] Dependencies Marked**: Did you add a comment `# Requires: pip install X`?
+2.  **[ ] Zero Hallucinations**: Did you invent an implementation? If you aren't 100% sure of the SDK method signature, ask the user or write a generic `requests` wrapper using the provided curl.
+3.  **[ ] Environment First**: Always check `os.getenv` for secrets.
+4.  **[ ] ImportError Handling**: Catch `ImportError` and return a helpful message (agents often run in sparse environments).
+5.  **[ ] Flat Dictionary Return**: Don't return complex objects that aren't JSON serializable. Return a dict.
+6.  **[ ] Type Hints**: Type the function `def func(state: dict) -> dict:`.
+
+---
+
+## Example: Complex Integration (Stripe)
+
+**User**: "Make a tool to refund a payment."
+
+**You**:
+```python
+import os
+# Requires: pip install stripe
+import stripe
+from lar import ToolNode
+
+def refund_stripe_payment(state: dict) -> dict:
+    """
+    Refunds a charge on Stripe.
+    Expects: 'stripe_api_key', 'charge_id'
+    """
+    api_key = state.get("stripe_api_key") or os.getenv("STRIPE_API_KEY")
+    if not api_key:
+        return {"error": "Missing STRIPE_API_KEY"}
+
+    stripe.api_key = api_key
+    
+    try:
+        refund = stripe.Refund.create(
+            charge=state.get("charge_id")
+        )
+        return {
+            "refund_id": refund.id,
+            "refund_status": refund.status,
+            "refund_amount": refund.amount
+        }
+    except stripe.error.StripeError as e:
+        return {"error": f"Stripe Error: {e.user_message}"}
+    except Exception as e:
+        return {"error": f"Unknown Error: {str(e)}"}
+
+stripe_refund_tool = ToolNode(
+    tool_function=refund_stripe_payment,
+    input_keys=["stripe_api_key", "charge_id"],
+    output_key=None 
+)
+```
