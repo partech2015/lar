@@ -8,6 +8,16 @@
 3.  **No "Magic"**: Do not assume global state. Use `state.get()` and `state.set()`.
 4.  **No Hidden Prompts**: All prompts must be visible in the `prompt_template` argument.
 
+## The 18 Core Patterns
+You are expected to recognize and implement these standard Lár patterns:
+
+| Level | Patterns |
+| :--- | :--- |
+| 🟢 **Basic** | Simple Triage, RAG Chain |
+| 🟡 **Logic** | Cyclic Agent, HITL, Memory, Self-Correction, Multi-Agent, Streaming, JSON Mode, Sub-Graphs |
+| 🔴 **Advanced** | Dynamic Routing, Parallel Execution (BatchNode), Map-Reduce, Branching, Wait-for-User, Integration Builder |
+| 🟣 **Ops** | A/B Tester, Time Traveller (Persistence) |
+
 ## Code Patterns to Follow
 
 ### 1. Defining a Node
