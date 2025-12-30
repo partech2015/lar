@@ -215,7 +215,7 @@ This is a **real execution** log from a lar-built agent. The agent's job was to 
 **This is the `lar` difference.** You know the *exact* node (`LLMNode`), the *exact* step (3), and the *exact reason* (`APIConnectionError`) for the failure. You can't debug a "black box," but you can **always** fix a "glass box."
 
 
-## 🔌 Just-in-Time Integrations
+##  Just-in-Time Integrations
 
 **Stop waiting for "HubSpot Support" to merge.**
 
@@ -225,7 +225,7 @@ Lár does not ship with 500+ brittle API wrappers. Instead, we ship the **Integr
 2.  **Ask**: *"Make me a tool that queries the Stripe API for failed payments."*
 3.  **Done**: You get a production-ready, type-safe `ToolNode` in 30 seconds.
 
-👉 **[Read the Full Guide](docs/guides/integrations.md)** | **[See Example](examples/16_integration_test.py)**
+ **[Read the Full Guide](docs/guides/integrations.md)** | **[See Example](examples/16_integration_test.py)**
 
 
 ## Installation
@@ -280,7 +280,7 @@ Instead of pasting massive prompts, simply **reference** the master files in the
 > "Using the rules in @lar/IDE_MASTER_PROMPT.md, implement the agent described in @lar/IDE_PROMPT_TEMPLATE.md."
 
 ### 2. Learn by Example
-We have provided **15 robust patterns** in the **[`examples/`](examples/)** directory:
+We have provided **16 robust patterns** in the **[`examples/`](examples/)** directory:
 
 | Level | Pattern | Concept |
 | :--- | :--- | :--- |
@@ -299,6 +299,7 @@ We have provided **15 robust patterns** in the **[`examples/`](examples/)** dire
 | ⚫ | **[`13_mini_swarm_pruner.py`](examples/13_mini_swarm_pruner.py)** | **Mini Swarm**: Dynamic Graph Pruning |
 | 🚀 | **[`14_parallel_newsroom.py`](examples/14_parallel_newsroom.py)** | **True Parallelism**: Fan-Out / Fan-In (`BatchNode`) |
 | ⚡ | **[`15_parallel_corporate_swarm.py`](examples/15_parallel_corporate_swarm.py)** | **Parallel Swarm**: Concurrent Branch Execution |
+| 🔌 | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
 
 ---
 
