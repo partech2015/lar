@@ -215,6 +215,18 @@ This is a **real execution** log from a lar-built agent. The agent's job was to 
 **This is the `lar` difference.** You know the *exact* node (`LLMNode`), the *exact* step (3), and the *exact reason* (`APIConnectionError`) for the failure. You can't debug a "black box," but you can **always** fix a "glass box."
 
 
+## 🔌 Just-in-Time Integrations
+
+**Stop waiting for "HubSpot Support" to merge.**
+
+Lár does not ship with 500+ brittle API wrappers. Instead, we ship the **Integration Builder**.
+
+1.  **Drag** [`IDE_INTEGRATION_PROMPT.md`](IDE_INTEGRATION_PROMPT.md) into your AI Chat (Cursor/Windsurf).
+2.  **Ask**: *"Make me a tool that queries the Stripe API for failed payments."*
+3.  **Done**: You get a production-ready, type-safe `ToolNode` in 30 seconds.
+
+👉 **[Read the Full Guide](docs/guides/integrations.md)** | **[See Example](examples/16_integration_test.py)**
+
 
 ## Installation
 
