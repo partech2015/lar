@@ -554,7 +554,6 @@ This means:
 - You may modify and distribute the code.
 - You MUST retain the `LICENSE` and the `NOTICE` file.
 - If you distribute a modified version, you must document what you changed.
-- You receive a patent license for contributions made to the project.
 
 `Apache 2.0` protects the original author `(Aadithya Vishnu Sajeev)` while encouraging broad adoption and community collaboration.
 
