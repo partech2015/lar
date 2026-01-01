@@ -43,8 +43,10 @@ ANTHROPIC_API_KEY="YOUR_ANTHROPIC_KEY_HERE"
 
 
 
-### 4. Zero Friction: Switch to Local Models
-Unlike other frameworks where you need to refactor your code to use local models, Lár (via LiteLLM) lets you switch by changing **one string**.
+### 4. Universal Model Support (Powered by LiteLLM)
+Refactoring code to switch providers is a thing of the past. Lár is built on **LiteLLM**, giving you instant access to 100+ providers (OpenAI, Anthropic, VertexAI, Bedrock, etc) and local models.
+
+Switching is just changing **one string**.
 
 **Cloud (OpenAI):**
 ```python
