@@ -43,7 +43,32 @@ class LLMNode(BaseNode):
         next_node: BaseNode = None,
         max_retries: int = 3,
         system_instruction: str = None
+class LLMNode(BaseNode):
+    def __init__(
+        self,
+        model_name: str,          # e.g., "gpt-4", "gemini/gemini-1.5-pro", "ollama/phi4"
+        prompt_template: str,     # Python formatting string, e.g., "Hello {name}"
+        output_key: str,          # State key to save result to
+        next_node: BaseNode = None,
+        max_retries: int = 3,
+        system_instruction: str = None,
+        generation_config: dict = None # Pass {"api_base": "...", "temperature": 0.5}
     ): ...
+```
+
+#### Example: Generic OpenAI / Llama.cpp
+You can connect to any generic OpenAI-compatible endpoint (like `vLLM` or `llama.cpp` server) using `generation_config`.
+
+```python
+node = LLMNode(
+    model_name="openai/my-custom-model",
+    prompt_template="Hello world",
+    output_key="result",
+    generation_config={
+        "api_base": "http://localhost:8080/v1", # Point to your local server
+        "api_key": "sk-xxx" # Optional if your server requires it
+    }
+)
 ```
 
 ### 3. ToolNode

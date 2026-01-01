@@ -57,6 +57,15 @@ node = LLMNode(model_name="gpt-4o", ...)
 node = LLMNode(model_name="ollama/phi4:latest", ...)
 ```
 
+**Local (Llama.cpp / vLLM):**
+```python
+# Use ANY generic OpenAI endpoint
+node = LLMNode(
+    model_name="openai/custom", 
+    generation_config={"api_base": "http://localhost:8080/v1"}
+)
+```
+
 ### 5. Create Your First “Glass Box” Agent
 
 Now, build a simple Master Planner Agent that accepts a user’s task, evaluates it, and chooses the appropriate worker—either a coding agent or a lightweight chatbot.

@@ -83,10 +83,18 @@ node = LLMNode(
     prompt_template="Hello {name}"
 )
 
-# After (Local)
+# After (Local - Ollama)
 node = LLMNode(
     model_name="ollama/phi4:latest", # <--- ONE CHANGE
     prompt_template="Hello {name}"
+)
+
+# After (Local - Llama.cpp / Generic OpenAI)
+# Use api_base to point to any vLLM / llama.cpp server
+node = LLMNode(
+    model_name="openai/custom_model_name",
+    prompt_template="Hello {name}",
+    generation_config={"api_base": "http://localhost:8080/v1"}
 )
 ```
 
