@@ -62,16 +62,17 @@ This means you get:
 
 ---
 
-## Zero Friction: Switch from Cloud to Local in 1 Line
+## Universal Model Support: Powered by LiteLLM
 
-Most frameworks make "Local Models" hard. You have to import `langchain_community.llms.Ollama`, refactor your classes, and change your API calls.
+**Lár runs on 100+ Providers.**
+Because Lár is built on the robust **[LiteLLM](https://docs.litellm.ai/docs/)** adapter, you are not locked into one vendor.
 
-With Lár (via LiteLLM), **the model is just a string**.
+Start with **OpenAI** for prototyping. Deploy with **Azure/Bedrock** for compliance. Switch to **Ollama** for local privacy. All with **Zero Refactoring**.
 
-| **Task** | **LangChain / CrewAI** | **Lár (The Easy Way)** |
+| **Task** | **LangChain / CrewAI** | **Lár (The Unified Way)** |
 | :--- | :--- | :--- |
-| **Switching to Local** | 1. Import `Ollama` specific class.<br>2. Instantiate new object.<br>3. Refactor Chains. | **Change 1 string.**<br>`model="gemini-1.5"` → `model="ollama/phi4"` |
-| **Code Changes** | **High.** Different classes for different providers. | **Zero.** The API is identical for GPT-4 and Llama 3. |
+| **Switching Providers** | 1. Import new provider class.<br>2. Instantiate specific object.<br>3. Refactor logic. | **Change 1 string.**<br>`model="gpt-4o"` → `model="ollama/phi4"` |
+| **Code Changes** | **High.** `ChatOpenAI` vs `ChatBedrock` classes. | **Zero.** The API contract is identical for every model. |
 
 ```python
 # Want to save money? Switch to local.
