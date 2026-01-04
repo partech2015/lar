@@ -74,7 +74,7 @@ Start with **OpenAI** for prototyping. Deploy with **Azure/Bedrock** for complia
 | **Switching Providers** | 1. Import new provider class.<br>2. Instantiate specific object.<br>3. Refactor logic. | **Change 1 string.**<br>`model="gpt-4o"` → `model="ollama/phi4"` |
 | **Code Changes** | **High.** `ChatOpenAI` vs `ChatBedrock` classes. | **Zero.** The API contract is identical for every model. |
 
-**[Read the Full LiteLLM Setup Guide](docs/guides/litellm_setup.md)** to learn how to configure:
+**[Read the Full LiteLLM Setup Guide](https://docs.snath.ai/guides/litellm_setup/)** to learn how to configure:
 -   **Local Models** (Ollama, Llama.cpp, LocalAI)
 -   **Cloud Providers** (OpenAI, Anthropic, Vertex, Bedrock, Azure)
 -   **Advanced Config** (Temperature, API Base, Custom Headers)
@@ -231,7 +231,7 @@ Lár does not ship with 500+ brittle API wrappers. Instead, we ship the **Integr
 2.  **Ask**: *"Make me a tool that queries the Stripe API for failed payments."*
 3.  **Done**: You get a production-ready, type-safe `ToolNode` in 30 seconds.
 
- **[Read the Full Guide](docs/guides/integrations.md)** | **[See Example](examples/16_integration_test.py)**
+ **[Read the Full Guide](https://docs.snath.ai/guides/integrations/)** | **[See Example](examples/16_integration_test.py)**
 
 
 ## Installation
