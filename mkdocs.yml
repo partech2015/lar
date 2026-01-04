@@ -45,6 +45,7 @@ nav:
     - 'The Audit Log': core-concepts/3-audit-log.md
     - 'The 18 Core Patterns': core-concepts/4-core-patterns.md
   - 'Guides':
+    - 'Universal Model Support (LiteLLM)': guides/litellm_setup.md
 
     - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
     - 'Just-in-Time Integrations': guides/integrations.md

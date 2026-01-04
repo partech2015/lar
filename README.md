@@ -74,27 +74,24 @@ Start with **OpenAI** for prototyping. Deploy with **Azure/Bedrock** for complia
 | **Switching Providers** | 1. Import new provider class.<br>2. Instantiate specific object.<br>3. Refactor logic. | **Change 1 string.**<br>`model="gpt-4o"` → `model="ollama/phi4"` |
 | **Code Changes** | **High.** `ChatOpenAI` vs `ChatBedrock` classes. | **Zero.** The API contract is identical for every model. |
 
+**[Read the Full LiteLLM Setup Guide](docs/guides/litellm_setup.md)** to learn how to configure:
+-   **Local Models** (Ollama, Llama.cpp, LocalAI)
+-   **Cloud Providers** (OpenAI, Anthropic, Vertex, Bedrock, Azure)
+-   **Advanced Config** (Temperature, API Base, Custom Headers)
+
 ```python
 # Want to save money? Switch to local.
 # No imports to change. No logic to refactor.
 
 # Before (Cloud)
-node = LLMNode(
-    model_name="gpt-4o", 
-    prompt_template="Hello {name}"
-)
+node = LLMNode(model_name="gpt-4o", ...)
 
 # After (Local - Ollama)
-node = LLMNode(
-    model_name="ollama/phi4:latest", # <--- ONE CHANGE
-    prompt_template="Hello {name}"
-)
+node = LLMNode(model_name="ollama/phi4", ...)
 
-# After (Local - Llama.cpp / Generic OpenAI)
-# Use api_base to point to any vLLM / llama.cpp server
+# After (Local - Generic Server)
 node = LLMNode(
-    model_name="openai/custom_model_name",
-    prompt_template="Hello {name}",
+    model_name="openai/custom",
     generation_config={"api_base": "http://localhost:8080/v1"}
 )
 ```
