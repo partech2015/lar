@@ -1,4 +1,4 @@
-[← Return to snath.ai](https://snath.ai)
+
 
 
 ## Power Your IDE (Cursor / Windsurf)

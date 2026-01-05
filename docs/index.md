@@ -1,4 +1,4 @@
-[← Return to snath.ai](https://snath.ai)
+
 # **Ready to build Auditable AI Agents**
  
 

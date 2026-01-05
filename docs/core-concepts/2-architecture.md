@@ -1,4 +1,4 @@
-[← Return to snath.ai](https://snath.ai)
+
 
 # The 7 Lár Primitives (The "Lego Bricks")
 

@@ -1,4 +1,4 @@
-[← Return to snath.ai](https://snath.ai)
+
 
 [← Return to API Reference](../api-reference/utilities.md)
 

@@ -1,4 +1,4 @@
-[← Return to snath.ai](https://snath.ai)
+
 
 # API Reference: `LLMNode`
 

@@ -1,4 +1,4 @@
-[← Return to snath.ai](https://snath.ai)
+
 
 # Guide: Self-Correcting Loops
 
