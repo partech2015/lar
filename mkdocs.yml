@@ -35,8 +35,18 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+# Social Links
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://snath.ai
+      name: Return to Snath.ai
+    - icon: fontawesome/brands/github
+      link: https://github.com/snath-ai/lar
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/snath_ai
+
 nav:
-  - 'Back to Snath.ai': https://snath.ai
   - 'Home': index.md
   - 'Getting Started': getting-started.md
   - 'IDE Setup': ide_setup.md
