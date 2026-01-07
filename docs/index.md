@@ -35,6 +35,7 @@ This means you get:
 
 Learn by building with our ready-made demos:
 
+*   **[DMN: The Showcase](https://github.com/snath-ai/DMN)**: A Cognitive Architecture that sleeps, dreams, and remembers.
 *   **[RAG Agent Demo](https://github.com/snath-ai/rag-demo)**: A self-correcting RAG agent with local vector search.
 *   **[Customer Support Swarm](https://github.com/snath-ai/customer-support-demo)**: A multi-agent orchestration pattern.
 

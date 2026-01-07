@@ -508,6 +508,8 @@ print("Agent serialized successfully. Ready for deployment.")
 ## Ready to Build a Real Agent?
 We have built two "killer demos" that prove this "glass box" model. You can clone, build, and run them today.
 
+- **[snath-ai/DMN](https://github.com/snath-ai/DMN)**: **The Flagship Showcase.** A cognitive architecture with a "Bicameral Mind" (Fast/Slow) that sleeps, dreams, and consolidates long-term memory to solve catastrophic forgetting.
+
 - **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
 
 - **[snath-ai/customer-support-demo](https://github.com/snath-ai/customer-support-demo)**: The Customer Support agent described above.
