@@ -533,6 +533,11 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 
 
 
+## Ready for Production?
+
+Lár is designed to be deployed as a standard Python library.
+Read our **[Deployment Guide](https://docs.snath.ai/guides/deployment/)** to learn how to wrap your graph in **FastAPI** and deploy to AWS/Heroku.
+
 ## Author
 **Lár** was created by **[Aadithya Vishnu Sajeev](https://github.com/axdithyaxo)**.
 
