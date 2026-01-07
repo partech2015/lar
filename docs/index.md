@@ -47,6 +47,11 @@ Make your IDE an expert Lár Architect with this **2-Step Workflow**:
 
 [Read the Full Guide](ide_setup.md)
 
+## Ready for Production?
+
+Lár is designed to be deployed as a standard Python library.
+Read our **[Deployment Guide](guides/deployment.md)** to learn how to wrap your graph in **FastAPI** and deploy to AWS/Heroku.
+
 Get Started in 3 Minutes [https://docs.snath.ai/getting-started/](https://docs.snath.ai/getting-started/)
 
 ## Author

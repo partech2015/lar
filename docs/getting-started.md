@@ -70,8 +70,14 @@ node = LLMNode(
 
 ### 5. Create Your First “Glass Box” Agent
 
-Now, build a simple Master Planner Agent that accepts a user’s task, evaluates it, and chooses the appropriate worker—either a coding agent or a lightweight chatbot.
+Now, build a simple Master Planner Agent that accepts a user’s task, evaluates it, and routes it to an exact specialist.
 
+## Next Steps: Moving to Production
+
+Once your agent is working locally, you want to deploy it as an API.
+Check out our **[Deployment Guide](guides/deployment.md)** to see how to wrap your agent in a **FastAPI** server in 5 minutes.
+
+[View Deployment Guide →](guides/deployment.md)
 
 ```python
 import os
