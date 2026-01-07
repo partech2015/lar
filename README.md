@@ -289,27 +289,27 @@ Instead of pasting massive prompts, simply **reference** the master files in the
 ### 2. Learn by Example
 We have provided **18 robust patterns** in the **[`examples/`](examples/)** directory:
 
-| Level | Pattern | Concept |
-| :--- | :--- | :--- |
-| 🟢 | **[`1_simple_triage.py`](examples/1_simple_triage.py)** | Classification & Linear Routing |
-| 🟢 | **[`2_rag_researcher.py`](examples/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
-| 🟡 | **[`3_self_correction.py`](examples/3_self_correction.py)** | "Judge" Pattern & Error Loops |
-| 🟡 | **[`4_human_in_the_loop.py`](examples/4_human_in_the_loop.py)** | User Approval & Interrupts |
-| 🟡 | **[`5_parallel_execution.py`](examples/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
-| 🔴 | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
-| 🔴 | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
-| 🟣 | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
-| ⚫ | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
-| 🛡️ | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
-| 🤖 | **[`11_reward_code_agent.py`](examples/11_reward_code_agent.py)** | **Code-First Agent**: Forward-Defined Logic |
-| 🔵 | **[`12_support_helper_agent.py`](examples/12_support_helper_agent.py)** | **Support Helper**: Lightweight Tool Assistant |
-| ⚫ | **[`13_mini_swarm_pruner.py`](examples/13_mini_swarm_pruner.py)** | **Mini Swarm**: Dynamic Graph Pruning |
-| 🚀 | **[`14_parallel_newsroom.py`](examples/14_parallel_newsroom.py)** | **True Parallelism**: Fan-Out / Fan-In (`BatchNode`) |
-| ⚡ | **[`15_parallel_corporate_swarm.py`](examples/15_parallel_corporate_swarm.py)** | **Parallel Swarm**: Concurrent Branch Execution |
-| 🔌 | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
-| 🧪 | **[`17_ab_tester.py`](examples/17_ab_tester.py)** | **A/B Tester**: Parallel Prompts + Judge |
-| ⏳ | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
-| 19 | **[`19_fastapi_server.py`](examples/19_fastapi_server.py)** | **Deploy Anywhere**: Wrap Agent in FastAPI |
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_simple_triage.py`](examples/1_simple_triage.py)** | Classification & Linear Routing |
+| **2** | **[`2_rag_researcher.py`](examples/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
+| **3** | **[`3_self_correction.py`](examples/3_self_correction.py)** | "Judge" Pattern & Error Loops |
+| **4** | **[`4_human_in_the_loop.py`](examples/4_human_in_the_loop.py)** | User Approval & Interrupts |
+| **5** | **[`5_parallel_execution.py`](examples/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
+| **6** | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
+| **7** | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
+| **8** | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
+| **9** | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
+| **10** | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
+| **11** | **[`11_reward_code_agent.py`](examples/11_reward_code_agent.py)** | **Code-First Agent**: Forward-Defined Logic |
+| **12** | **[`12_support_helper_agent.py`](examples/12_support_helper_agent.py)** | **Support Helper**: Lightweight Tool Assistant |
+| **13** | **[`13_mini_swarm_pruner.py`](examples/13_mini_swarm_pruner.py)** | **Mini Swarm**: Dynamic Graph Pruning |
+| **14** | **[`14_parallel_newsroom.py`](examples/14_parallel_newsroom.py)** | **True Parallelism**: Fan-Out / Fan-In (`BatchNode`) |
+| **15** | **[`15_parallel_corporate_swarm.py`](examples/15_parallel_corporate_swarm.py)** | **Parallel Swarm**: Concurrent Branch Execution |
+| **16** | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
+| **17** | **[`17_ab_tester.py`](examples/17_ab_tester.py)** | **A/B Tester**: Parallel Prompts + Judge |
+| **18** | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
+| **19** | **[`19_fastapi_server.py`](examples/19_fastapi_server.py)** | **Deploy Anywhere**: Wrap Agent in FastAPI |
 
 ---
 
