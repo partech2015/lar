@@ -309,6 +309,7 @@ We have provided **18 robust patterns** in the **[`examples/`](examples/)** dire
 | 🔌 | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
 | 🧪 | **[`17_ab_tester.py`](examples/17_ab_tester.py)** | **A/B Tester**: Parallel Prompts + Judge |
 | ⏳ | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
+| 19 | **[`19_fastapi_server.py`](examples/19_fastapi_server.py)** | **Deploy Anywhere**: Wrap Agent in FastAPI |
 
 ---
 
