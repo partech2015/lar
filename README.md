@@ -358,7 +358,7 @@ graph TD
     I --> J[END];
 ```
 
-# Lár Engine Architecture: The Multi-Agent Assembly Line
+## Lár Engine Architecture: The Multi-Agent Assembly Line
 
 ### The core of this application is a Multi-Agent Orchestration Graph. `Lár` forces you to define the assembly line, which guarantees predictable, auditable results.
 
