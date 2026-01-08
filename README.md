@@ -362,6 +362,20 @@ graph TD
 
 ### The core of this application is a Multi-Agent Orchestration Graph. `Lár` forces you to define the assembly line, which guarantees predictable, auditable results.
 
+## Compliance & Safety (EU AI Act Ready - Aug 2026)
+
+Lár is engineered for **High-Risk AI Systems** under the **EU AI Act (2026)** and **FDA 21 CFR Part 11**.
+
+| Regulation | Requirement | Lár Implementation |
+| :--- | :--- | :--- |
+| **EU AI Act Art. 12** | **Record-Keeping** | **State-Diff Ledger**: Automatically creates an immutable, forensic JSON log of every step, variable change, and model decision. |
+| **EU AI Act Art. 13** | **Transparency** | **"Glass Box" Architecture**: No hidden prompts or "magic" loops. Every node is explicit code that can be audited by non-technical reviewers. |
+| **EU AI Act Art. 14** | **Human Oversight** | **Interrupt Pattern**: Native support for "Human-in-the-Loop". Pause execution, modify state, and resume—ensuring human control over high-stakes decisions. |
+| **FDA 21 CFR Part 11** | **Audit Trails** | **Cryptographic Determinism**: The engine is deterministic by design, ensuring reproducible runs for clinical validation. |
+
+---
+
+## Quick Start
 ### 1. Graph Flow (Execution Sequence)
 
 The agent executes in a fixed, 6-step sequence. The graph is `defined backwards` in the code, but the execution runs forwards:
