@@ -309,7 +309,8 @@ We have provided **18 robust patterns** in the **[`examples/`](examples/)** dire
 | **16** | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
 | **17** | **[`17_ab_tester.py`](examples/17_ab_tester.py)** | **A/B Tester**: Parallel Prompts + Judge |
 | **18** | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
-| **19** | **[`19_fastapi_server.py`](examples/19_fastapi_server.py)** | **Deploy Anywhere**: Wrap Agent in FastAPI |
+| **20** | **[`20_juried_layer.py`](examples/20_juried_layer.py)** | **Juried Layer**: Proposer (LLM) -> Jury (Code) -> Kernel (Exec) |
+| **21** | **[`21_access_control_agent.py`](examples/21_access_control_agent.py)** | **Flagship**: Access Control (LLM + Policy + Human Interrupt) |
 
 ---
 
@@ -523,6 +524,8 @@ print("Agent serialized successfully. Ready for deployment.")
 We have built two "killer demos" that prove this "glass box" model. You can clone, build, and run them today.
 
 - **[snath-ai/DMN](https://github.com/snath-ai/DMN)**: **The Flagship Showcase.** A cognitive architecture with a "Bicameral Mind" (Fast/Slow) that sleeps, dreams, and consolidates long-term memory to solve catastrophic forgetting.
+
+- **[`examples/21_access_control_agent.py`](examples/21_access_control_agent.py)**: **The Enterprise Flagship.** A "Juried Layer" demo that combines LLM Reasoning, Deterministic Policy, and Human-in-the-Loop Interrupts for secure infrastructure access.
 
 - **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
 
