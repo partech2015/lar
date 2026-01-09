@@ -54,7 +54,7 @@ nav:
     - 'The "Glass Box" Philosophy': core-concepts/1-philosophy.md
     - 'The 7 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
-    - 'The 18 Core Patterns': core-concepts/4-core-patterns.md
+    - 'The 21 Core Patterns': core-concepts/4-core-patterns.md
   - 'Guides':
     - 'Universal Model Support (LiteLLM)': guides/litellm_setup.md
 
