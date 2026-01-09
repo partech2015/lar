@@ -1,3 +1,4 @@
+# For setup instructions, see: https://docs.snath.ai/guides/litellm_setup/
 import os
 import json
 import sys

@@ -1,3 +1,4 @@
+# For setup instructions, see: https://docs.snath.ai/guides/litellm_setup/
 """
 Mini swarm example inspired by the corporate swarm pattern.
 One LLM sets strategy, routers prune or execute branches, and workers

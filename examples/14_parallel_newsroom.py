@@ -1,3 +1,4 @@
+# For setup instructions, see: https://docs.snath.ai/guides/litellm_setup/
 """
 Example 15: The Newsroom (True Parallel Execution)
 --------------------------------------------------

@@ -1,3 +1,4 @@
+# For setup instructions, see: https://docs.snath.ai/guides/litellm_setup/
 
 import requests
 from lar import GraphState, GraphExecutor, ToolNode, AddValueNode, apply_diff, summarize_diff

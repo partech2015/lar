@@ -1,3 +1,4 @@
+# For setup instructions, see: https://docs.snath.ai/guides/litellm_setup/
 """
 Example: Lightweight support helper agent built with Lár.
 The graph classifies the request, optionally gathers lightweight

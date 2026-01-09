@@ -1,3 +1,4 @@
+# For setup instructions, see: https://docs.snath.ai/guides/litellm_setup/
 """
 Example 19: Deploying Lár as an API (FastAPI)
 
