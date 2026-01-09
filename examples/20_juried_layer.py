@@ -27,17 +27,8 @@ Return ONLY valid JSON in this format:
 Do not write any text outside the JSON.
 """
 
-# Configure the LLM Node
-# Ensure you have run: `ollama pull phi4`
-proposer = LLMNode(
-    model_name="ollama/phi4", 
-    prompt_template=PROMPT_TEMPLATE,
-    output_key="proposal_txt", # We store the raw string first
-    next_node=None # We will wire this manually at the bottom
-)
 
-# --- 2. JSON PARSER (Helper) ---
-# Since LLMs return strings, we need a small node to parse it into a Dict
+# Validates the Proposer's output
 class JsonParserNode(BaseNode):
     def __init__(self, next_node=None):
         self.next_node = next_node
@@ -114,9 +105,13 @@ jury = JuryNode(next_node=kernel)
 parser = JsonParserNode(next_node=jury)
 
 # Wire the LLM
-# Note: LLMNode allows setting next_node in __init__, but we can also set it post-hoc if needed.
-# Since we instantiated `proposer` earlier with next_node=None, let's fix it.
-proposer.next_node = parser
+# Ensure you have run: `ollama pull phi4`
+proposer = LLMNode(
+    model_name="ollama/phi4", 
+    prompt_template=PROMPT_TEMPLATE,
+    output_key="proposal_txt",
+    next_node=parser # Wired directly! 
+)
 
 # --- 5. EXECUTION HELPER ---
 def run_and_print(executor, start_node, initial_state):
