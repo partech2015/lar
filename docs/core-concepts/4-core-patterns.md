@@ -1,6 +1,6 @@
-# The 18 Core Patterns
+# The 21 Core Patterns
 
-Lár is built on the philosophy of "Code as Graph". We have created **18 robust engineering patterns** that strictly correspond to the examples in the repository.
+Lár is built on the philosophy of "Code as Graph". We have created **21 robust engineering patterns** that strictly correspond to the examples in the repository.
 
 Each pattern below includes a link to the source code.
 
@@ -123,3 +123,21 @@ Each pattern below includes a link to the source code.
 [See Example](https://github.com/snath-ai/lar/blob/main/examples/18_resumable_graph.py)
 *   **Mechanism**: Save `state.json` -> Stop Process -> Load `state.json` -> Resume.
 *   **Use Case**: Serverless deployments (stopping to save cost), Crash recovery.
+
+### 19. FastAPI Server
+**Deploy Anywhere.**
+[See Example](https://github.com/snath-ai/lar/blob/main/examples/19_fastapi_server.py)
+*   **Mechanism**: Wrapping `GraphExecutor` in a FastAPI route.
+*   **Use Case**: Exposing your agent as a REST API for production deployment.
+
+### 20. Juried Layer
+**Architecture-Level Safety.**
+[See Example](https://github.com/snath-ai/lar/blob/main/examples/20_juried_layer.py)
+*   **Mechanism**: `Proposer (LLM)` -> `Jury (Code/Policy)` -> `Kernel (Execution)`.
+*   **Why**: Separates the "Reasoning" (untrustworthy) from the "Authorization" (deterministic).
+
+### 21. Access Control Agent
+**The Flagship.**
+[See Example](https://github.com/snath-ai/lar/blob/main/examples/21_access_control_agent.py)
+*   **Mechanism**: `Juried Layer` + `Human-in-the-Loop Interrupt` + `Strict JSON`.
+*   **Use Case**: Enterprise Infrastructure Access Bot (e.g. "Grant admin access to DB").

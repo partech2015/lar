@@ -136,8 +136,9 @@ LangGraph Engine stopped execution due to Recursion Limit.
 
 **Why this matters:**
 1.  **The "Recursion Limit" Crash**: Standard executors treat agents as loops. They cap at 25 steps to prevent infinite loops. Real work (like a 60-step swarm) triggers this safety switch.
-2.  **The "Token Burn"**: Standard frameworks use an LLM to route every step ($0.60/run). Lár uses code ($0.00/run).
-3.  **The "Telephone Game"**: Passing data through 60 LLM layers corrupts context. Lár passes explicit state objects.
+2.  **Clone the Patterns**: You don't need a framework. You need a pattern. We provide **21 single-file recipes** (Examples 1-21).
+3.  **The "Token Burn"**: Standard frameworks use an LLM to route every step ($0.60/run). Lár uses code ($0.00/run).
+4.  **The "Telephone Game"**: Passing data through 60 LLM layers corrupts context. Lár passes explicit state objects.
 
 > "Lár turns Agents from 'Chatbot Prototyping' into 'High-Performance Software'."
 
