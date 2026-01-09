@@ -67,7 +67,7 @@ def integration_wrapper(state):
 # 5. Node Definition
 integration_node = ToolNode(
     tool_function=integration_wrapper,
-    input_keys=["service_api_key", "param_1"], # Audit log definition
+    input_keys=["__state__"], # Pass full state to function
     output_key=None, # Merges returned dict into GraphState
     next_node=None   # Wiring handled by the Architect
 )
@@ -125,7 +125,7 @@ def refund_stripe_payment(state: dict) -> dict:
 
 stripe_refund_tool = ToolNode(
     tool_function=refund_stripe_payment,
-    input_keys=["stripe_api_key", "charge_id"],
+    input_keys=["__state__"], # Pass full state to wrapper
     output_key=None 
 )
 ```
