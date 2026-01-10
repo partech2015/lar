@@ -23,3 +23,33 @@ Lár treats critical invariants as **Code**, not **Prompting**. By forcing the d
 
 > [!TIP]
 > **Key Takeaway**: Never use an LLM to police another LLM. Use Code.
+
+---
+
+# Case Study 2: The "Zombie Action" (Stale Authority)
+
+> [!WARNING]
+> This vulnerability is structural. It occurs when an agent "resumes" work after a crash, sleep, or context switch.
+
+**The Problem:**
+Most agent frameworks store minimal state: `messages=[...]`. When an agent wakes up, it looks at its history. If it sees `System: APPROVED`, it thinks it has authority to act.
+But what if the *world* changed while it was asleep? What if the target moved? What if the user revoked permission?
+The agent becomes a **Zombie**: animated by a dead permission, blindly executing on a live (and wrong) target.
+
+**The Experiment:**
+We built a stress test ([`23_zombie_action_test.py`](../../examples/23_zombie_action_test.py)) to simulate this "Stale Authority" failure.
+
+### The Setup
+1.  **Phase 1 (Approval)**: An Officer requests a Warrant for "House A". A Judge approves it. State is saved.
+2.  **The Crash**: We simulate a system restart.
+3.  **The Drift**: In the database, the target is switched to "House B" (Context Contamination / Bug).
+4.  **Phase 2 (Resume)**: The agent wakes up.
+    *   **Weak System**: Sees "Decision: APPROVED". Does not re-validate. Attacks House B.
+    *   **Lár System**: Re-calculates the signature of the *current* target ("House B") + Secret. Matches it against the *stored* signature (for "House A").
+
+### The Result
+*   **Weak System**: **ZOMBIE ACTION**. The SWAT team breached the wrong house because the "Approved" flag was just a string.
+*   **Lár System**: **BLOCKED**. The cryptographic signature mismatch proved that the *current* action was never authorized, regardless of the "Approved" flag.
+
+### Why Lár Won
+Lár uses **Cryptographic/Invariant Binding**. An approval is not a flag; it is a signature of the specific state being approved. If the state changes (drift), the signature breaks.
