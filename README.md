@@ -315,7 +315,7 @@ We have provided **18 robust patterns** in the **[`examples/`](examples/)** dire
 
 ---
 
-## 🛡️ Security Labs: Red Teaming Case Studies
+## Security Labs: Red Teaming Case Studies
 
 We don't just build agents; we break them. These "Labs" demonstrate common failure modes in other frameworks and how Lár prevents them.
 
