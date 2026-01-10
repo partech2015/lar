@@ -71,10 +71,11 @@ The "Golden Rule" of Lár is **Determinism**.
 *   **Rule**: If you provide the same Input and the same Random Seed (for the LLM), the agent MUST produce the exact same Output.
 
 **The Test:**
-1.  Ask the engineer for the **Input State** of the incident.
-2.  Ask them to re-run the agent with that Input.
-3.  Compare the new `flight_recorder.json` with the original.
-4.  **They must match.**
+
+1. Ask the engineer for the **Input State** of the incident.
+2. Ask them to re-run the agent with that Input.
+3. Compare the new `flight_recorder.json` with the original.
+4. **They must match.**
 
 If they do not match, the system is not compliant with "Repeatability" standards. Lár is designed to pass this test.
 
