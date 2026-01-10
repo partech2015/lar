@@ -322,6 +322,7 @@ We don't just build agents; we break them. These "Labs" demonstrate common failu
 | ID | File | The Vulnerability |
 | :--- | :--- | :--- |
 | **Lab 1** | **[`22_context_contamination_test.py`](examples/22_context_contamination_test.py)** | **Context Contamination**: Using "Social Engineering" to trick an LLM Jury. (Lár blocks this). |
+| **Lab 2** | **[`23_zombie_action_test.py`](examples/23_zombie_action_test.py)** | **Zombie Actions**: "Stale Authority" execution after a crash/resume. (Lár signatures prevent this). |
 
 
 ---
