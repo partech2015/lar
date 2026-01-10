@@ -29,9 +29,10 @@ For every execution of a Lár Agent, the system produces two artifacts. You shou
 This is the map of *what could happen*. It is usually a Mermaid diagram or a Python file defining the nodes.
 
 **What to look for:**
-*   **Loops**: Are there infinite loops? (Lár automatically caps loops at 100 steps to prevent this).
-*   **Gates**: Is there a "Human-in-the-Loop" before sensitive actions (e.g., "Refund Tool")?
-*   **Separation**: Is the "Reasoning" (LLM) separated from the "Action" (Tool)?
+
+* **Loops**: Are there infinite loops? (Lár automatically caps loops at 100 steps to prevent this).
+* **Gates**: Is there a "Human-in-the-Loop" before sensitive actions (e.g., "Refund Tool")?
+* **Separation**: Is the "Reasoning" (LLM) separated from the "Action" (Tool)?
 
 ### B. The Flight Recorder (`state.json` / `flight_recorder.json`)
 
@@ -57,9 +58,10 @@ Lár generates a **State-Diff Ledger**. It does not just dump logs; it records e
 ```
 
 **Verification Steps:**
-1.  **Traceability**: Can you follow the `step` numbers 1, 2, 3...?
-2.  **Causality**: Did Step 2 happen *because* Step 1 output "high_risk"?
-3.  **Completeness**: Are there any gaps in the sequence?
+
+1. **Traceability**: Can you follow the `step` numbers 1, 2, 3...?
+2. **Causality**: Did Step 2 happen *because* Step 1 output "high_risk"?
+3. **Completeness**: Are there any gaps in the sequence?
 
 ---
 
@@ -83,5 +85,5 @@ If they do not match, the system is not compliant with "Repeatability" standards
 As an auditor, look for these common "Anti-Patterns":
 
 *   **"The Hallucinating Jury"**: In a Juried Layer (Proposer -> Jury), did the Jury ignore a policy violation? Check the `JuryNode` log in the flight recorder.
-*   **"The Magic Loop"**: Did the agent spin in a loop (Planner -> Executor -> Planner) without making progress? Check if the `step` count hit the limit (25).
+*   **"The Magic Loop"**: Did the agent spin in a loop (Planner -> Executor -> Planner) without making progress? Check if the `step` count hit the limit (100).
 *   **"The Silent Fail"**: Did a tool fail (e.g., API Error) but the LLM ignored it? Check the `ToolNode` output in the JSON.
