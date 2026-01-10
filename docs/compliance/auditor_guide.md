@@ -29,7 +29,7 @@ For every execution of a Lár Agent, the system produces two artifacts. You shou
 This is the map of *what could happen*. It is usually a Mermaid diagram or a Python file defining the nodes.
 
 **What to look for:**
-*   **Loops**: Are there infinite loops? (Lár automatically caps loops at 25 steps to prevent this).
+*   **Loops**: Are there infinite loops? (Lár automatically caps loops at 100 steps to prevent this).
 *   **Gates**: Is there a "Human-in-the-Loop" before sensitive actions (e.g., "Refund Tool")?
 *   **Separation**: Is the "Reasoning" (LLM) separated from the "Action" (Tool)?
 
