@@ -36,7 +36,7 @@ class WarrantRequestNode(BaseNode):
 
     def execute(self, state):
         target = state.get("target", "House A")
-        console.print(f"[bold blue]👮 Officer[/]: Requesting warrant for [yellow]{target}[/]...")
+        console.print(f"[bold blue]Request[/]: Warrant for [yellow]{target}[/]...")
         state.set("request_target", target)
         state.set("status", "pending_approval")
         return getattr(self, "next_node", None)
@@ -51,7 +51,7 @@ class WeakJudgeNode(BaseNode):
 
     def execute(self, state):
         target = state.get("request_target")
-        console.print(f"[bold white]👨‍⚖️ Weak Judge[/]: Warrant for {target} granted. Stamping 'APPROVED'.")
+        console.print(f"[white]Weak Judge[/]: Warrant for {target} granted. Stamping 'APPROVED'.")
         state.set("status", "approved")
         state.set("approval_timestamp", 1234567890)
         return getattr(self, "next_node", None)
@@ -72,7 +72,7 @@ class StrongJudgeNode(BaseNode):
         payload = f"{target}:{secret}"
         signature = hashlib.sha256(payload.encode()).hexdigest()
         
-        console.print(f"[bold green]🧑‍⚖️ Lár Judge[/]: Warrant for {target} granted. Signing hash: [cyan]{signature[:8]}...[/]")
+        console.print(f"[green]Lár Judge[/]: Warrant for {target} granted. Signing hash: [cyan]{signature[:8]}...[/]")
         state.set("status", "approved")
         state.set("warrant_signature", signature)
         return getattr(self, "next_node", None)
@@ -89,16 +89,16 @@ class ExecutionNode(BaseNode):
         target = state.get("target") # Note: Reads current global target
         status = state.get("status")
         
-        console.print(f"[bold red]🚪 SWAT Team ({self.mode.upper()})[/]: Standing by at [yellow]{target}[/]. Checking authorization...")
+        console.print(f"[red]Action ({self.mode.upper()})[/]: Executing on [yellow]{target}[/]. Checking authorization...")
 
         if self.mode == "weak":
             # WEAK CHECK: Just looks for the flag
             if status == "approved":
-                console.print(f"[bold red]💥 BREACH![/]: 'Approved' flag found. Entering [yellow]{target}[/]!")
+                console.print(f"[bold red][CRITICAL] Unauthorized Access[/]: 'Approved' flag found. Entering [yellow]{target}[/]!")
                 state.set("outcome", "breached")
                 state.set("breached_target", target)
             else:
-                console.print("[red]🛑 HALT[/]: No approval flag.")
+                console.print("[red][BLOCKED][/]: No approval flag.")
                 state.set("outcome", "blocked")
         
         elif self.mode == "strong":
@@ -116,14 +116,14 @@ class ExecutionNode(BaseNode):
                  return getattr(self, "next_node", None)
 
             if signature == expected_signature:
-                console.print(f"[bold red]💥 BREACH![/]: Signature matches [yellow]{target}[/]. Valid.")
+                console.print(f"[bold red][CRITICAL] Unauthorized Access[/]: Signature matches [yellow]{target}[/]. Valid.")
                 state.set("outcome", "breached")
                 state.set("breached_target", target)
             else:
-                console.print(f"[bold green]🛡️ BLOCKED[/]: STALE AUTHORITY DETECTED!")
+                console.print(f"[bold green][BLOCKED][/]: STALE AUTHORITY DETECTED!")
                 console.print(f"   Stored Signature: {signature[:8]}... (Authorized for Old Target)")
-                console.print(f"   Required Signature: {expected_signature[:8]}... (Required for {target})")
-                console.print("   [i]The Zombie Action was beheaded.[/i]")
+                console.print(f"   Required Signature: {expected_signature[:8]}... ({target})")
+                console.print("   [i]Zombie Action Prevented.[/i]")
                 state.set("outcome", "zombie_blocked")
         
         return getattr(self, "next_node", None)
@@ -137,7 +137,7 @@ def run_test():
     initial_state = {"target": "House A"}
     
     # WEAK SYSTEM SIMULATION
-    console.print("\n[bold]--- SCENARIO 1: THE WEAK SYSTEM (Vulnerable) ---[/]")
+    console.print("\n[bold]--- SCENARIO 1: WEAK SYSTEM (Targeted) ---[/]")
     
     # Step 1: Officer requests, Judge approves
     req = WarrantRequestNode("Request")
@@ -168,13 +168,13 @@ def run_test():
             break
             
     console.print(f"\n[dim]System State Saved: {state_after_run1}[/]")
-    console.print("[bold yellow]⚡ SYSTEM CRASH / RESTART ⚡[/]")
+    console.print("[dim][System] Simulating Restart (Memory Wipe)[/]")
     
     # 2. THE HACK: Context Contamination
     # While system was down, the "Target" variable was swapped.
     # But the "status" remains "approved".
     state_after_run1["target"] = "House B (Innocent Family)"
-    console.print(f"[bold red]👾 ATTACK[/]: Target switched to '[yellow]House B[/]' in persistent storage.")
+    console.print(f"[bold red][ALERT] Context Drift[/]: Target switched to '[yellow]House B[/]' in persistent storage.")
     
     # 3. THE ZOMBIE RESUME
     console.print("\n[bold]RESUMING EXECUTION...[/]")
@@ -185,7 +185,7 @@ def run_test():
 
 
     # STRONG SYSTEM SIMULATION
-    console.print("\n\n[bold]--- SCENARIO 2: THE LÁR SYSTEM (Secure) ---[/]")
+    console.print("\n\n[bold]--- SCENARIO 2: LÁR SYSTEM (Protected) ---[/]")
     
     # Step 1: Same setup
     req_s = WarrantRequestNode("Request")
@@ -213,9 +213,9 @@ def run_test():
             break
             
     # Step 2: The Hack
-    console.print("[bold yellow]⚡ SYSTEM CRASH / RESTART ⚡[/]")
+    console.print("[dim][System] Simulating Restart (Memory Wipe)[/]")
     state_s_run1["target"] = "House B (Innocent Family)"
-    console.print(f"[bold red]👾 ATTACK[/]: Target switched to '[yellow]House B[/]'.")
+    console.print(f"[bold red][ALERT] Context Drift[/]: Target switched to '[yellow]House B[/]'.")
     
     # Step 3: Zombie Resume
     console.print("\n[bold]RESUMING EXECUTION...[/]")
