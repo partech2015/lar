@@ -63,7 +63,9 @@ nav:
     - 'Self-Correcting Loops': guides/self-correction-loop.md
     - 'Deploying Lár (FastAPI)': guides/deployment.md
 
-  - 'Compliance & Safety': compliance.md
+  - 'Compliance & Safety':
+    - 'Overview': compliance.md
+    - 'For Auditors': compliance/auditor_guide.md
   - 'API Reference':
     - 'LLMNode': api-reference/llmnode.md
     - 'ToolNode': api-reference/toolnode.md
