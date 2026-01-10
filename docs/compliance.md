@@ -16,7 +16,9 @@ The EU AI Act (fully enforceable August 2026) imposes strict obligations on "Hig
 **Requirement**: Systems must enable "automatic recording of events ('logs') over their lifetime" to ensure traceability.
 
 **Lár Solution**: `State-Diff Ledger`
+
 Every Lár agent automatically produces a `flight_recorder.json` log. This is not a simple debugging print stream; it is a **forensic ledger** containing:
+
 *   **Timestamp**: UTC-aligned execution time.
 *   **Input/Output**: The exact prompt sent and the raw completion received.
 *   **Model ID**: The specific version of the model used (e.g., `gpt-4-0613`).
@@ -39,6 +41,7 @@ Every Lár agent automatically produces a `flight_recorder.json` log. This is no
 **Requirement**: High-risk AI systems must be designed "in such a way that their operation is sufficiently transparent to enable users to interpret the system's output."
 
 **Lár Solution**: "Glass Box" Architecture
+
 *   **No Hidden Prompts**: Lár does not inject "system prompts" behind your back. You own 100% of the prompt.
 *   **Explicit Routing**: The logic flow is defined in standard Python code (Nodes and Edges), not in a hidden neural network or a complex "Agent Executor" loop.
 *   **Interpretability**: Any Python developer can read `graph.add_edge("Triage", "Human")` and understand the decision path without needing to understand the LLM's internal weights.
@@ -47,7 +50,9 @@ Every Lár agent automatically produces a `flight_recorder.json` log. This is no
 **Requirement**: Systems must be designed so that they can be "effectively overseen by natural persons," including the ability to "interrupt the system" or "override" decisions.
 
 **Lár Solution**: Native `Interrupt` Pattern
+
 Lár treats "Human Intervention" as a first-class citizen in the graph.
+
 *   **Pause & Resume**: You can execute the graph up to a checkpoint (e.g., `before="ExecuteTool"`), inspect the state, and resume.
 *   **State Modification**: A human supervisor can manually edit the memory (e.g., correcting a hallucinated argument) before approving the next step.
 
