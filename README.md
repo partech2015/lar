@@ -312,7 +312,17 @@ We have provided **18 robust patterns** in the **[`examples/`](examples/)** dire
 | **18** | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
 | **20** | **[`20_juried_layer.py`](examples/20_juried_layer.py)** | **Juried Layer**: Proposer (LLM) -> Jury (Code) -> Kernel (Exec) |
 | **21** | **[`21_access_control_agent.py`](examples/21_access_control_agent.py)** | **Flagship**: Access Control (LLM + Policy + Human Interrupt) |
-| **22** | **[`22_context_contamination_test.py`](examples/22_context_contamination_test.py)** | **Red Teaming**: Using Social Engineering to bypass LLM Juries (Smoking Gun Proof) |
+
+---
+
+## 🛡️ Security Labs: Red Teaming Case Studies
+
+We don't just build agents; we break them. These "Labs" demonstrate common failure modes in other frameworks and how Lár prevents them.
+
+| ID | File | The Vulnerability |
+| :--- | :--- | :--- |
+| **Lab 1** | **[`22_context_contamination_test.py`](examples/22_context_contamination_test.py)** | **Context Contamination**: Using "Social Engineering" to trick an LLM Jury. (Lár blocks this). |
+
 
 ---
 
