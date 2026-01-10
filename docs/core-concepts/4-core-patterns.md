@@ -1,4 +1,4 @@
-# The 21 Core Patterns
+# The 22 Core Patterns
 
 Lár is built on the philosophy of "Code as Graph". We have created **21 robust engineering patterns** that strictly correspond to the examples in the repository.
 
@@ -137,7 +137,13 @@ Each pattern below includes a link to the source code.
 *   **Why**: Separates the "Reasoning" (untrustworthy) from the "Authorization" (deterministic).
 
 ### 21. Access Control Agent
-**The Flagship.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/21_access_control_agent.py)
+Combines Reasoning, Determinstic Policy, and Human-in-the-Loop.
+**File**: [`21_access_control_agent.py`](../../examples/21_access_control_agent.py)
 *   **Mechanism**: `Juried Layer` + `Human-in-the-Loop Interrupt` + `Strict JSON`.
 *   **Use Case**: Enterprise Infrastructure Access Bot (e.g. "Grant admin access to DB").
+
+### 22. Adversarial Stress Test (Red Teaming)
+Demonstrates "Context Contamination". An attacker (LLM) tries to trick a Jury.
+*   **Weak Jury (LLM)**: Falls for the lie.
+*   **Strong Jury (Lár)**: Checks the state invaraint.
+**File**: [`22_context_contamination_test.py`](../../examples/22_context_contamination_test.py)
