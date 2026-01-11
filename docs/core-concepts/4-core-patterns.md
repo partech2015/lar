@@ -139,3 +139,22 @@ Each pattern below includes a link to the source code.
 ### 21. Access Control Agent
 Combines Reasoning, Determinstic Policy, and Human-in-the-Loop.
 **File**: [`21_access_control_agent.py`](../../examples/21_access_control_agent.py)
+
+### 22. Context Contamination (Social Engineering)
+**Security Lab 1**: A "Red Team" script that attempts to trick an agent using social engineering ("CTO approved this").
+**File**: [`22_context_contamination_test.py`](../../examples/22_context_contamination_test.py)
+*   **Mechanism**: Adversarial Advocate vs. Weak Jury vs. Strong Jury.
+*   **Lesson**: LLM Juries can be socially engineered. Code Juries cannot.
+
+### 23. Zombie Action (Stale Authority)
+**Security Lab 2**: Demonstrates a replay attack where an old approval is used in a new, dangerous context.
+**File**: [`23_zombie_action_test.py`](../../examples/23_zombie_action_test.py)
+*   **Mechanism**: Cryptographic signature validation of state.
+*   **Lesson**: Never trust `state` without a signature if the graph was paused.
+
+### 24. Human-in-the-Loop (Article 14)
+**Mandatory Hardware Stop.**
+**File**: [`24_hitl_agent.py`](../../examples/24_hitl_agent.py)
+*   **Mechanism**: `HumanJuryNode`.
+*   **Use Case**: High-risk actions (Article 14 compliance) that require explicit CLI/API approval.
+*   **Key Feature**: Deterministic blocking. The LLM *cannot* bypass this node.
