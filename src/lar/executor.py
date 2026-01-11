@@ -26,17 +26,6 @@ class GraphExecutor:
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
 
-    def _check_enterprise_policy(self, node, node_name: str):
-        """
-        Hook for Enterprise Security Policies (Air-Gap, PII Masking, etc).
-        In OSS, this is a no-op.
-        In Snath Enterprise, this enforces 21 CFR Part 11 compliance.
-        """
-        # Enterprise Hooks go here.
-        # See: https://snath.ai/enterprise
-        pass
-
-
     def _save_log(self, history: list, run_id: str, summary: dict = None):
         """Saves the execution history to a JSON file."""
         filename = f"{self.log_dir}/run_{run_id}.json"
@@ -103,9 +92,6 @@ class GraphExecutor:
             }
             
             try:
-                # 2. Enterprise Policy Hook
-                self._check_enterprise_policy(current_node, node_name)
-
                 # 3. Execute the node
                 next_node = current_node.execute(state)
                 
@@ -144,6 +130,7 @@ class GraphExecutor:
             # 6. Compute the diff (now on the *cleaned* state_after)
             state_diff = compute_state_diff(state_before, state_after)
             log_entry["state_diff"] = state_diff
+            log_entry["state_after"] = state_after
 
             # 7. Step Output Logging
             # Log the step metadata
