@@ -4,6 +4,7 @@ Lár: A "Define-by-Run" Agentic Framework.
 This file makes the core classes and utilities available for easy import
 by any developer who runs `pip install lar-engine`.
 """
+__version__ = "1.0.1"
 # Import the core classes to the top level of the package
 from .state import GraphState
 from .node import (
@@ -51,6 +52,5 @@ __all__ = [
 
 ]
 
-# This is our "canary." It proves to the user
 # that they are running the correct, new version.
-print("\n---- Lár Engine Successfully Imported ------\n")
+print(f"\n---- Lár Engine v{__version__} Successfully Imported ------\n")
