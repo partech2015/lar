@@ -1,8 +1,8 @@
 
 
-# The 7 Lár Primitives (The "Lego Bricks")
+# The 8 Lár Primitives (The "Lego Bricks")
 
-**`Lár` is not a heavy, complex framework. It is a tiny, powerful engine with 7 core "primitives." You can combine these "Lego bricks" to build any agent, from a simple chatbot to a complex, multi-agent orchestrator.**
+**`Lár` is not a heavy, complex framework. It is a tiny, powerful engine with 8 core "primitives." You can combine these "Lego bricks" to build any agent, from a simple chatbot to a complex, multi-agent orchestrator.**
 
 - The `GraphExecutor`
 
@@ -40,6 +40,12 @@
 **What it is**: The "Accelerator" or "Parallelizer."
 
 **Job**: Runs multiple nodes *concurrently* in separate threads. It creates a copy of the state for each thread (Fan-Out) and merges the results back into the main state (Fan-In). Essential for multi-agent swarms.
+
+- The `HumanJuryNode` (Article 14)
+
+**What it is**: The "Hardware Stop" or "Oversight Guard."
+
+**Job**: This blocks the execution thread completely until a human explicitly provides "Approve" or "Reject" via CLI (stdin) or API. It's the only node that can overrule the LLM. Required for EU AI Act compliance.
 
 - The `"Utility" Nodes`
 
