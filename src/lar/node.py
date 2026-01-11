@@ -1,5 +1,6 @@
 import time
 import copy
+import json
 import concurrent.futures
 from abc import ABC, abstractmethod
 from typing import Callable, Dict, List, Optional, Any 
@@ -377,4 +378,59 @@ class BatchNode(BaseNode):
                     updates_count += 1
         
         print(f"  [BatchNode]: Merged {updates_count} updates.")
+        return self.next_node
+
+class HumanJuryNode(BaseNode):
+    """
+    A blocking node that pauses execution to request Human-in-the-Loop feedback via the CLI.
+    Useful for "Article 14" Oversight compliance.
+    """
+    def __init__(self, 
+                 prompt: str, 
+                 choices: List[str], 
+                 output_key: str, 
+                 context_keys: List[str] = [],
+                 next_node: BaseNode = None):
+        """
+        Args:
+            prompt: The question to ask the user.
+            choices: List of valid lowecase strings (e.g. ['approve', 'reject']).
+            output_key: Where to store the user's choice in state.
+            context_keys: Keys from state to display to the user for context.
+            next_node: The next node to execute.
+        """
+        self.prompt = prompt
+        self.choices = [c.lower() for c in choices]
+        self.output_key = output_key
+        self.context_keys = context_keys
+        self.next_node = next_node
+
+    def execute(self, state: GraphState):
+        print("\n" + "="*40)
+        print("  ✋ HUMAN JURY INTERVENTION REQUIRED")
+        print("="*40)
+        
+        # 1. Show Context
+        if self.context_keys:
+            print("CONTEXT:")
+            for key in self.context_keys:
+                val = state.get(key)
+                if isinstance(val, (dict, list)):
+                    val_str = json.dumps(val, indent=2)
+                else:
+                    val_str = str(val)
+                print(f"  - {key}: {val_str}")
+            print("-" * 40)
+            
+        # 2. Loop until valid input
+        while True:
+            user_input = input(f"{self.prompt} ({'/'.join(self.choices)}): ").strip().lower()
+            if user_input in self.choices:
+                print(f"  [HumanJuryNode]: User selected '{user_input}'")
+                state.set(self.output_key, user_input)
+                break
+            else:
+                print(f"  [HumanJuryNode]: Invalid input. Please type one of: {self.choices}")
+                
+        print("="*40 + "\n")
         return self.next_node

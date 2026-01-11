@@ -13,7 +13,8 @@ from .node import (
     RouterNode,
     ToolNode,
     ClearErrorNode,
-    BatchNode
+    BatchNode,
+    HumanJuryNode
 )
 from .executor import GraphExecutor
 from .utils import compute_state_diff, apply_diff
@@ -37,6 +38,7 @@ __all__ = [
     "ToolNode",
     "ClearErrorNode",
     "BatchNode",
+    "HumanJuryNode",
     
     # Utility Functions
     "compute_state_diff",

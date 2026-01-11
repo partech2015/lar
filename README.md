@@ -201,6 +201,7 @@ You can build any agent with four core components:
       * **`ToolNode`**: The "Actor." Executes any deterministic Python function (e.g., run code, search a database, call an API). It supports separate routing for `success` and `error`.
       * **`RouterNode`**: The "Choice." Executes a simple Python function to inspect the state and returns a string key, which deterministically routes execution to the next node. This is your "if/else" statement.
       * **`BatchNode`**: The "Parallelizer." Fan-out multiple nodes to run concurrently on separate threads, then merge their results (fan-in). Essential for speed.
+      * **`HumanJuryNode`**: The "Article 14 Guard." Pauses execution and solicits explicit human approval via CLI before allowing the graph to proceed.
       * **`ClearErrorNode`**: A utility node that cleans up state (e.g., removes `last_error`) to prevent infinite loops.
 
 ---
@@ -312,6 +313,7 @@ We have provided **18 robust patterns** in the **[`examples/`](examples/)** dire
 | **18** | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
 | **20** | **[`20_juried_layer.py`](examples/20_juried_layer.py)** | **Juried Layer**: Proposer (LLM) -> Jury (Code) -> Kernel (Exec) |
 | **21** | **[`21_access_control_agent.py`](examples/21_access_control_agent.py)** | **Flagship**: Access Control (LLM + Policy + Human Interrupt) |
+| **24** | **[`24_hitl_agent.py`](examples/24_hitl_agent.py)** | **Article 14**: Dedicated `HumanJuryNode` for blocking dangerous actions. |
 
 ---
 
