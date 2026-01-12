@@ -1,6 +1,7 @@
 site_name: 'Lár - The PyTorch for Agents'
 site_author: Lár Project
-site_url: https://snath-ai.github.io/lar/
+site_description: "The official documentation for Lár: The first Deterministic, Auditable AI Agent Framework. Built on Graph Theory and LiteLLM."
+site_url: https://docs.snath.ai/
 repo_name: snath-ai/lar
 repo_url: https://github.com/snath-ai/lar
 edit_uri: ""
