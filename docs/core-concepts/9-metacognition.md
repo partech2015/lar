@@ -116,7 +116,7 @@ planner = DynamicNode(
 
 ---
 
-## 🛡️ Compliance & Auditing
+## Compliance & Auditing
 
 The question arises: **"Does self-modifying code violate strict compliance?"**
 

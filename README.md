@@ -352,7 +352,7 @@ We have provided **21 robust patterns** in the **[`examples/`](examples/)** dire
 
 #### 5. Metacognition (`examples/metacognition/`)
 
-See the **[Metacognition Docs](docs/core-concepts/9-metacognition.md)** for a deep dive.
+See the **[Metacognition Docs](https://docs.snath.ai/core-concepts/9-metacognition)** for a deep dive.
 
 | # | Pattern | Concept |
 | :---: | :--- | :--- |
