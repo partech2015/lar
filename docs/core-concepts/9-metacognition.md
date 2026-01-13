@@ -1,7 +1,7 @@
 
 # 9. Metacognition (Dynamic Graphs)
 
-> [!IMPORTANT]
+> [!NOTE]
 > **Exclusive Feature:** This capability requires Lár v1.1+. It unlocks "Level 4 Agency" (Pro-active/Self-modifying).
 
 Metacognition is the ability of an agent to **introspect** about its own thinking process and **modify** its execution structure at runtime.
@@ -118,7 +118,7 @@ planner = DynamicNode(
 
 ## Compliance & Auditing
 
-> [!IMPORTANT]
+> [!NOTE]
 > **The question arises: "Does self-modifying code violate strict compliance?"**
 >
 > In a black box system, **YES**.
