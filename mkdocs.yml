@@ -56,6 +56,7 @@ nav:
     - 'The 8 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
     - 'The 24 Core Patterns': core-concepts/4-core-patterns.md
+    - 'Dynamic Graphs (Metacognition)': core-concepts/9-metacognition.md
   - 'Case Studies':
     - 'Red Teaming (Security)': case-studies/red-teaming.md
   - 'Guides':

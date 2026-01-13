@@ -68,6 +68,28 @@ For healthcare and pharmaceutical applications (e.g., Drug Discovery pipelines),
 
 ---
 
+## Risk Mitigation: Dynamic Graphs (Self-Modifying Code)
+
+Lár v1.1 introduces `DynamicNode`, which allows agents to rewrite their execution topology at runtime. While powerful, "Self-Modifying Code" is traditionally a compliance red flag.
+
+**How Lár mitigates this risk:**
+
+### 1. The "Code-as-Event" Principle
+In Lár, a topological change is not a hidden internal state. It is an explicit **Event**.
+- The `DynamicNode` outputs a JSON `GraphSpec`.
+- This JSON spec is **logged physically** in the audit trail before execution.
+- **Auditor Verification**: An auditor can replay the exact moment the agent decided to "add a research step" and verify *why* (based on the context).
+
+### 2. Deterministic Topology Validation
+The `TopologyValidator` is a **non-AI, deterministic guardrail**.
+- **Allowlists**: It enforces that dynamically spawned nodes can ONLY use tools from a pre-approved list. An agent *cannot* invent a "Delete Database" tool if that function isn't in the Python allowlist.
+- **Cycle Prevention**: It mathematically proves that the new subgraph is a DAG (Directed Acyclic Graph) or a bounded loop, preventing "Runaway Agent" scenarios.
+
+### 3. Structural Constraints
+The modifications are local. A `DynamicNode` can only swap *itself* or its immediate downstream path. It cannot rewrite history or modify upstream nodes, ensuring "Forward-Only" integrity.
+
+---
+
 ## Summary for Auditors
 
 | Feature | Lár Implementation | Compliance Value |

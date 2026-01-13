@@ -236,7 +236,23 @@ Lár does not ship with 500+ brittle API wrappers. Instead, we ship the **Integr
  **[Read the Full Guide](https://docs.snath.ai/guides/integrations/)** | **[See Example](examples/16_integration_test.py)**
 
 
-## Installation
+## 🧠 Metacognition (Level 4 Agency)
+
+**New in v1.1**: Lár introduces the **Dynamic Graph**, allowing agents to rewrite their own topology at runtime.
+
+This unlocks capabilities previously impossible in static DAGs:
+- **Self-Healing**: Detects errors and injects recovery subgraphs.
+- **Tool Invention**: Writes and executes its own Python tools on the fly.
+- **Adaptive Depth**: Decides between "Quick Answer" (1 node) vs "Deep Research" (N nodes).
+
+> [!IMPORTANT]
+> **Risk Mitigation**: Self-Modifying Code is inherently risky. Lár ensures **Compliance** by:
+> 1. Logging the exact JSON of the generated graph (Audit Trail).
+> 2. Using a deterministic `TopologyValidator` (Non-AI) to prevent unauthorized tools or infinite loops.
+
+See `examples/metacognition/` for 5 working Proof-of-Concepts.
+
+## 📦 Installation
 
 This project is managed with [Poetry](https://python-poetry.org/).
 
@@ -289,42 +305,62 @@ Instead of pasting massive prompts, simply **reference** the master files in the
 > "Using the rules in @lar/IDE_MASTER_PROMPT.md, implement the agent described in @lar/IDE_PROMPT_TEMPLATE.md."
 
 ### 2. Learn by Example
-We have provided **18 robust patterns** in the **[`examples/`](examples/)** directory:
+
+We have provided **21 robust patterns** in the **[`examples/`](examples/)** directory, organized by category:
+
+> 📚 **[View the Visual Library](https://snath.ai/examples)**: Browse all patterns with diagrams and use-cases on our website.
+
+#### 1. 🟢 Basic Primitives (`examples/basic/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_simple_triage.py`](examples/basic/1_simple_triage.py)** | Classification & Linear Routing |
+| **11** | **[`11_reward_code_agent.py`](examples/basic/11_reward_code_agent.py)** | Code-First Agent Logic |
+| **12** | **[`12_support_helper_agent.py`](examples/basic/12_support_helper_agent.py)** | Lightweight Tool Assistant |
+| **19** | **[`19_fastapi_server.py`](examples/basic/19_fastapi_server.py)** | FastAPI Wrapper (Deploy Anywhere) |
+
+#### 2. 🟡 Core Patterns (`examples/patterns/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **2** | **[`2_rag_researcher.py`](examples/patterns/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
+| **3** | **[`3_self_correction.py`](examples/patterns/3_self_correction.py)** | "Judge" Pattern & Error Loops |
+| **5** | **[`5_parallel_execution.py`](examples/patterns/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
+| **6** | **[`6_structured_output.py`](examples/patterns/6_structured_output.py)** | Strict JSON Enforcement |
+| **7** | **[`7_multi_agent_handoff.py`](examples/patterns/7_multi_agent_handoff.py)** | Multi-Agent Collaboration |
+| **8** | **[`8_meta_prompt_optimizer.py`](examples/patterns/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
+| **16** | **[`16_integration_test.py`](examples/patterns/16_integration_test.py)** | Integration Builder (CoinCap) |
+| **17** | **[`17_ab_tester.py`](examples/patterns/17_ab_tester.py)** | A/B Tester (Parallel Prompts) |
+| **18** | **[`18_resumable_graph.py`](examples/patterns/18_resumable_graph.py)** | Time Traveller (Crash & Resume) |
+
+#### 3. 🛡️ Compliance & Safety (`examples/compliance/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **4** | **[`4_human_in_the_loop.py`](examples/compliance/4_human_in_the_loop.py)** | User Approval & Interrupts |
+| **10** | **[`10_security_firewall.py`](examples/compliance/10_security_firewall.py)** | Blocking Jailbreaks with Code |
+| **20** | **[`20_juried_layer.py`](examples/compliance/20_juried_layer.py)** | Proposer -> Jury -> Kernel |
+| **21** | **[`21_access_control_agent.py`](examples/compliance/21_access_control_agent.py)** | **Flagship Access Control** |
+| **22** | **[`22_context_contamination_test.py`](examples/compliance/22_context_contamination_test.py)** | Red Teaming: Social Engineering |
+| **23** | **[`23_zombie_action_test.py`](examples/compliance/23_zombie_action_test.py)** | Red Teaming: Stale Authority |
+| **24** | **[`24_hitl_agent.py`](examples/compliance/24_hitl_agent.py)** | Article 14 Compliance Node |
+
+#### 4. ⚖️ High Scale (`examples/scale/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **9** | **[`9_corporate_swarm.py`](examples/scale/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph |
+| **13** | **[`13_mini_swarm_pruner.py`](examples/scale/13_mini_swarm_pruner.py)** | Dynamic Graph Pruning |
+| **14** | **[`14_parallel_newsroom.py`](examples/scale/14_parallel_newsroom.py)** | True Parallelism (`BatchNode`) |
+| **15** | **[`15_parallel_corporate_swarm.py`](examples/scale/15_parallel_corporate_swarm.py)** | Concurrent Branch Execution |
+
+#### 5. 🧠 Metacognition (`examples/metacognition/`)
+
+See the **[Metacognition Docs](docs/core-concepts/9-metacognition.md)** for a deep dive.
 
 | # | Pattern | Concept |
 | :---: | :--- | :--- |
-| **1** | **[`1_simple_triage.py`](examples/1_simple_triage.py)** | Classification & Linear Routing |
-| **2** | **[`2_rag_researcher.py`](examples/2_rag_researcher.py)** | RAG (ToolNode) & State Merging |
-| **3** | **[`3_self_correction.py`](examples/3_self_correction.py)** | "Judge" Pattern & Error Loops |
-| **4** | **[`4_human_in_the_loop.py`](examples/4_human_in_the_loop.py)** | User Approval & Interrupts |
-| **5** | **[`5_parallel_execution.py`](examples/5_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
-| **6** | **[`6_structured_output.py`](examples/6_structured_output.py)** | Strict JSON Enforcement |
-| **7** | **[`7_multi_agent_handoff.py`](examples/7_multi_agent_handoff.py)** | Multi-Agent Collaboration (Writer <-> Editor) |
-| **8** | **[`8_meta_prompt_optimizer.py`](examples/8_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
-| **9** | **[`9_corporate_swarm.py`](examples/9_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph (Programmatic Generation) |
-| **10** | **[`10_security_firewall.py`](examples/10_security_firewall.py)** | **Architecture Security**: Blocking Jailbreaks with Code ($0 Cost) |
-| **11** | **[`11_reward_code_agent.py`](examples/11_reward_code_agent.py)** | **Code-First Agent**: Forward-Defined Logic |
-| **12** | **[`12_support_helper_agent.py`](examples/12_support_helper_agent.py)** | **Support Helper**: Lightweight Tool Assistant |
-| **13** | **[`13_mini_swarm_pruner.py`](examples/13_mini_swarm_pruner.py)** | **Mini Swarm**: Dynamic Graph Pruning |
-| **14** | **[`14_parallel_newsroom.py`](examples/14_parallel_newsroom.py)** | **True Parallelism**: Fan-Out / Fan-In (`BatchNode`) |
-| **15** | **[`15_parallel_corporate_swarm.py`](examples/15_parallel_corporate_swarm.py)** | **Parallel Swarm**: Concurrent Branch Execution |
-| **16** | **[`16_integration_test.py`](examples/16_integration_test.py)** | **Integration Builder**: AI-Generated API Wrapper (CoinCap) |
-| **17** | **[`17_ab_tester.py`](examples/17_ab_tester.py)** | **A/B Tester**: Parallel Prompts + Judge |
-| **18** | **[`18_resumable_graph.py`](examples/18_resumable_graph.py)** | **Time Traveller**: Crash, Serialize, & Resume |
-| **20** | **[`20_juried_layer.py`](examples/20_juried_layer.py)** | **Juried Layer**: Proposer (LLM) -> Jury (Code) -> Kernel (Exec) |
-| **21** | **[`21_access_control_agent.py`](examples/21_access_control_agent.py)** | **Flagship**: Access Control (LLM + Policy + Human Interrupt) |
-| **24** | **[`24_hitl_agent.py`](examples/24_hitl_agent.py)** | **Article 14**: Dedicated `HumanJuryNode` for blocking dangerous actions. |
-
----
-
-## Security Labs: Red Teaming Case Studies
-
-We don't just build agents; we break them. These "Labs" demonstrate common failure modes in other frameworks and how Lár prevents them.
-
-| ID | File | The Vulnerability |
-| :--- | :--- | :--- |
-| **Lab 1** | **[`22_context_contamination_test.py`](examples/22_context_contamination_test.py)** | **Context Contamination**: Using "Social Engineering" to trick an LLM Jury. (Lár blocks this). |
-| **Lab 2** | **[`23_zombie_action_test.py`](examples/23_zombie_action_test.py)** | **Zombie Actions**: "Stale Authority" execution after a crash/resume. (Lár signatures prevent this). |
+| **25** | **[`25_dynamic_depth.py`](examples/metacognition/25_dynamic_depth.py)** | **Adaptive Complexity** (1 Node vs N Nodes) |
+| **26** | **[`26_tool_inventor.py`](examples/metacognition/26_tool_inventor.py)** | **Self-Coding** (Writing Tools at Runtime) |
+| **27** | **[`27_self_healing.py`](examples/metacognition/27_self_healing.py)** | **Error Recovery** (Injecting Fix Subgraphs) |
+| **28** | **[`28_adaptive_deep_dive.py`](examples/metacognition/28_adaptive_deep_dive.py)** | **Recursive Research** (Spawning Sub-Agents) |
+| **29** | **[`29_expert_summoner.py`](examples/metacognition/29_expert_summoner.py)** | **Dynamic Persona Instantiation** |
 
 
 ---

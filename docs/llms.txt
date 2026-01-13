@@ -203,7 +203,7 @@ json_output = export_graph_to_json(
     start_node=triage,
     name="Triage Bot",
     description="Auto-triage system",
-    version="1.0.0"
+    version="1.1.0"
 )
 
 # Save to file
