@@ -14,12 +14,14 @@ Lár takes a different approach: **The Integration Builder**.
 Instead of waiting for us to build a tool for `Stripe`, `Linear`, or `Notion`, you generate it yourself in 30 seconds.
 
 ### 1. The Integration Prompt
-We provide a specialized prompt file: `lar/IDE_INTEGRATION_PROMPT.md`. This file teaches your IDE (Cursor, Windsurf, Copilot) the "Gold Standard" for writing robust Lár `ToolNode` wrappers.
+We provide a specialized prompt file: `lar/LAR_MASTER_PROMPT.md`.
+> "Read `lar/LAR_MASTER_PROMPT.md` and `lar/examples/` first."
+This file teaches your IDE (Cursor, Windsurf, Copilot) the "Gold Standard" for writing robust Lár `ToolNode` wrappers.
 
 ### 2. How to Use It
 
 1.  **Open your IDE** (Cursor/Windsurf recommended).
-2.  **Drag & Drop** `lar/IDE_INTEGRATION_PROMPT.md` into the chat context.
+2.  **Drag & Drop** `lar/LAR_MASTER_PROMPT.md` into the chat context.
 3.  **Ask**: *"Make me a Lár tool that searches Linear tickets."*
 
 ### 3. The Result
@@ -57,4 +59,4 @@ linear_tool = ToolNode(
 *   **Zero Dependencies**: You don't need to install `lar-hubspot` or `lar-stripe`. Just `lar` and `hubspot-client`.
 
 ## Proof of Concept
-Check out [`examples/16_integration_test.py`](https://github.com/snath-ai/lar/blob/main/examples/16_integration_test.py) to see a generated integration for the CoinCap API.
+Check out [`examples/patterns/7_integration_test.py`](https://github.com/snath-ai/lar/blob/main/examples/patterns/7_integration_test.py) to see a generated integration for the CoinCap API.

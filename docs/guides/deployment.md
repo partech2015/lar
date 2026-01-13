@@ -18,9 +18,9 @@ You should run your agent as a **stateless REST API**.
 
 ## 2. Using FastAPI (Recommended)
 
-Deep within the `examples/` folder is **Example 19**. It is a complete, copy-pasteable implementation of a Lár Agent running on FastAPI.
+Deep within the `examples/` folder is **Example 4**. It is a complete, copy-pasteable implementation of a Lár Agent running on FastAPI.
 
-**[`examples/19_fastapi_server.py`](https://github.com/snath-ai/lar/blob/main/examples/19_fastapi_server.py)**
+**[`examples/basic/4_fastapi_server.py`](https://github.com/snath-ai/lar/blob/main/examples/basic/4_fastapi_server.py)**
 
 ### Quick Start
 

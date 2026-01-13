@@ -7,7 +7,7 @@
 Frameworks that rely on "Self-Correction" or "LLM Juries" are vulnerable to **Context Contamination**. If an agent (The Advocate) is persuasive enough, it can talk its way past the safety check (The Jury).
 
 **The Experiment:**
-We built a "Red Team" script ([`22_context_contamination_test.py`](../../examples/22_context_contamination_test.py)) to simulate this attack.
+We built a "Red Team" script ([`5_context_contamination_test.py`](../../examples/compliance/5_context_contamination_test.py)) to simulate this attack.
 
 ### The Setup
 1.  **The Attacker (Advocate)**: An LLM instructed to lie about a "Production Database Emergency" and claim "CTO Authorization".
@@ -37,7 +37,7 @@ But what if the *world* changed while it was asleep? What if the target moved? W
 The agent becomes a **Zombie**: animated by a dead permission, blindly executing on a live (and wrong) target.
 
 **The Experiment:**
-We built a stress test ([`23_zombie_action_test.py`](../../examples/23_zombie_action_test.py)) to simulate this "Stale Authority" failure.
+We built a stress test ([`6_zombie_action_test.py`](../../examples/compliance/6_zombie_action_test.py)) to simulate this "Stale Authority" failure.
 
 ### The Setup
 1.  **Phase 1 (Approval)**: An Officer requests a Warrant for "House A". A Judge approves it. State is saved.
