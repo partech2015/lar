@@ -15,10 +15,10 @@
 
 - If the test fails, it loops back to a "Corrector" LLMNode with the exact error message and tries again.
 
-> [!TIP]
-> **See it in Action**
-> We have a complete, production-ready demo of this "Self-Correction" pattern.
-> check out the **[Code Repair Demo](https://github.com/snath-ai/code-repair-demo)**.
+!!! tip
+    **See it in Action**
+    We have a complete, production-ready demo of this "Self-Correction" pattern.
+    check out the **[Code Repair Demo](https://github.com/snath-ai/code-repair-demo)**.
 ### The "Glass Box" Flowchart
 
 **This is the "assembly line" for a self-correcting agent.**

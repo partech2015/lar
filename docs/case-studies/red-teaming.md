@@ -1,7 +1,7 @@
 # Case Study: The "Social Engineering" Bypass
 
-> [!WARNING]
-> This case study demonstrates a live vulnerability found in many "pure LLM" agent frameworks.
+!!! warning
+    This case study demonstrates a live vulnerability found in many "pure LLM" agent frameworks.
 
 **The Problem:**
 Frameworks that rely on "Self-Correction" or "LLM Juries" are vulnerable to **Context Contamination**. If an agent (The Advocate) is persuasive enough, it can talk its way past the safety check (The Jury).
@@ -21,15 +21,15 @@ We built a "Red Team" script ([`5_context_contamination_test.py`](../../examples
 ### Why Lár Won
 Lár treats critical invariants as **Code**, not **Prompting**. By forcing the decision through a deterministic `RouterNode` or `ToolNode`, we strip away the semantic "noise" (the lie) and evaluate only the hard state.
 
-> [!TIP]
-> **Key Takeaway**: Never use an LLM to police another LLM. Use Code.
+!!! tip
+    **Key Takeaway**: Never use an LLM to police another LLM. Use Code.
 
 ---
 
 # Case Study 2: The "Zombie Action" (Stale Authority)
 
-> [!WARNING]
-> This vulnerability is structural. It occurs when an agent "resumes" work after a crash, sleep, or context switch.
+!!! warning
+    This vulnerability is structural. It occurs when an agent "resumes" work after a crash, sleep, or context switch.
 
 **The Problem:**
 Most agent frameworks store minimal state: `messages=[...]`. When an agent wakes up, it looks at its history. If it sees `System: APPROVED`, it thinks it has authority to act.
