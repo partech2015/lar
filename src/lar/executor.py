@@ -84,6 +84,7 @@ class GraphExecutor:
             
             log_entry = {
                 "step": step_index,
+                "timestamp": datetime.datetime.now().isoformat(),
                 "node": node_name,
                 "state_before": state_before,
                 "state_diff": {},
