@@ -2,7 +2,7 @@
 
 We are proud to announce **Lár v1.1**, the "Metacognition Update". This release introduces Level 4 Agency capabilities, allowing agents to modify their own execution logic at runtime while maintaining strict "Glass Box" compliance.
 
-## 🚀 Major Features
+## Major Features
 
 ### 1. Dynamic Graphs (Metacognition)
 Agents can now inspect and modify their own topology during execution.
@@ -22,7 +22,7 @@ We have added 5 advanced examples demonstrating dynamic graph capabilities:
 - **EU AI Act & FDA Compatibility**: Updated compliance documentation to address "Self-Modifying AI". By using `TopologyValidator` and the immutable `State-Diff Ledger`, Lár v1.1 ensures that even dynamic behavior is fully traceable and reproducible.
 - **Safety First**: New documentation alerts and guidelines for deploying dynamic agents in production environments.
 
-## 🛠️ Improvements
+## Improvements
 
 - **Example Reorganization**: All examples have been moved to `lar/examples/` and organized into clear categories:
   - `basic/`: Fundamental primitives (Linear, Branching).
@@ -30,16 +30,19 @@ We have added 5 advanced examples demonstrating dynamic graph capabilities:
   - `compliance/`: Safety and auditing examples (Human Jury, Audit Logs).
   - `scale/`: High-performance and distributed examples.
   - `metacognition/`: The new v1.1 dynamic graph examples.
-- **Website Updates**: The documentation website now features a dedicated "Metacognition" section and "Audit-Logged" badges for compliance features.
+- **Website Updates**:
+  - **Red Teaming Hook**: Added a prominent hook to the Compliance section of the homepage.
+  - **Doc Improvements**: Fixed documentation rendering for alerts/admonitions and audited all links.
+  - **Metacognition Section**: Added a dedicated section for dynamic graphs.
 - **Version Bump**: Framework version updated to `1.1.0`.
 
-## 📦 Upgrading
+## Upgrading
 
 To upgrade to Lár v1.1, simply run:
 ```bash
 pip install lar-engine==1.1.0
 ```
 
-## 📚 Documentation
+## Documentation
 - [New Metacognition Guide](https://docs.snath.ai/core-concepts/9-metacognition)
 - [Compliance & Safety](https://docs.snath.ai/compliance)
