@@ -10,6 +10,7 @@ from litellm import completion, ModelResponse, utils
 from litellm.exceptions import APIError
 # ------------------------------
 from .state import GraphState
+from .utils import truncate_for_log
 
 # --- The Core API "Contract" ---
 class BaseNode(ABC):
@@ -48,9 +49,9 @@ class AddValueNode(BaseNode):
                 value_to_set = state.get(key_to_copy)
                 print(f"  [AddValueNode]: Copying state['{key_to_copy}'] to state['{self.key}']")
             else:
-                print(f"  [AddValueNode] WARN: Key '{key_to_copy}' not in state. Setting literal value.")
+             print(f"  [AddValueNode] WARN: Key '{key_to_copy}' not in state. Setting literal value.")
         else:
-             print(f"  [AddValueNode]: Setting state['{self.key}'] = '{str(value_to_set)[:50]}...'")
+             print(f"  [AddValueNode]: Setting state['{self.key}'] = {truncate_for_log(value_to_set)}")
 
         state.set(self.key, value_to_set)
         return self.next_node
@@ -135,7 +136,7 @@ class LLMNode(BaseNode):
             print(f"  [LLMNode] WARN: Missing key {e} for prompt template. Using raw template.")
             prompt = template
 
-        print(f"  [LLMNode]: Sending prompt to {self.model_identifier}: '{prompt[:50]}...'")
+        print(f"  [LLMNode]: Sending prompt to {self.model_identifier}: {truncate_for_log(prompt)}")
         
         retries = 0
         base_delay = 1
@@ -275,7 +276,7 @@ class ToolNode(BaseNode):
             else:
                 inputs = [state.get(key) for key in self.input_keys]
             
-            print(f"  [ToolNode]: Running {self.tool_function.__name__} with inputs: {inputs}")
+            print(f"  [ToolNode]: Running {self.tool_function.__name__} with inputs: {truncate_for_log(inputs)}")
             result = self.tool_function(*inputs)
             
             # Special handling for merging dict results

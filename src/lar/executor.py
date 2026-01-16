@@ -76,6 +76,7 @@ class GraphExecutor:
         total_prompt_tokens = 0
         total_completion_tokens = 0
         total_tokens = 0
+        tokens_by_model = {}
 
         step_index = 0
         while current_node is not None:
@@ -121,9 +122,19 @@ class GraphExecutor:
                 
                 # Aggregate tokens if present
                 if metadata and isinstance(metadata, dict):
-                    total_prompt_tokens += metadata.get("prompt_tokens", 0)
-                    total_completion_tokens += metadata.get("output_tokens", 0)
-                    total_tokens += metadata.get("total_tokens", 0)
+                    t_prompt = metadata.get("prompt_tokens", 0)
+                    t_completion = metadata.get("output_tokens", 0)
+                    t_total = metadata.get("total_tokens", 0)
+                    model_name = metadata.get("model", "unknown")
+
+                    total_prompt_tokens += t_prompt
+                    total_completion_tokens += t_completion
+                    total_tokens += t_total
+                    
+                    # Update breakdown
+                    if model_name not in tokens_by_model:
+                        tokens_by_model[model_name] = 0
+                    tokens_by_model[model_name] += t_total
             
             # 5. Clear metadata from the actual state so it doesn't persist
             state.set("__last_run_metadata", None)
@@ -172,6 +183,7 @@ class GraphExecutor:
             "total_steps": step_index,
             "total_prompt_tokens": total_prompt_tokens,
             "total_completion_tokens": total_completion_tokens,
-            "total_tokens": total_tokens
+            "total_tokens": total_tokens,
+            "tokens_by_model": tokens_by_model
         }
         self._save_log(history, run_id, summary)
