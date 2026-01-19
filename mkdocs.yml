@@ -74,6 +74,9 @@ nav:
     - 'LLMNode': api-reference/llmnode.md
     - 'ToolNode': api-reference/toolnode.md
     - 'RouterNode': api-reference/routernode.md
+    - 'BatchNode': api-reference/batchnode.md
+    - 'DynamicNode': api-reference/dynamicnode.md
     - 'AddValueNode': api-reference/addvaluenode.md
     - 'ClearErrorNode': api-reference/clearerrornode.md
+    - 'TopologyValidator': api-reference/topologyvalidator.md
     - 'Utilities': api-reference/utilities.md
