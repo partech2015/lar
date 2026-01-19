@@ -31,7 +31,7 @@ Use this structure. It is battle-tested for Lár agents.
 ```python
 import os
 import json
-# [TODO: Add pip install comment here]
+# Requires: pip install your_sdk
 # import your_sdk
 
 from lar import ToolNode

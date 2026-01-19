@@ -19,6 +19,23 @@ class BaseNode(ABC):
     It forces all other node classes to have an `execute` method.
     """
     
+    def _validate_next_node(self, next_node: Optional['BaseNode'], param_name: str = "next_node") -> None:
+        """
+        Validates that next_node is either None or a BaseNode instance.
+        
+        Args:
+            next_node: The node to validate
+            param_name: Name of the parameter for error messages
+            
+        Raises:
+            ValueError: If next_node is not None and not a BaseNode instance
+        """
+        if next_node is not None and not isinstance(next_node, BaseNode):
+            raise ValueError(
+                f"{param_name} must be a BaseNode instance or None, "
+                f"got {type(next_node).__name__}"
+            )
+    
     @abstractmethod
     def execute(self, state: GraphState):
         """
@@ -36,6 +53,11 @@ class AddValueNode(BaseNode):
     """
     
     def __init__(self, key: str, value: any, next_node: BaseNode = None):
+        # Validation
+        if not isinstance(key, str) or not key:
+            raise ValueError("key must be a non-empty string")
+        self._validate_next_node(next_node)
+        
         self.key = key
         self.value = value
         self.next_node = next_node
@@ -85,6 +107,17 @@ class LLMNode(BaseNode):
             system_instruction (str, optional): System prompt to steer the model's behavior.
             generation_config (dict, optional): LiteLLM-specific parameters (temperature, max_tokens, etc).
         """
+        
+        # Validation
+        if not isinstance(model_name, str) or not model_name:
+            raise ValueError("model_name must be a non-empty string")
+        if not isinstance(prompt_template, str) or not prompt_template:
+            raise ValueError("prompt_template must be a non-empty string")
+        if not isinstance(output_key, str) or not output_key:
+            raise ValueError("output_key must be a non-empty string")
+        if not isinstance(max_retries, int) or max_retries < 1:
+            raise ValueError("max_retries must be a positive integer")
+        self._validate_next_node(next_node)
         
         # 1. Store configuration as instance variables
         self.model_name = model_name
@@ -215,6 +248,26 @@ class RouterNode(BaseNode):
             path_map (Dict[str, BaseNode]): A mapping of return keys to the respective Next Node.
             default_node (BaseNode, optional): Fallback node if the returned key is not in path_map.
         """
+        # Validation
+        if not callable(decision_function):
+            raise ValueError("decision_function must be callable")
+        if not isinstance(path_map, dict):
+            raise ValueError("path_map must be a dictionary")
+        if not path_map:
+            raise ValueError("path_map cannot be empty")
+        
+        # Validate all path_map values are BaseNode instances
+        for key, node in path_map.items():
+            if not isinstance(key, str):
+                raise ValueError(f"path_map keys must be strings, got {type(key).__name__}")
+            if not isinstance(node, BaseNode):
+                raise ValueError(
+                    f"path_map[\"{key}\"] must be a BaseNode instance, "
+                    f"got {type(node).__name__}"
+                )
+        
+        self._validate_next_node(default_node, "default_node")
+        
         self.decision_function = decision_function
         self.path_map = path_map
         self.default_node = default_node
@@ -262,6 +315,19 @@ class ToolNode(BaseNode):
                 check 'last_error' in the state.
         """
         
+        # Validation
+        if not callable(tool_function):
+            raise ValueError("tool_function must be callable")
+        if not isinstance(input_keys, list):
+            raise ValueError("input_keys must be a list")
+        for key in input_keys:
+            if not isinstance(key, str):
+                raise ValueError(f"input_keys must contain only strings, got {type(key).__name__}")
+        if output_key is not None and not isinstance(output_key, str):
+            raise ValueError("output_key must be a string or None")
+        self._validate_next_node(next_node, "next_node")
+        self._validate_next_node(error_node, "error_node")
+        
         self.tool_function = tool_function
         self.input_keys = input_keys
         self.output_key = output_key
@@ -303,6 +369,10 @@ class ClearErrorNode(BaseNode):
     the 'last_error' key from the state.
     """
     def __init__(self, next_node: BaseNode):
+        # Validation
+        if not isinstance(next_node, BaseNode):
+            raise ValueError(f"next_node must be a BaseNode instance, got {type(next_node).__name__}")
+        
         self.next_node = next_node
 
     def execute(self, state: GraphState):
@@ -324,6 +394,18 @@ class BatchNode(BaseNode):
             nodes: List of nodes to execute in parallel.
             next_node: The single node to execute after all parallel nodes finish.
         """
+        # Validation
+        if not isinstance(nodes, list):
+            raise ValueError("nodes must be a list")
+        if not nodes:
+            raise ValueError("nodes list cannot be empty")
+        for i, node in enumerate(nodes):
+            if not isinstance(node, BaseNode):
+                raise ValueError(
+                    f"nodes[{i}] must be a BaseNode instance, got {type(node).__name__}"
+                )
+        self._validate_next_node(next_node)
+        
         self.nodes = nodes
         self.next_node = next_node
 
@@ -400,6 +482,20 @@ class HumanJuryNode(BaseNode):
             context_keys: Keys from state to display to the user for context.
             next_node: The next node to execute.
         """
+        # Validation
+        if not isinstance(prompt, str) or not prompt:
+            raise ValueError("prompt must be a non-empty string")
+        if not isinstance(choices, list) or not choices:
+            raise ValueError("choices must be a non-empty list")
+        for choice in choices:
+            if not isinstance(choice, str):
+                raise ValueError(f"choices must contain only strings, got {type(choice).__name__}")
+        if not isinstance(output_key, str) or not output_key:
+            raise ValueError("output_key must be a non-empty string")
+        if not isinstance(context_keys, list):
+            raise ValueError("context_keys must be a list")
+        self._validate_next_node(next_node)
+        
         self.prompt = prompt
         self.choices = [c.lower() for c in choices]
         self.output_key = output_key

@@ -47,4 +47,10 @@ htmlcov/
 
 # Ignore agent audit logs
 lar_logs/
+test_logs/
+custom_test_logs/
+
+# Ignore test scripts
+test_v1_*.py
+
 site/

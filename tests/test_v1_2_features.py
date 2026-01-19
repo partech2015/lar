@@ -49,19 +49,12 @@ def test_token_aggregation():
     
     executor = GraphExecutor(log_dir="test_logs")
     
-    # Monkeypatch _save_log to capture summary without IO
-    captured_summary = {}
-    
-    def mock_save(history, run_id, summary):
-        captured_summary.update(summary)
-    
-    executor._save_log = mock_save
-    
     # Run
     list(executor.run_step_by_step(node1, {}))
     
-    # Assertions
-    breakdown = captured_summary.get("tokens_by_model", {})
+    # Get summary from the tracker
+    summary = executor.tracker.get_summary()
+    breakdown = summary.get("tokens_by_model", {})
     
     # Node 1: 200 total (100+100)
     # Node 3: 100 total (50+50)
@@ -72,4 +65,4 @@ def test_token_aggregation():
     # Total Gemini: 1000
     assert breakdown["gemini-pro"] == 1000
     
-    assert captured_summary["total_tokens"] == 1300
+    assert summary["total_tokens"] == 1300
