@@ -10,6 +10,13 @@ Scenario:
 4. Doctor analyzes error -> Generates a recovery subgraph:
    [ Diagnose -> Rotate Creds -> Retry Connect ]
 5. Graph hot-swaps and the connection succeeds.
+
+Expected Output:
+- First connection attempt fails with AuthFailed error
+- DynamicNode generates recovery subgraph
+- Credentials are rotated
+- Connection succeeds on retry
+- Final: "Connected to DB!"
 """
 
 import json
@@ -22,60 +29,82 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- 1. Define the Tools ---
+# --- 1. Mock Database (Proper Class Instead of Globals) ---
 
-# Mock DB State
-DB_CREDS = {"user": "admin", "pass": "wrong_password"}
-
-def connect_to_db(creds_key: str):
-    """Simulate a DB connection that fails if password is wrong."""
-    creds = globals()["DB_CREDS"] # simplistic mock
-    print(f"    [Tool: connect_db] Connecting with {creds}...")
+class MockDatabase:
+    """Simulated database with credential management."""
+    def __init__(self):
+        self.credentials = {"user": "admin", "pass": "wrong_password"}
+        self.correct_password = "correct_password"
     
-    if creds["pass"] != "correct_password":
-         raise ValueError("AuthFailed: Invalid Password")
+    def connect(self) -> str:
+        """Attempt to connect with current credentials."""
+        print(f"    [Tool: connect_db] Connecting with user={self.credentials['user']}...")
+        
+        if self.credentials["pass"] != self.correct_password:
+            raise ValueError("AuthFailed: Invalid Password")
+        
+        return "Connected to DB!"
     
-    return "Connected to DB!"
+    def rotate_credentials(self) -> str:
+        """Fix the password to enable successful connection."""
+        print("    [Tool: rotate_creds] Rotating password to correct value...")
+        self.credentials["pass"] = self.correct_password
+        return "Credentials Rotated"
+    
+    def reset(self):
+        """Reset to initial broken state for testing."""
+        self.credentials["pass"] = "wrong_password"
 
-def rotate_credentials():
-    """Simulate fixing the issue."""
-    print("    [Tool: rotate_creds] Rotating password to 'correct_password'...")
-    globals()["DB_CREDS"]["pass"] = "correct_password" # Fix the global state
-    return "Credentials Rotated"
+# Global DB instance (singleton pattern for this example)
+mock_db = MockDatabase()
 
-# --- 2. Define the Validator ---
+# --- 2. Define the Tools (Now Use MockDatabase) ---
+
+def connect_to_db(dummy_param: str = "") -> str:
+    """
+    Wrapper for database connection.
+    Note: Parameter needed for ToolNode compatibility.
+    """
+    return mock_db.connect()
+
+def rotate_credentials() -> str:
+    """Wrapper for credential rotation."""
+    return mock_db.rotate_credentials()
+
+# --- 3. Define the Validator ---
 
 validator = TopologyValidator(allowed_tools=[connect_to_db, rotate_credentials])
 
-# --- 3. Define the Static Graph (The "Happy Path" that fails) ---
+# --- 4. Define the Static Graph (The "Happy Path" that fails) ---
 
 # Node 3: Success State
 success_node = AddValueNode("status", "Success")
 
-# Node 1: Try Check
-# We wrap it in a ToolNode
-# IF it fails, ToolNode sets 'last_error'.
+# Node 1: Initial Connection Attempt
+# This will fail on first try due to wrong password
 connect_node = ToolNode(
     tool_function=connect_to_db,
-    input_keys=["creds"], # We'll just pass a dummy key, the tool uses globals
+    input_keys=[], # No inputs needed (uses mock_db singleton)
     output_key="db_conn",
     next_node=success_node,
-    # No error_node defined here because we handle it via Router
+    error_node=None  # We'll set this to doctor below
 )
 
-# --- 4. Define the Doctor (Dynamic Node) ---
+# --- 5. Define the Doctor (Dynamic Node) ---
 
 DOCTOR_PROMPT = """
 You are a Self-Healing Runtime.
-Error: "{last_error}"
+Error Detected: "{last_error}"
 
+The error is "AuthFailed: Invalid Password".
 Design a recovery subgraph to fix this error.
-The error is "AuthFailed".
-Recipe:
-1. Call 'rotate_credentials'.
-2. Call 'connect_to_db' again.
 
-Output a JSON GraphSpec with this schema:
+Required Steps:
+1. Call 'rotate_credentials' tool (no inputs needed)
+2. Call 'connect_to_db' tool again (no inputs needed)
+
+Output ONLY valid JSON matching this schema:
 {{
   "nodes": [
     {{
@@ -90,13 +119,15 @@ Output a JSON GraphSpec with this schema:
       "id": "retry",
       "type": "ToolNode",
       "tool_name": "connect_to_db",
-      "input_keys": ["creds"], 
+      "input_keys": [],
       "output_key": "db_conn",
       "next": null
     }}
   ],
   "entry_point": "fix"
 }}
+
+Output ONLY the JSON, no explanations.
 """
 
 doctor = DynamicNode(
@@ -107,58 +138,44 @@ doctor = DynamicNode(
     context_keys=["last_error"]
 )
 
-# --- 5. The Routing Logic ---
+# Wire the error_node to doctor for self-healing
+connect_node.error_node = doctor
 
-def check_error(state: GraphState):
-    err = state.get("last_error")
-    if err:
-        return "error"
-    return "ok"
-
-# We start with the connect node.
-# But ToolNode doesn't have a "on_error" router built-in easily in the basic class
-# except via 'next_node' or 'error_node'.
-# So we modify the graph structure:
-# Entry -> ConnectNode (fails) -> (if error) -> Doctor -> Success
-#                              -> (if ok)    -> Success
-
-# To implement this "If Error" check, we actually need ConnectNode to NOT crash hard,
-# but set 'last_error'. Our ToolNode does this.
-# But ToolNode only has one 'next_node'.
-# So we need ConnectNode -> RouterNode -> (Doctor or Success).
-
-router = RouterNode(
-    decision_function=check_error,
-    path_map={
-        "error": doctor,
-        "ok": success_node
-    }
-)
-
-# Re-wire connect_node to go to router regardless of outcome
-# (In reality, ToolNode goes to next_node on success, error_node on failure)
-# Let's use the explicit error_node feature of ToolNode primitive
-connect_node.next_node = success_node
-connect_node.error_node = doctor # Make ToolNode jump directly to Doctor on error
-
-# --- 6. Run ---
+# --- 6. Run with Error Handling ---
 
 if __name__ == "__main__":
-    print("\n🚀 TEST CASE: Self-Healing Pipeline")
+    print("\n" + "="*60)
+    print("TEST CASE: Self-Healing Pipeline")
+    print("="*60)
     
-    executor = GraphExecutor()
-    initial_state = {
-        "creds": "dummy" 
-    }
-
-    print("--- Starting Execution ---")
-    # We must reset the global for the test
-    globals()["DB_CREDS"]["pass"] = "wrong_password"
-    
-    results = executor.run_step_by_step(connect_node, initial_state)
-    
-    final_state = {}
-    for step in results:
-        final_state = step.get("state_after", {})
+    try:
+        # Reset database to broken state
+        mock_db.reset()
         
-    print(f"\n🏁 Final DB Connection: {final_state.get('db_conn')}")
+        executor = GraphExecutor()
+        initial_state = {}
+
+        print("\n--- Starting Execution ---")
+        print("Initial DB State: Password is WRONG")
+        print("Expected: Connection fails -> Doctor heals -> Retry succeeds\n")
+        
+        results = list(executor.run_step_by_step(connect_node, initial_state))
+        
+        # Extract final state
+        final_state = results[-1].get("state_after", {})
+        
+        print("\n" + "="*60)
+        print("RESULT")
+        print("="*60)
+        print(f"Final DB Connection: {final_state.get('db_conn')}")
+        print(f"Status: {final_state.get('status')}")
+        
+        # Verify success
+        if final_state.get('db_conn') == "Connected to DB!":
+            print("\nSelf-healing successful!")
+        else:
+            print("\nSelf-healing failed!")
+            
+    except Exception as e:
+        print(f"\nCRITICAL ERROR: {e}")
+        print("Note: Ensure ollama/phi4 is installed and running")

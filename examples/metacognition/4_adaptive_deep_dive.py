@@ -11,6 +11,10 @@ The agent receives a query.
   [ SearchTool -> SummaryTool -> LLMNode ]
 
 This differs from Example 25 because the *types* of nodes change, not just the count.
+
+Expected Output:
+- Simple query ("What is 2+2?"): Direct LLM answer
+- Complex query ("Tesla stock price"): web_search -> read_content -> synthesize answer
 """
 
 from lar import (
@@ -105,21 +109,32 @@ planner = DynamicNode(
 entry = planner
 
 def run_test(query_text, label):
-    print(f"\n\n🚀 TEST CASE: {label} ('{query_text}')")
+    print(f"\n\n{'='*60}")
+    print(f"TEST CASE: {label}")
+    print(f"{'='*60}")
+    print(f"Query: '{query_text}'")
+    print(f"{'='*60}\n")
     
-    executor = GraphExecutor()
-    initial_state = {
-        "query": query_text
-    }
+    try:
+        executor = GraphExecutor()
+        initial_state = {
+            "query": query_text
+        }
 
-    print("--- Starting Execution ---")
-    results = executor.run_step_by_step(entry, initial_state)
-    
-    final_state = {}
-    for step in results:
-        final_state = step.get("state_after", {})
+        print("--- Starting Execution ---\n")
+        results = list(executor.run_step_by_step(entry, initial_state))
         
-    print(f"\n🏁 Answer: {final_state.get('final_answer')}")
+        final_state = results[-1].get("state_after", {})
+        
+        print(f"\n{'='*60}")
+        print(f"RESULT")
+        print(f"{'='*60}")
+        print(f"Answer: {final_state.get('final_answer', 'No answer generated')}")
+        print(f"Status: {final_state.get('status')}")
+        
+    except Exception as e:
+        print(f"\nCRITICAL ERROR: {e}")
+        print("Note: Ensure ollama/phi4 is installed and running")
 
 
 if __name__ == "__main__":
@@ -127,5 +142,4 @@ if __name__ == "__main__":
     run_test("What is 2 + 2?", "SIMPLE")
     
     # Test 2: Complex
-    run_test("What is the current stock price of Tesla?", "COMPLEX")
-
+    # run_test("What is the current stock price of Tesla?", "COMPLEX")

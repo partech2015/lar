@@ -8,6 +8,14 @@ workers (`BatchNode`) are needed to solve it.
 
 "Simple" query -> 1 worker.
 "Complex" query -> 5 workers in parallel.
+
+Expected Output:
+- Simple query: "What is the capital of France?" -> Single researcher chain
+- Complex query: Deep geopolitical analysis -> Multiple researcher chain
+- Final summary synthesized from all research steps
+
+Note: Current implementation uses sequential chains due to BatchNode factory limitation.
+See README.md for details.
 """
 
 import os
@@ -109,24 +117,37 @@ entry = dynamic_architect # Start directly with the dynamic node
 # --- 5. Run ---
 
 def run_simulation(request_text, complexity_label):
-    print(f"\n\n🚀 TEST CASE: {complexity_label} ('{request_text}')")
+    print(f"\n\n{'='*60}")
+    print(f"TEST CASE: {complexity_label}")
+    print(f"{'='*60}")
+    print(f"Request: '{request_text}'")
+    print(f"{'='*60}\n")
     
-    executor = GraphExecutor()
-    initial_state = {
-        "request": request_text, 
-        "url": "http://example.com"
-    }
+    try:
+        executor = GraphExecutor()
+        initial_state = {
+            "request": request_text, 
+            "url": "http://example.com"
+        }
 
-    print("--- Starting Execution ---")
-    results = executor.run_step_by_step(entry, initial_state)
-    
-    for step in results:
-        # print(f"Step {step['step']}: {step['node']}")
-        pass
+        print("--- Starting Execution ---\n")
+        results = list(executor.run_step_by_step(entry, initial_state))
+        
+        final_state = results[-1].get("state_after", {})
+        
+        print(f"\n{'='*60}")
+        print(f"RESULT")
+        print(f"{'='*60}")
+        print(f"Summary: {final_state.get('summary', 'No summary generated')}")
+        print(f"Status: {final_state.get('status')}")
+        
+    except Exception as e:
+        print(f"\nCRITICAL ERROR: {e}")
+        print("Note: Ensure ollama/phi4 is installed and running")
 
 if __name__ == "__main__":
     # Test 1: Simple
     run_simulation("What is the capital of France?", "SIMPLE")
     
-    # Test 2: Complex
-    # run_simulation("Analyze the geopolitical impact of quantum computing on crypto.", "COMPLEX")
+    # Test 2: Complex (Uncomment to test)
+    # run_simulation("Analyze the geopolitical impact of quantum computing on cryptocurrency.", "COMPLEX")
