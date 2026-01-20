@@ -38,10 +38,7 @@ class TopologyValidator:
             # Check 'next' pointer
             nxt = n.get("next")
             if nxt and nxt != "__end__" and nxt not in node_ids:
-                # If it's not in internal IDs, allowed if it's meant to be the exit to main graph
-                # But typically we enforce rigorous internal consistency.
-                # For `DynamicNode`, "next" can be None (implying flow to the DynamicNode's configured static next)
-                pass
+                raise SecurityError(f"Node '{n.get('id')}' links to non-existent node '{nxt}'.")
 
         # 2. Cycle Detection (DFS)
         # Simplified: We build an adjacency map
