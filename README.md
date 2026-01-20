@@ -238,7 +238,7 @@ Lár does not ship with 500+ brittle API wrappers. Instead, we ship the **Integr
 
 ## Metacognition (Level 4 Agency)
 
-**New in v1.1**: Lár introduces the **Dynamic Graph**, allowing agents to rewrite their own topology at runtime.
+**New in v1.3**: Lár introduces the **Dynamic Graph**, allowing agents to rewrite their own topology at runtime.
 
 This unlocks capabilities previously impossible in static DAGs:
 - **Self-Healing**: Detects errors and injects recovery subgraphs.
