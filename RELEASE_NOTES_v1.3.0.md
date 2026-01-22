@@ -35,6 +35,53 @@ The `GraphExecutor` has been refactored to delegate responsibilities to dedicate
 - `GraphExecutor` constructor now accepts optional `logger` and `tracker` instances for dependency injection.
 - **Compliance**: The "Glass Box" is now even more transparent with improved metadata fidelity in logs.
 
+### How to Use (New in v1.3.0)
+
+#### Option 1: Automatic (Default Behavior)
+```python
+from lar import GraphExecutor, LLMNode
+
+# Logger and Tracker are created automatically
+executor = GraphExecutor(log_dir="my_logs")
+
+node = LLMNode(model_name="ollama/phi4", prompt_template="test", output_key="result")
+result = executor.run(node, {})
+
+# Access automatically created instances
+print(executor.logger.get_history())  # Audit trail
+print(executor.tracker.get_summary())  # Token usage
+```
+
+#### Option 2: Custom Injection (Advanced)
+```python
+from lar import GraphExecutor, AuditLogger, TokenTracker
+
+# Create custom instances
+custom_logger = AuditLogger(log_dir="advanced_logs")
+custom_tracker = TokenTracker()
+
+# Inject into executor
+executor = GraphExecutor(
+    logger=custom_logger,
+    tracker=custom_tracker
+)
+
+# Share tracker across multiple executors for aggregated cost tracking
+executor2 = GraphExecutor(
+    logger=AuditLogger(log_dir="other_logs"),
+    tracker=custom_tracker  # Same tracker = aggregated tokens
+)
+```
+
+**Why Custom Injection?**
+- Centralized audit trail management
+- Cost aggregation across workflows
+- Custom log formatting/persistence
+- Integration with existing monitoring systems
+
+**See:** `examples/patterns/16_custom_logger_tracker.py` for full demo
+
+
 ## Chains to State Machines
 With `v1.3`, the debate is settled. Lár's state machine architecture now offers native compliance features (Breakpoints, Static Analysis) that Chain-based frameworks struggle to implement.
 

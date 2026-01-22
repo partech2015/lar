@@ -70,3 +70,65 @@ When your agent fails, the "glass box" gives you a perfect record:
 ```
 
 This is the `lar` difference. You don't have to guess why it failed. Your log tells you the exact node, the exact error, and the exact state it failed with.
+
+---
+
+## New in v1.3.0: Modular Observability
+
+**Lár now separates logging and tracking into dedicated, injectable components:**
+
+### AuditLogger
+
+Manages the audit trail with GxP-compliant JSON persistence.
+
+**Default usage:**
+```python
+executor = GraphExecutor(log_dir="my_logs")
+# AuditLogger created automatically
+history = executor.logger.get_history()
+```
+
+**Advanced (custom injection):**
+```python
+from lar import AuditLogger
+
+custom_logger = AuditLogger(log_dir="compliance_logs")
+executor = GraphExecutor(logger=custom_logger)
+
+# Direct access to audit history
+for step in custom_logger.get_history():
+    print(f"Step {step['step']}: {step['node']} - {step['outcome']}")
+```
+
+### TokenTracker
+
+Aggregates token usage across models and workflows.
+
+**Default usage:**
+```python
+executor = GraphExecutor()
+summary = executor.tracker.get_summary()
+print(f"Total tokens: {summary['total_tokens']}")
+print(f"By model: {summary['tokens_by_model']}")
+```
+
+**Advanced (shared tracker for cost aggregation):**
+```python
+from lar import TokenTracker
+
+# Share one tracker across multiple executors
+shared_tracker = TokenTracker()
+
+executor1 = GraphExecutor(log_dir="workflow1", tracker=shared_tracker)
+executor2 = GraphExecutor(log_dir="workflow2", tracker=shared_tracker)
+
+# Run both workflows
+executor1.run(agent1, state1)
+executor2.run(agent2, state2)
+
+# Get aggregated cost
+total = shared_tracker.get_summary()
+print(f"Total cost across both workflows: {total['total_tokens']} tokens")
+```
+
+**See full example:** `examples/patterns/16_custom_logger_tracker.py`

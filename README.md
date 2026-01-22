@@ -194,6 +194,24 @@ You can build any agent with four core components:
 2.  **`BaseNode`**: The abstract class (the "contract") for all executable units. It enforces a single method: `execute(self, state)`. The `execute` method's sole responsibility is to perform its logic and return the *next* `BaseNode` to run, or `None` to terminate the graph.
 
 3.  **`GraphExecutor`**: The "engine" that runs the graph. It is a Python generator that runs one node, yields the execution log for that step, and then pauses, waiting for the next call.
+    
+    **New in v1.3.0:** Modular observability with separated concerns:
+    - **`AuditLogger`**: Centralizes audit trail logging and file persistence (GxP-compliant)
+    - **`TokenTracker`**: Aggregates token usage across multiple providers and models
+    
+    ```python
+    # Default (automatic - recommended)
+    executor = GraphExecutor(log_dir="my_logs")
+    
+    # Advanced (custom injection for cost aggregation across workflows)
+    from lar import AuditLogger, TokenTracker
+    custom_tracker = TokenTracker()
+    executor1 = GraphExecutor(logger=AuditLogger("logs1"), tracker=custom_tracker)
+    executor2 = GraphExecutor(logger=AuditLogger("logs2"), tracker=custom_tracker)
+    # Both executors share the same tracker → aggregated cost tracking
+    ```
+    
+    **See:** `examples/patterns/16_custom_logger_tracker.py` for full demo
 
 4.  **Node Implementations**: The "building blocks" of your agent.
 
@@ -244,6 +262,7 @@ This unlocks capabilities previously impossible in static DAGs:
 - **Self-Healing**: Detects errors and injects recovery subgraphs.
 - **Tool Invention**: Writes and executes its own Python tools on the fly.
 - **Adaptive Depth**: Decides between "Quick Answer" (1 node) vs "Deep Research" (N nodes).
+- **Custom Observability**: Inject custom logger/tracker instances for advanced cost tracking and audit trail management (`examples/patterns/16_custom_logger_tracker.py`).
 
 > [!IMPORTANT]
 > **Risk Mitigation**: Self-Modifying Code is inherently risky. Lár ensures **Compliance** by:
