@@ -223,15 +223,15 @@ This ensures **full compliance auditability** - you can always see what the agen
 
 ## Real-World Examples
 
-See the [`examples/metacognition/`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/metacognition/) directory:
+See the [`examples/metacognition/`](https://github.com/snath-ai/lar/blob/main/examples/metacognition/) directory:
 
 | Example | Capability |
 |---------|------------|
-| [`1_dynamic_depth.py`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/metacognition/1_dynamic_depth.py) | Adaptive complexity (1 node vs N nodes) |
-| [`2_tool_inventor.py`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/metacognition/2_tool_inventor.py) | Self-coding (writes tools at runtime) |
-| [`3_self_healing.py`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/metacognition/3_self_healing.py) | Error recovery (Injects fix subgraphs) |
-| [`4_adaptive_deep_dive.py`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/metacognition/4_adaptive_deep_dive.py) | Recursive research (spawns sub-agents) |
-| [`5_expert_summoner.py`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/metacognition/5_expert_summoner.py) | Dynamic persona instantiation |
+| [`1_dynamic_depth.py`](https://github.com/snath-ai/lar/blob/main/examples/metacognition/1_dynamic_depth.py) | Adaptive complexity (1 node vs N nodes) |
+| [`2_tool_inventor.py`](https://github.com/snath-ai/lar/blob/main/examples/metacognition/2_tool_inventor.py) | Self-coding (writes tools at runtime) |
+| [`3_self_healing.py`](https://github.com/snath-ai/lar/blob/main/examples/metacognition/3_self_healing.py) | Error recovery (Injects fix subgraphs) |
+| [`4_adaptive_deep_dive.py`](https://github.com/snath-ai/lar/blob/main/examples/metacognition/4_adaptive_deep_dive.py) | Recursive research (spawns sub-agents) |
+| [`5_expert_summoner.py`](https://github.com/snath-ai/lar/blob/main/examples/metacognition/5_expert_summoner.py) | Dynamic persona instantiation |
 
 ## Compliance
 

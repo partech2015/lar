@@ -312,4 +312,4 @@ For very large graphs (>100 nodes), consider:
 - [DynamicNode API](dynamicnode.md) - Uses TopologyValidator
 - [Metacognition Guide](../core-concepts/9-metacognition.md) - Self-modifying agents
 - [Red Teaming](../case-studies/red-teaming.md) - Security testing
-- [Security Firewall Example](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/compliance/2_security_firewall.py)
+- [Security Firewall Example](https://github.com/snath-ai/lar/blob/main/examples/compliance/2_security_firewall.py)

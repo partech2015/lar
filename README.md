@@ -115,7 +115,7 @@ You cannot run 1,000 agents if every step costs $0.05 and takes 3 seconds.
 
 ### 2. The Numbers Don't Lie
 
-We prove this in **[`examples/9_corporate_swarm.py`](examples/9_corporate_swarm.py)**.
+We prove this in **[`examples/scale/1_corporate_swarm.py`](examples/scale/1_corporate_swarm.py)**.
 
 | Feature | Standard "Agent Builder" (LangChain/CrewAI) | Lár "Hybrid" Architecture |
 | :--- | :--- | :--- |
@@ -130,7 +130,7 @@ We built the generic "Corporate Swarm" in massive-scale LangChain/LangGraph (`ex
 
 ```text
 -> Step 24
-💥 CRASH CONFIRMED: Recursion limit of 25 reached without hitting a stop condition.
+CRASH CONFIRMED: Recursion limit of 25 reached without hitting a stop condition.
 LangGraph Engine stopped execution due to Recursion Limit.
 ```
 
@@ -251,7 +251,7 @@ Lár does not ship with 500+ brittle API wrappers. Instead, we ship the **Integr
 2.  **Ask**: *"Make me a tool that queries the Stripe API for failed payments."*
 3.  **Done**: You get a production-ready, type-safe `ToolNode` in 30 seconds.
 
- **[Read the Full Guide](https://docs.snath.ai/guides/integrations/)** | **[See Example](examples/16_integration_test.py)**
+ **[Read the Full Guide](https://docs.snath.ai/guides/integrations/)** | **[See Example](examples/patterns/7_integration_test.py)**
 
 
 ## Metacognition (Level 4 Agency)
@@ -270,6 +270,35 @@ This unlocks capabilities previously impossible in static DAGs:
 > 2. Using a deterministic `TopologyValidator` (Non-AI) to prevent unauthorized tools or infinite loops.
 
 See `examples/metacognition/` for 5 working Proof-of-Concepts.
+
+---
+
+## The DMN Showcase: A Cognitive Architecture
+
+**[snath-ai/DMN](https://github.com/snath-ai/DMN)** - The flagship demonstration of Lár's capabilities.
+
+DMN (Dynamic Memory Network) is a **complete cognitive architecture** built entirely on Lár, showcasing what's possible when you combine:
+- **Bicameral Mind**: Fast/Slow thinking systems running in parallel
+- **Sleep Cycles**: Automatic memory consolidation during "rest" periods  
+- **Episodic Memory**: Long-term storage with vectorized recall
+- **Self-Awareness**: Metacognitive introspection and adaptive behavior
+
+> [!NOTE]
+> **DMN proves that Lár isn't just for chatbots.** It's a platform for building genuinely intelligent systems with memory, learning, and self-improvement capabilities.
+
+### What Makes DMN Special?
+
+| Feature | Traditional Agents | DMN (Built on Lár) |
+|---------|-------------------|---------------------|
+| **Memory** | Context window only | Persistent episodic memory with sleep consolidation |
+| **Learning** | Static prompts | Learns from interactions and self-corrects |
+| **Architecture** | Single-path logic | Dual-process (Fast + Slow) cognitive system |
+| **Auditability** | Black box | Complete glass-box audit trail of every thought |
+
+**[Explore the DMN Repository →](https://github.com/snath-ai/DMN)**
+
+---
+
 
 ##  Installation
 
@@ -595,7 +624,7 @@ We have built two "killer demos" that prove this "glass box" model. You can clon
 
 - **[snath-ai/DMN](https://github.com/snath-ai/DMN)**: **The Flagship Showcase.** A cognitive architecture with a "Bicameral Mind" (Fast/Slow) that sleeps, dreams, and consolidates long-term memory to solve catastrophic forgetting.
 
-- **[`examples/21_access_control_agent.py`](examples/21_access_control_agent.py)**: **The Enterprise Flagship.** A "Juried Layer" demo that combines LLM Reasoning, Deterministic Policy, and Human-in-the-Loop Interrupts for secure infrastructure access.
+- **[`examples/compliance/4_access_control_agent.py`](examples/compliance/4_access_control_agent.py)**: **The Enterprise Flagship.** A "Juried Layer" demo that combines LLM Reasoning, Deterministic Policy, and Human-in-the-Loop Interrupts for secure infrastructure access.
 
 - **[snath-ai/rag-demo](https://github.com/snath-ai/rag-demo)**: A complete, self-correcting RAG agent that uses a local vector database.
 

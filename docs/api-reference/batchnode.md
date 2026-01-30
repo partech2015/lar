@@ -91,7 +91,7 @@ print(final_state.get("summary"))
 
 ### Newsroom Pattern (Real-World Example)
 
-See [`examples/scale/3_parallel_newsroom.py`](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/scale/3_parallel_newsroom.py) for a production pattern:
+See [`examples/scale/3_parallel_newsroom.py`](https://github.com/snath-ai/lar/blob/main/examples/scale/3_parallel_newsroom.py) for a production pattern:
 
 1. **Planner Node**: LLM generates story angles
 2. **BatchNode**: 3 reporter agents research in parallel
@@ -191,5 +191,5 @@ ValueError: nodes[0] must be a BaseNode instance, got str
 ## See Also
 
 - [Multi-Agent Orchestration Guide](../guides/multi-agent-orchestration.md)
-- [Parallel Corporate Swarm Example](file:///Users/aadithya/Desktop/Lar_Main/lar/examples/scale/4_parallel_corporate_swarm.py)
+- [Parallel Corporate Swarm Example](https://github.com/snath-ai/lar/blob/main/examples/scale/4_parallel_corporate_swarm.py)
 - [RouterNode API](routernode.md) - For sequential conditional logic

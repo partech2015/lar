@@ -18,7 +18,7 @@ Lár is designed to be written by AI.
 3.  **Interactive Mode**: The IDE will either **Draft a Blueprint** for you or ask for `IDE_PROMPT_TEMPLATE.md`.
 
 *If the IDE hallucinates, tell it:*
-> "Read `lar/LAR_MASTER_PROMPT.md` and `lar/examples/` first."
+> "Read `lar/IDE_MASTER_PROMPT.md` and `lar/examples/` first."
 
 ### 2. Install the Engine
 

@@ -88,5 +88,38 @@ cleanup = ClearErrorNode(
 )
 ```
 
+### 6. Defining a Human Jury Node (HITL)
+```python
+from lar import HumanJuryNode
+
+jury = HumanJuryNode(
+    prompt="Should we proceed with this action?",
+    choices=["approve", "reject"],
+    output_key="user_decision",
+    context_keys=["plan", "risk_assessment"],
+    next_node=None
+)
+```
+
+### 7. Defining a Dynamic Node with Safety Validation
+```python
+from lar import DynamicNode, TopologyValidator
+
+# 1. Define allowed tools for the validator
+def safe_tool(state):
+    return "safe result"
+
+# 2. Create validator with allowlist
+validator = TopologyValidator(allowed_tools=[safe_tool])
+
+# 3. Create DynamicNode (LLM designs subgraph at runtime)
+dynamic = DynamicNode(
+    llm_model="gemini/gemini-1.5-pro",
+    prompt_template="Design a graph to solve: {task}",
+    validator=validator,
+    next_node=final_node
+)
+```
+
 ## Running Agents
 Always include a `if __name__ == "__main__":` block that uses `GraphExecutor` to run the graph instantly for verification.
