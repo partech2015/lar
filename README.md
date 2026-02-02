@@ -267,7 +267,7 @@ This unlocks capabilities previously impossible in static DAGs:
 > [!IMPORTANT]
 > **Risk Mitigation**: Self-Modifying Code is inherently risky. Lár ensures **Compliance** by:
 > 1. Logging the exact JSON of the generated graph (Audit Trail).
-> 2. Using a deterministic `TopologyValidator` (Non-AI) to prevent unauthorized tools or infinite loops.
+> 2. Using a deterministic `TopologyValidator` (Non-AI) to prevent unauthorized tools, infinite loops, or **malformed graph structures** (Structural Integrity).
 
 See `examples/metacognition/` for 5 working Proof-of-Concepts.
 

@@ -103,6 +103,29 @@ Runs the graph.
 class GraphExecutor:
     def __init__(self, log_dir: str = "lar_logs"): ...
     def run_step_by_step(self, start_node: BaseNode, initial_state: dict): ...
+
+### 6. DynamicNode
+A metacognitive primitive that asks an LLM to design a subgraph at runtime.
+```python
+class DynamicNode(BaseNode):
+    def __init__(
+        self,
+        llm_model: str,
+        prompt_template: str,
+        validator: TopologyValidator,
+        next_node: BaseNode = None,
+        context_keys: List[str] = [],
+        system_instruction: str = None
+    ): ...
+```
+
+### 7. TopologyValidator
+Enforces safety on dynamic graphs (No cycles, Allowed tools only, Structural Integrity).
+```python
+class TopologyValidator:
+    def __init__(self, allowed_tools: List[callable] = None): ...
+    def validate(self, graph_spec: dict): ...
+```
 ```
 
 ## Hello World (Triage Agent)
