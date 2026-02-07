@@ -98,6 +98,34 @@ node = LLMNode(
 
 ---
 
+## ⚡ Quick Start (`v1.4.0`)
+
+**The fastest way to build an agent is the CLI.**
+
+### 1. Install & Scaffold
+```bash
+pip install lar-engine
+lar new agent my-bot
+cd my-bot
+poetry install  # or pip install -e .
+python agent.py
+```
+> This generates a production-ready folder structure with `pyproject.toml`, `.env`, and a template agent.
+> *(For Lár v1.4.0+)*
+
+### 2. The "Low Code" Way (`@node`)
+Define nodes as simple functions. No boilerplate.
+```python
+from lar import node
+
+@node(output_key="summary")
+def summarize_text(state):
+    # Access state like a dictionary (New in v1.4.0!)
+    text = state["text"] 
+    return llm.generate(text)
+```
+*(See `examples/v1_4_showcase.py` for a full comparison)*
+
 ## The Game Changer: Hybrid Cognitive Architecture
 
 **Most frameworks are "All LLM." This doesn't scale.**

@@ -35,7 +35,7 @@ def build_agent_graph():
     
     # Simple Agent
     agent_node = LLMNode(
-        model_name="gpt-4o", # Or "ollama/phi4", "claude-3-opus"
+        model_name="ollama/phi4", # Or "ollama/phi4", "claude-3-opus"
         prompt_template="You are a helper API. Answer this request concisely: {task}",
         output_key="response",
         next_node=final_node

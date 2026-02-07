@@ -342,7 +342,8 @@ class ToolNode(BaseNode):
             else:
                 inputs = [state.get(key) for key in self.input_keys]
             
-            print(f"  [ToolNode]: Running {self.tool_function.__name__} with inputs: {truncate_for_log(inputs)}")
+            func_name = getattr(self.tool_function, "__name__", str(self.tool_function))
+            print(f"  [ToolNode]: Running {func_name} with inputs: {truncate_for_log(inputs)}")
             result = self.tool_function(*inputs)
             
             # Special handling for merging dict results
@@ -356,7 +357,8 @@ class ToolNode(BaseNode):
 
             return self.next_node
         except Exception as e:
-            print(f"  [ToolNode] ERROR: {self.tool_function.__name__} failed: {e}")
+            func_name = getattr(self.tool_function, "__name__", str(self.tool_function))
+            print(f"  [ToolNode] ERROR: {func_name} failed: {e}")
             state.set("last_error", str(e))
             if self.error_node:
                 return self.error_node
@@ -441,9 +443,11 @@ class BatchNode(BaseNode):
                 try:
                     local_state_result = future.result()
                     results.append(local_state_result)
-                    print(f"  [BatchNode]: Node {node.__class__.__name__} ({getattr(node, 'output_key', 'unknown')}) completed.")
+                    node_name = getattr(node, "__name__", node.__class__.__name__)
+                    print(f"  [BatchNode]: Node {node_name} ({getattr(node, 'output_key', 'unknown')}) completed.")
                 except Exception as e:
-                    print(f"  [BatchNode] ERROR in thread for {node.__class__.__name__}: {e}")
+                    node_name = getattr(node, "__name__", node.__class__.__name__)
+                    print(f"  [BatchNode] ERROR in thread for {node_name}: {e}")
                     state.set("last_error", str(e))
 
         # Merge results back into the main state
@@ -531,3 +535,48 @@ class HumanJuryNode(BaseNode):
                 
         print("="*40 + "\n")
         return self.next_node
+
+class FunctionalNode(BaseNode):
+    """
+    Wrapper for a simple function to act as a Node.
+    Created via the @node decorator.
+    """
+    def __init__(self, func: Callable, output_key: str = None, next_node: BaseNode = None):
+        if not callable(func):
+            raise ValueError("func must be callable")
+        
+        self.func = func
+        self.output_key = output_key
+        self.next_node = next_node
+        # Try to adopt the function's name and docs
+        self.__name__ = getattr(func, "__name__", "anonymous_func")
+        self.__doc__ = getattr(func, "__doc__", "")
+
+    def execute(self, state: GraphState):
+        func_name = getattr(self.func, "__name__", "anonymous_func")
+        print(f"  [FunctionalNode]: Executing {func_name}...")
+        
+        # Pass state to the function
+        # Expectation: function(state: GraphState) -> result
+        result = self.func(state)
+        
+        if self.output_key:
+            state.set(self.output_key, result)
+            print(f"  [FunctionalNode]: Saved result to state['{self.output_key}']")
+            
+        return self.next_node
+
+def node(output_key: str = None, next_node: BaseNode = None):
+    """
+    Decorator to convert a function into a Node instance.
+    
+    Usage:
+    @node(output_key="summary")
+    def summarize_text(state):
+        return llm.generate(state.get("text"))
+        
+    # summarize_text is now a FunctionalNode instance
+    """
+    def decorator(func):
+        return FunctionalNode(func, output_key=output_key, next_node=next_node)
+    return decorator

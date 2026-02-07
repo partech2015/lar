@@ -20,13 +20,23 @@ Lár is designed to be written by AI.
 *If the IDE hallucinates, tell it:*
 > "Read `lar/IDE_MASTER_PROMPT.md` and `lar/examples/` first."
 
-### 2. Install the Engine
+### 2. Install & Scaffold (New in v1.4.0)
 
-You can install the core Lár engine directly from PyPI:
+You can install the core Lár engine and new CLI directly from PyPI:
 
 ```bash
 pip install lar-engine
 ```
+
+Then, generate a new agent project instantly:
+
+```bash
+lar new agent my-agent
+cd my-agent
+poetry install
+```
+
+This creates a production-ready folder structure with `pyproject.toml`, `.env`, and a template agent.
 ### 3. **Set Up Environment Variables**
 `Lár` uses a unified adapter `(LiteLLM)`. Depending on the models you run, you must set the corresponding API keys in your `.env` file:
 

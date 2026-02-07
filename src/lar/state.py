@@ -18,6 +18,14 @@ class GraphState:
         """Sets a key-value pair in the state."""
         self._state[key] = value
 
+    def __setitem__(self, key: str, value: any):
+        """Allows state['key'] = value syntax."""
+        self.set(key, value)
+
+    def __getitem__(self, key: str):
+        """Allows value = state['key'] syntax."""
+        return self._state[key]
+
     def get(self, key: str, default: any = None):
         """
         Gets a value from the state by its key.

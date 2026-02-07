@@ -53,14 +53,6 @@ def security_scan(state: GraphState) -> str:
     print("  [Firewall]: ✅ Input clean. Routing to LLM.")
     return "PASS"
 
-firewall_router = RouterNode(
-    decision_function=security_scan,
-    path_map={
-        "BLOCK": None, # Will point to security_alert node
-        "PASS": None   # Will point to assistant node
-    }
-)
-
 # --- 2. The Security Alert (The Alarm) ---
 # executed if input is blocked. deterministic. $0 cost.
 security_alert = AddValueNode(
@@ -74,15 +66,19 @@ security_alert = AddValueNode(
 agent_response = AddValueNode(key="final_response", value="[LLM Generated Answer]", next_node=None)
 # Ideally this would be an LLMNode, but for this demo we simulate the 'Safe Zone'
 llm_node = LLMNode(
-    model_name="gemini/gemini-1.5-pro",
+    model_name="ollama/phi4",
     prompt_template="You are a helpful assistant. User says: {user_query}",
     output_key="final_response",
     next_node=None
 )
 
-# Wire the router (Now that nodes exist)
-firewall_router.path_map["BLOCK"] = security_alert
-firewall_router.path_map["PASS"] = llm_node
+firewall_router = RouterNode(
+    decision_function=security_scan,
+    path_map={
+        "BLOCK": security_alert, # Will point to security_alert node
+        "PASS": llm_node   # Will point to assistant node
+    }
+)
 
 # --- Runs ---
 

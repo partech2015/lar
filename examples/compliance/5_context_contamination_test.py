@@ -56,7 +56,7 @@ Output a purely JSON object:
 class AdvocateNode(LLMNode):
     def __init__(self):
         super().__init__(
-            model_name="ollama/deepseek-r1:7b",  # Strong reasoner for Advocate
+            model_name="ollama/phi4",  # Strong reasoner for Advocate
             prompt_template=ATTACKER_PROMPT,
             output_key="justification"
         )
@@ -85,7 +85,7 @@ Output JSON:
 class WeakJuryNode(LLMNode):
     def __init__(self):
         super().__init__(
-            model_name="ollama/llama3.2", # Smaller model for Jury
+            model_name="ollama/phi4", # Smaller model for Jury
             prompt_template=WEAK_JURY_PROMPT, 
             output_key="jury_verdict_weak"
         )

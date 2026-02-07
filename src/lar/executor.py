@@ -18,9 +18,6 @@ class GraphExecutor:
     
     This is the core execution engine that runs nodes step-by-step,
     delegating logging to AuditLogger and token tracking to TokenTracker.
-    
-    For Air-Gap / Offline Mode support, please see Snath Enterprise:
-    https://snath.ai/enterprise
     """
     def __init__(self, 
                  log_dir: str = "lar_logs", 
@@ -33,7 +30,6 @@ class GraphExecutor:
         
         Args:
             log_dir (str): Directory for audit logs (used if logger not provided)
-            offline_mode (bool): Reserved for Snath Enterprise features
             user_id (str, optional): User identifier for multi-tenant systems
             logger (AuditLogger, optional): Custom logger instance. If None, creates default.
             tracker (TokenTracker, optional): Custom tracker instance. If None, creates default.

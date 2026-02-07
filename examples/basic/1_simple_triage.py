@@ -25,7 +25,7 @@ Concepts:
 
 # 1. Define Nodes
 classifier = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
+    model_name="ollama/phi4",
     prompt_template="Classify the following request as 'BILLING' or 'TECHNICAL'. Request: {input}",
     output_key="classification",
     system_instruction="You are a triage assistant. Output only one word."

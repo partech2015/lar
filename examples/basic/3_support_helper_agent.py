@@ -61,7 +61,7 @@ def route_on_intent(state: GraphState) -> str:
     return "direct"
 
 
-def build_agent_graph(model_name: str = "gemini/gemini-1.5-flash") -> LLMNode:
+def build_agent_graph(model_name="ollama/phi4",) -> LLMNode:
     """
     Build the support helper graph using forward definition then explicit linking.
     """

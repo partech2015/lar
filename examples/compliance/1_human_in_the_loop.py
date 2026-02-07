@@ -23,7 +23,7 @@ Concepts:
 
 # 1. Proposal Generator
 proposal_bot = LLMNode(
-    model_name="gemini/gemini-2.5-pro",
+    model_name="ollama/phi4",
     prompt_template="Write a short tweet about: {topic}.",
     output_key="tweet_draft",
     system_instruction="You are a social media manager."

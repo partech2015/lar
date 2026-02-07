@@ -9,7 +9,7 @@ from lar import GraphExecutor, GraphState, LLMNode, RouterNode, ToolNode
 
 # A. The Architect: breaks down the problem
 architect = LLMNode(
-    model_name="gemini/gemini-1.5-pro",
+    model_name="ollama/phi4",
     prompt_template="""
     You are a Senior Software Architect.
     Analyze the user request: {input}
