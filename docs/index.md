@@ -31,6 +31,18 @@ This means you get:
 
 *Stop guessing. Start building agents you can trust.*
 
+## What's New in v1.4.1 (Feb 2026)?
+
+**Reasoning Models (System 2) are now first-class citizens.**
+Lár supports **DeepSeek R1**, **OpenAI o1**, and **Liquid Thinking** out of the box.
+
+*   **Audit Logic:** Captures "hidden" reasoning traces into metadata.
+*   **Clean State:** delivers only the final answer to your downstream nodes.
+*   **Robustness:** Handles malformed tags from local models.
+
+[Read the Reasoning Models Guide](core-concepts/5-reasoning-models.md)
+
+
 ## Demos & Examples
 
 Learn by building with our ready-made demos:

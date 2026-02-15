@@ -252,6 +252,29 @@ You can build any agent with four core components:
 
 ---
 
+## Reasoning Models (System 2) - New in v1.4.1
+
+Term "Chain of Thought" is now a first-class citizen.
+Lár supports **DeepSeek R1**, **OpenAI o1**, and **Liquid Thinking**.
+
+- **Automatic Capture**: The "thinking process" is extracted and saved to `run_metadata`.
+- **Clean Output**: Your downstream nodes only see the final answer.
+- **Robustness**: Works with both API-based reasoning (o1) and local raw reasoning (DeepSeek R1 via Ollama).
+
+```python
+# examples/reasoning_models/1_deepseek_r1.py
+node = LLMNode(
+    model_name="ollama/deepseek-r1:7b",
+    prompt_template="Solve: {puzzle}",
+    output_key="answer"
+)
+# Result: 
+# state['answer'] = "The answer is 42."
+# log['metadata']['reasoning_content'] = "<think>First, I calculate...</think>"
+```
+
+---
+
 ## Example "Glass Box" Audit Trail
 
 You don't need to guess why an agent failed. `lar` is a "glass box" that provides a complete, auditable log for every run, especially failures.

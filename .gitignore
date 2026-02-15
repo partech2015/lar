@@ -49,6 +49,7 @@ htmlcov/
 lar_logs/
 test_logs/
 custom_test_logs/
+reasoning_logs/
 
 # Ignore test scripts
 test_v1_*.py

@@ -210,6 +210,48 @@ class LLMNode(BaseNode):
                         "total_tokens": response.usage.prompt_tokens + response.usage.completion_tokens, 
                         "model": self.model_identifier # Log the model used
                     }
+
+                    # --- Reasoning Content Support (DeepSeek R1, o1, etc.) ---
+                    # 1. Check for "reasoning_content" in the message object (Standard API)
+                    reasoning = getattr(response.choices[0].message, "reasoning_content", None)
+                    
+                    # 2. Robust Regex Fallback (Handling malformed tags)
+                    clean_answer = llm_response_text.strip() # Initialize with full text
+                    if not reasoning: # Only attempt regex if not already found via standard API
+                        import re
+                        # Case A: Standard <think> content </think>
+                        match = re.search(r"<think>(.*?)</think>", llm_response_text, flags=re.DOTALL)
+                        if match:
+                            reasoning = match.group(1).strip()
+                            # Remove the thought block from the final answer
+                            clean_answer = re.sub(r"<think>.*?</think>", "", llm_response_text, flags=re.DOTALL).strip()
+                        
+                        # Case B: Opening tag only (Model cutoff or ongoing thought)
+                        elif "<think>" in llm_response_text:
+                            parts = llm_response_text.split("<think>", 1)
+                            # Everything after <think> is reasoning
+                            reasoning = parts[1].strip()
+                            # Everything before is the answer (usually empty, but safe to keep)
+                            clean_answer = parts[0].strip()
+                        
+                        # Case C: Closing tag only (Model started thinking "internally" or hallucinated start)
+                        elif "</think>" in llm_response_text:
+                            parts = llm_response_text.split("</think>", 1)
+                            # Everything before </think> is reasoning
+                            reasoning = parts[0].strip()
+                            # Everything after is the answer
+                            clean_answer = parts[1].strip()
+                        
+                        # Case D: No reasoning tags -> clean_answer remains llm_response_text.strip()
+                    
+                    if reasoning:
+                        usage["reasoning_content"] = reasoning
+                        print(f"  [LLMNode]: 🧠 Captured {len(reasoning)} chars of reasoning trace (Regex).")
+
+                    # Set the (potentially cleaned) answer to the state
+                    state.set(self.output_key, clean_answer)
+                    print(f"  [LLMNode]: Saved response to state['{self.output_key}']")
+
                     state.set("__last_run_metadata", usage)
                     print(f"  [LLMNode]: Logged {usage['total_tokens']} tokens.")
 
