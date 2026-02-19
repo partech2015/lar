@@ -241,20 +241,28 @@ You can build any agent with four core components:
     
     **See:** `examples/patterns/16_custom_logger_tracker.py` for full demo
 
-4.  **Node Implementations**: The "building blocks" of your agent.
+### 4. Node Implementations (The Building Blocks)
 
-      * **`LLMNode`**: The "Thinker." Calls any major LLM API (e.g., Gemini, GPT-4, Claude) to generate text... to generate text, modify plans, or correct code. **Now supports `generation_config` for controlling creativity (temperature, top_p).**
-      * **`ToolNode`**: The "Actor." Executes any deterministic Python function (e.g., run code, search a database, call an API). It supports separate routing for `success` and `error`.
-      * **`RouterNode`**: The "Choice." Executes a simple Python function to inspect the state and returns a string key, which deterministically routes execution to the next node. This is your "if/else" statement.
-      * **`BatchNode`**: The "Parallelizer." Fan-out multiple nodes to run concurrently on separate threads, then merge their results (fan-in). Essential for speed.
-      * **`HumanJuryNode`**: The "Article 14 Guard." Pauses execution and solicits explicit human approval via CLI before allowing the graph to proceed.
-      * **`ClearErrorNode`**: A utility node that cleans up state (e.g., removes `last_error`) to prevent infinite loops.
+- **`LLMNode`**: The "Thinker." Calls any major LLM API (Gemini, GPT-4, DeepSeek, etc.) to plan, reason, or write code.
+- **`ToolNode`**: The "Actor." Executes deterministic Python functions (API calls, DB lookups). Separates success/error routing.
+- **`RouterNode`**: The "Traffic Cop." Deterministically routes execution to the next node based on state values.
+- **`BatchNode`** *(New)*: The "Parallelizer." Fans out multiple nodes to run concurrently on separate threads.
+- **`DynamicNode`** *(New)*: The "Architect." Can recursively generate and execute new sub-agents at runtime (Fractal Agency).
+- **`HumanJuryNode`**: The "Guard." Pauses execution for explicit human approval via CLI.
+- **`ClearErrorNode`**: The "Janitor." Clears error states to allow robust retry loops.
 
 ---
 
-- **Reasoning Models (System 2):** Native support for DeepSeek R1, OpenAI o1, & Liquid. (v1.4+)
+## Reasoning Models (System 2 Support)
 
-### Why Lár?
+**Lár treats "Thinking" as a first-class citizen.**
+Native support for **DeepSeek R1**, **OpenAI o1**, and **Liquid**.
+
+- **Audit Logic:** Distinct `<think>` tags are captured in metadata, keeping your main context window clean.
+- **Robustness:** Handles malformed tags and fallback logic automatically.
+- **Example:** `examples/reasoning_models/1_deepseek_r1.py`
+
+## Why Lár?
 - **Fractal Agency:** Agents can spawn sub-agents recursively (`DynamicNode`). (v1.5+)
 - **True Parallelism:** Run multiple agents in parallel threads (`BatchNode`). (v1.5+)
 - **Lightweight:** No vector DB required. Just Python.
@@ -463,6 +471,11 @@ See the **[Metacognition Docs](https://docs.snath.ai/core-concepts/9-metacogniti
 | **3** | **[`3_self_healing.py`](examples/metacognition/3_self_healing.py)** | **Error Recovery** (Injecting Fix Subgraphs) |
 | **4** | **[`4_adaptive_deep_dive.py`](examples/metacognition/4_adaptive_deep_dive.py)** | **Recursive Research** (Spawning Sub-Agents) |
 | **5** | **[`5_expert_summoner.py`](examples/metacognition/5_expert_summoner.py)** | **Dynamic Persona Instantiation** |
+
+#### 6. Advanced Showcase (`examples/advanced/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`fractal_polymath.py`](examples/advanced/fractal_polymath.py)** | **Fractal Agency** (Recursion + Parallelism) |
 
 
 ---

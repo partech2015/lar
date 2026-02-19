@@ -1,183 +1,62 @@
-# The 21 Core Patterns
+# The Pattern Library
 
-Lár is built on the philosophy of "Code as Graph". We have created **21 robust engineering patterns** that strictly correspond to the examples in the repository.
+We have provided **21 robust patterns** in the **[`examples/`](../../examples/)** directory, organized by category:
 
-Each pattern below includes a link to the source code.
+> **[View the Visual Library](https://snath.ai/examples)**: Browse all patterns with diagrams and use-cases on our website.
 
----
+#### 1. Basic Primitives (`examples/basic/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_simple_triage.py`](../../examples/basic/1_simple_triage.py)** | Classification & Linear Routing |
+| **2** | **[`2_reward_code_agent.py`](../../examples/basic/2_reward_code_agent.py)** | Code-First Agent Logic |
+| **3** | **[`3_support_helper_agent.py`](../../examples/basic/3_support_helper_agent.py)** | Lightweight Tool Assistant |
+| **4** | **[`4_fastapi_server.py`](../../examples/basic/4_fastapi_server.py)** | FastAPI Wrapper (Deploy Anywhere) |
 
-## Standard Patterns
+#### 2. Core Patterns (`examples/patterns/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_rag_researcher.py`](../../examples/patterns/1_rag_researcher.py)** | RAG (ToolNode) & State Merging |
+| **2** | **[`2_self_correction.py`](../../examples/patterns/2_self_correction.py)** | "Judge" Pattern & Error Loops |
+| **3** | **[`3_parallel_execution.py`](../../examples/patterns/3_parallel_execution.py)** | Fan-Out / Fan-In Aggregation |
+| **4** | **[`4_structured_output.py`](../../examples/patterns/4_structured_output.py)** | Strict JSON Enforcement |
+| **5** | **[`5_multi_agent_handoff.py`](../../examples/patterns/5_multi_agent_handoff.py)** | Multi-Agent Collaboration |
+| **6** | **[`6_meta_prompt_optimizer.py`](../../examples/patterns/6_meta_prompt_optimizer.py)** | Self-Modifying Agents (Meta-Reasoning) |
+| **7** | **[`7_integration_test.py`](../../examples/patterns/7_integration_test.py)** | Integration Builder (CoinCap) |
+| **8** | **[`8_ab_tester.py`](../../examples/patterns/8_ab_tester.py)** | A/B Tester (Parallel Prompts) |
+| **9** | **[`9_resumable_graph.py`](../../examples/patterns/9_resumable_graph.py)** | Time Traveller (Crash & Resume) |
 
-### 1. Simple Triage
-**The "Hello World" of Agents.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/basic/1_simple_triage.py)
+#### 3. Compliance & Safety (`examples/compliance/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_human_in_the_loop.py`](../../examples/compliance/1_human_in_the_loop.py)** | User Approval & Interrupts |
+| **2** | **[`2_security_firewall.py`](../../examples/compliance/2_security_firewall.py)** | Blocking Jailbreaks with Code |
+| **3** | **[`3_juried_layer.py`](../../examples/compliance/3_juried_layer.py)** | Proposer -> Jury -> Kernel |
+| **4** | **[`4_access_control_agent.py`](../../examples/compliance/4_access_control_agent.py)** | **Flagship Access Control** |
+| **5** | **[`5_context_contamination_test.py`](../../examples/compliance/5_context_contamination_test.py)** | Red Teaming: Social Engineering |
+| **6** | **[`6_zombie_action_test.py`](../../examples/compliance/6_zombie_action_test.py)** | Red Teaming: Stale Authority |
+| **7** | **[`7_hitl_agent.py`](../../examples/compliance/7_hitl_agent.py)** | Article 14 Compliance Node |
 
-*   **Mechanism**: `LLMNode` (Classifier) -> `RouterNode` -> `ToolNode` (Handler).
-*   **Use Case**: Customer support routing (Billing vs Tech), Email sorting.
-*   **Why**: Deterministic routing is safer than letting an LLM decide "what to do" implicitly.
+#### 4. High Scale (`examples/scale/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_corporate_swarm.py`](../../examples/scale/1_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph |
+| **2** | **[`2_mini_swarm_pruner.py`](../../examples/scale/2_mini_swarm_pruner.py)** | Dynamic Graph Pruning |
+| **3** | **[`3_parallel_newsroom.py`](../../examples/scale/3_parallel_newsroom.py)** | True Parallelism (`BatchNode`) |
+| **4** | **[`4_parallel_corporate_swarm.py`](../../examples/scale/4_parallel_corporate_swarm.py)** | Concurrent Branch Execution |
 
-### 2. RAG Researcher
-**Retrieval Augmented Generation with State.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/1_rag_researcher.py)
+#### 5. Metacognition (`examples/metacognition/`)
 
-*   **Mechanism**: `ToolNode` (Retriever) -> `LLMNode` (Answer Generator).
-*   **Key Feature**: The `ToolNode` output merges into `state`, providing context for the `LLMNode`.
+See the **[Metacognition Docs](9-metacognition.md)** for a deep dive.
 
-### 3. Self-Correction
-**The "Unreliable Witness" fix.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/2_self_correction.py)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_dynamic_depth.py`](../../examples/metacognition/1_dynamic_depth.py)** | **Adaptive Complexity** (1 Node vs N Nodes) |
+| **2** | **[`2_tool_inventor.py`](../../examples/metacognition/2_tool_inventor.py)** | **Self-Coding** (Writing Tools at Runtime) |
+| **3** | **[`3_self_healing.py`](../../examples/metacognition/3_self_healing.py)** | **Error Recovery** (Injecting Fix Subgraphs) |
+| **4** | **[`4_adaptive_deep_dive.py`](../../examples/metacognition/4_adaptive_deep_dive.py)** | **Recursive Research** (Spawning Sub-Agents) |
+| **5** | **[`5_expert_summoner.py`](../../examples/metacognition/5_expert_summoner.py)** | **Dynamic Persona Instantiation** |
 
-*   **Mechanism**: `Generator` -> `Validator` -> `Error?` -> `Refiner`.
-*   **Use Case**: Code generation (run -> syntax error -> fix).
-*   **Key Feature**: Uses `ClearErrorNode` to reset state after a fix before retrying.
-
-### 4. Human-in-the-Loop
-**Pausing for approval.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/compliance/1_human_in_the_loop.py)
-
-*   **Mechanism**: `LLMNode` (Propose Plan) -> `Wait` (Stop Execution) -> User Input -> `ToolNode` (Execute).
-*   **Use Case**: Deploying code, spending money, sending sensitive emails.
-
-### 5. Parallel Execution (Basic)
-**Fan-Out Aggregation.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/3_parallel_execution.py)
-
-*   **Mechanism**: Running multiple logical branches that merge back.
-*   **Note**: This is simulated parallelism. For true threading, see Pattern 14.
-
-### 6. Structured Output
-**Strict JSON Enforcement.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/4_structured_output.py)
-
-*   **Mechanism**: `LLMNode` -> `JSONParser` -> `API`.
-*   **Use Case**: Extracting data for APIs.
-*   **Why**: Guarantees the output is machine-readable, preventing downstream crashes.
-
----
-
-## Intermediate Patterns
-
-### 7. Multi-Agent Handoff
-**The Manager-Worker topology.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/5_multi_agent_handoff.py)
-
-*   **Mechanism**: `Manager` (Router) -> `Worker A` / `Worker B` -> `Manager`.
-*   **Use Case**: Complex projects (e.g., Writer <-> Editor).
-*   **Why**: Specialization. A "Coder" prompt performs better than a "Generalist" prompt.
-
-### 8. Meta-Prompt Optimizer
-**Self-Modifying Agents.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/6_meta_prompt_optimizer.py)
-
-*   **Mechanism**: An agent that rewrites its own system prompt based on results.
-*   **Use Case**: Optimizing instructions for specific tasks.
-
-### 9. Corporate Swarm
-**Stress Testing.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/scale/1_corporate_swarm.py)
-
-*   **Mechanism**: Programmatically generating a graph with 60+ nodes.
-*   **Why**: Proves Lár's graph engine scales `O(1)` with complexity, unlike chain-based frameworks.
-
-### 10. Security Firewall
-**Architecture-Level Safety.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/compliance/2_security_firewall.py)
-
-*   **Mechanism**: `Input` -> `Guardrail Node` -> `Router` (Block/Allow) -> `Agent`.
-*   **Why**: Blocks jailbreaks *before* they reach the expensive model.
-
-### 11. Reward Code Agent
-**Forward-Defined Logic.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/basic/2_reward_code_agent.py)
-
-*   **Mechanism**: Code-first logic design.
-
-### 12. Support Helper
-**Lightweight Assistant.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/basic/3_support_helper_agent.py)
-
-*   **Mechanism**: Specific tool usage for customer support data.
-
-### 13. Mini Swarm Pruner
-**Dynamic Graph management.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/scale/2_mini_swarm_pruner.py)
-
-*   **Mechanism**: Dynamically removing nodes from execution.
-
----
-
-## Advanced & Ops Patterns
-
-### 14. Parallel Newsroom
-**True Threaded Parallelism.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/scale/3_parallel_newsroom.py)
-
-*   **Mechanism**: `BatchNode([Worker A, Worker B])`.
-*   **Use Case**: Fetching 5 URLs at once using `ThreadPoolExecutor`.
-
-### 15. Parallel Corporate Swarm
-**Concurrent Branch Execution.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/scale/4_parallel_corporate_swarm.py)
-
-*   **Mechanism**: Scaling the Swarm (Pattern 9) with `BatchNode` for 50x speedup.
-
-### 16. Integration Builder
-**Just-in-Time Tools.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/7_integration_test.py)
-
-*   **Mechanism**: User -> `@lar/IDE_INTEGRATION_PROMPT.md` -> New `ToolNode`.
-*   **Use Case**: Wrappers for CoinCap, Stripe, Linear.
-
-### 17. The A/B Tester
-**Agentic Evaluation.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/8_ab_tester.py)
-
-*   **Mechanism**: `BatchNode` (Model A, Model B) -> `JudgeNode` (Evaluator).
-*   **Use Case**: Testing a new prompt against an old one.
-
-### 18. The Time Traveller
-**State Serialization.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/patterns/9_resumable_graph.py)
-
-*   **Mechanism**: Save `state.json` -> Stop Process -> Load `state.json` -> Resume.
-*   **Use Case**: Serverless deployments (stopping to save cost), Crash recovery.
-
-### 19. FastAPI Server
-**Deploy Anywhere.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/basic/4_fastapi_server.py)
-
-*   **Mechanism**: Wrapping `GraphExecutor` in a FastAPI route.
-*   **Use Case**: Exposing your agent as a REST API for production deployment.
-
-### 20. Juried Layer
-**Architecture-Level Safety.**
-[See Example](https://github.com/snath-ai/lar/blob/main/examples/compliance/3_juried_layer.py)
-
-*   **Mechanism**: `Proposer (LLM)` -> `Jury (Code/Policy)` -> `Kernel (Execution)`.
-*   **Why**: Separates the "Reasoning" (untrustworthy) from the "Authorization" (deterministic).
-
-### 21. Access Control Agent
-Combines Reasoning, Determinstic Policy, and Human-in-the-Loop.
-**File**: [`4_access_control_agent.py`](../../examples/compliance/4_access_control_agent.py)
-
-### 22. Context Contamination (Social Engineering)
-**Security Lab 1**: A "Red Team" script that attempts to trick an agent using social engineering ("CTO approved this").
-**File**: [`5_context_contamination_test.py`](../../examples/compliance/5_context_contamination_test.py)
-
-*   **Mechanism**: Adversarial Advocate vs. Weak Jury vs. Strong Jury.
-*   **Lesson**: LLM Juries can be socially engineered. Code Juries cannot.
-
-### 23. Zombie Action (Stale Authority)
-**Security Lab 2**: Demonstrates a replay attack where an old approval is used in a new, dangerous context.
-**File**: [`6_zombie_action_test.py`](../../examples/compliance/6_zombie_action_test.py)
-
-*   **Mechanism**: Cryptographic signature validation of state.
-*   **Lesson**: Never trust `state` without a signature if the graph was paused.
-
-### 24. Human-in-the-Loop (Article 14)
-**Mandatory Hardware Stop.**
-**File**: [`7_hitl_agent.py`](../../examples/compliance/7_hitl_agent.py)
-
-*   **Mechanism**: `HumanJuryNode`.
-*   **Use Case**: High-risk actions (Article 14 compliance) that require explicit CLI/API approval.
-*   **Key Feature**: Deterministic blocking. The LLM *cannot* bypass this node.
+#### 6. Advanced Showcase (`examples/advanced/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`fractal_polymath.py`](../../examples/advanced/fractal_polymath.py)** | **Fractal Agency** (Recursion + Parallelism) |

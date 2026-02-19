@@ -51,11 +51,11 @@ nav:
   - 'Home': index.md
   - 'Getting Started': getting-started.md
   - 'IDE Setup': ide_setup.md
-  - 'Core Concepts':
+  - 'Examples':
     - 'The "Glass Box" Philosophy': core-concepts/1-philosophy.md
     - 'The 8 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
-    - 'The 24 Core Patterns': core-concepts/4-core-patterns.md
+    - 'Pattern Library': core-concepts/4-core-patterns.md
     - 'Reasoning Models (System 2)': core-concepts/5-reasoning-models.md
     - 'Dynamic Graphs (Metacognition)': core-concepts/9-metacognition.md
   - 'Case Studies':

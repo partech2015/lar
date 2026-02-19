@@ -42,7 +42,7 @@ def mock_completion_side_effect(*args, **kwargs):
                 {
                     "id": "poet_agent",
                     "type": "DynamicNode",
-                    "prompt": "Poet Prompt...",
+                    "prompt": "Poet who codes...",
                     "output_key": "poem_result"
                 },
                 {
