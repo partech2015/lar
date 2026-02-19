@@ -51,7 +51,7 @@ nav:
   - 'Home': index.md
   - 'Getting Started': getting-started.md
   - 'IDE Setup': ide_setup.md
-  - 'Examples':
+  - 'Core Concepts':
     - 'The "Glass Box" Philosophy': core-concepts/1-philosophy.md
     - 'The 8 Primitives': core-concepts/2-architecture.md
     - 'The Audit Log': core-concepts/3-audit-log.md
