@@ -1,8 +1,6 @@
 # The Pattern Library
 
-We have provided **21 robust patterns** in the **[`examples/`](../../examples/)** directory, organized by category:
 
-> **[View the Visual Library](https://snath.ai/examples)**: Browse all patterns with diagrams and use-cases on our website.
 
 #### 1. Basic Primitives (`examples/basic/`)
 | # | Pattern | Concept |
