@@ -441,8 +441,9 @@ class BatchNode(BaseNode):
         # Validation
         if not isinstance(nodes, list):
             raise ValueError("nodes must be a list")
-        if not nodes:
-            raise ValueError("nodes list cannot be empty")
+        # Relaxed validation: Allow empty list for dynamic graph construction (lazy loading)
+        # if not nodes:
+        #    raise ValueError("nodes list cannot be empty")
         for i, node in enumerate(nodes):
             if not isinstance(node, BaseNode):
                 raise ValueError(
@@ -463,9 +464,21 @@ class BatchNode(BaseNode):
             local_state = GraphState(local_state_dict)
             
             # Execute the node logic
-            # Note: We ignore the 'next_node' return of the child node.
-            # BatchNode controls the flow, not the children.
-            node.execute(local_state)
+            # [FIX] Recursive Execution Loop
+            # Previously, we just ran node.execute() and ignored the return.
+            # But DynamicNodes return a 'next_node' (the subgraph entry) that MUST be run.
+            # So we loop here, effectively becoming a mini-GraphExecutor for this thread.
+            current_node = node
+            MAX_STEPS = 50 # Safety brake for infinite loops
+            steps = 0
+            
+            while current_node and steps < MAX_STEPS:
+                # print(f"    [BatchThread] Executing {current_node.__class__.__name__}...")
+                current_node = current_node.execute(local_state)
+                steps += 1
+            
+            if steps >= MAX_STEPS:
+                print(f"  [BatchNode] WARN: Thread hit MAX_STEPS ({MAX_STEPS}). Potential infinite loop.")
             
             return local_state
 

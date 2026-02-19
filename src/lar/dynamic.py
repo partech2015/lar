@@ -200,25 +200,57 @@ class DynamicNode(BaseNode):
                     tool_function=func,
                     input_keys=n.get("input_keys", []),
                     output_key=n.get("output_key"),
-                    next_node=None
+                    next_node=None # Wired in Pass 2
+                )
+            elif ntype == "BatchNode":
+                # [NEW] Support for BatchNode
+                # BatchNode only takes 'nodes' and 'next_node'
+                node_map[nid] = BatchNode(
+                    nodes=[], # Will be filled in Pass 2
+                    next_node=None 
+                )
+                # Store metadata to help wiring later
+                node_map[nid]._pending_concurrent_ids = n.get("concurrent_nodes", [])
+            elif ntype == "DynamicNode":
+                # [NEW] Recursive Metacognition (Fractal Agency)
+                # The child DynamicNode needs a model, prompt, and the same validator.
+                child_prompt = n.get("prompt", "Design a sub-graph.")
+                
+                # We instantiate the class recursively
+                node_map[nid] = DynamicNode(
+                    llm_model=n.get("model", self.llm_node.model_name),
+                    prompt_template=child_prompt,
+                    validator=self.validator, # Inherit safety rails
+                    next_node=None # Wired in Pass 2
                 )
             # Add more types as needed (Router, Batch)
         
-        # Second Pass: Wire 'next_node'
+        # Second Pass: Wire 'next_node' and 'BatchNode.nodes'
         for n in nodes_data:
             nid = n["id"]
-            current_obj = node_map.get(nid)
-            if not current_obj: continue
+            node_obj = node_map.get(nid)
+            if not node_obj: continue 
             
+            # 2a. Wire 'next'
             next_id = n.get("next")
             if next_id:
                 if next_id in node_map:
-                    current_obj.next_node = node_map[next_id]
+                    node_obj.next_node = node_map[next_id]
                 else:
-                    print(f"  [DynamicNode] Warn: Next ID '{next_id}' not found. Broken link.")
+                    print(f"  [DynamicNode] Warning: Node '{nid}' points to unknown next '{next_id}'.")
             else:
                 # If next is null/None, it flows to the DynamicNode's configured 'next_node' (Rejoining main graph)
-                current_obj.next_node = self.next_node
+                node_obj.next_node = self.next_node
+            
+            # 2b. Wire 'BatchNode' concurrent nodes
+            if isinstance(node_obj, BatchNode) and hasattr(node_obj, "_pending_concurrent_ids"):
+                concurrent_nodes = []
+                for cid in node_obj._pending_concurrent_ids:
+                    if cid in node_map:
+                        concurrent_nodes.append(node_map[cid])
+                    else:
+                        print(f"  [DynamicNode] Warning: BatchNode '{nid}' includes unknown node '{cid}'.")
+                node_obj.nodes = concurrent_nodes
 
         entry_id = spec.get("entry_point")
         entry_node = node_map.get(entry_id)

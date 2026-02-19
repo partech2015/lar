@@ -98,7 +98,7 @@ node = LLMNode(
 
 ---
 
-## ⚡ Quick Start (`v1.4.0`)
+## Quick Start (`v1.4.0`)
 
 **The fastest way to build an agent is the CLI.**
 
@@ -252,11 +252,14 @@ You can build any agent with four core components:
 
 ---
 
-## Reasoning Models (System 2) - New in v1.4.1
+- **Reasoning Models (System 2):** Native support for DeepSeek R1, OpenAI o1, & Liquid. (v1.4+)
 
-Term "Chain of Thought" is now a first-class citizen.
-Lár supports **DeepSeek R1**, **OpenAI o1**, and **Liquid Thinking**.
-
+### Why Lár?
+- **Fractal Agency:** Agents can spawn sub-agents recursively (`DynamicNode`). (v1.5+)
+- **True Parallelism:** Run multiple agents in parallel threads (`BatchNode`). (v1.5+)
+- **Lightweight:** No vector DB required. Just Python.
+- **Model Agnostic:** Works with OpenAI, Gemini, Claude, DeepSeek, Ollama, etc.
+- **Glass Box:** Every step, prompt, and thought is logged to `lar_logs/` for audit.
 - **Automatic Capture**: The "thinking process" is extracted and saved to `run_metadata`.
 - **Clean Output**: Your downstream nodes only see the final answer.
 - **Robustness**: Works with both API-based reasoning (o1) and local raw reasoning (DeepSeek R1 via Ollama).
