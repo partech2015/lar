@@ -339,7 +339,7 @@ See `examples/metacognition/` for 5 working Proof-of-Concepts.
 
 **[snath-ai/DMN](https://github.com/snath-ai/DMN)** - The flagship demonstration of Lár's capabilities.
 
-DMN (Dynamic Memory Network) is a **complete cognitive architecture** built entirely on Lár, showcasing what's possible when you combine:
+DMN (Default Mode Network) is a **complete cognitive architecture** built entirely on Lár, showcasing what's possible when you combine:
 - **Bicameral Mind**: Fast/Slow thinking systems running in parallel
 - **Sleep Cycles**: Automatic memory consolidation during "rest" periods  
 - **Episodic Memory**: Long-term storage with vectorized recall
