@@ -144,7 +144,9 @@ if __name__ == "__main__":
     
     print("\n[Manager] Designing the Agent Team (Cipher & Poet)...")
     try:
-        final_state = executor.run(recursive_polymath, initial_state)
+        final_state = {}
+        for step_log in executor.run_step_by_step(recursive_polymath, initial_state):
+            final_state = step_log.get("state_after", {})
         
         print("\n" + "="*50)
         print("MISSION ACCOMPLISHED")
