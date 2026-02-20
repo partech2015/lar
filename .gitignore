@@ -50,6 +50,9 @@ lar_logs/
 test_logs/
 custom_test_logs/
 reasoning_logs/
+clinical_audit_logs/
+financial_audit_logs/
+hmac_compliance_logs/
 
 # Ignore test scripts
 test_v1_*.py
