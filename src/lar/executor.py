@@ -25,7 +25,8 @@ class GraphExecutor:
                  user_id: Optional[str] = None,
                  logger: Optional[AuditLogger] = None,
                  tracker: Optional[TokenTracker] = None,
-                 hmac_secret: Optional[str] = None):
+                 hmac_secret: Optional[str] = None,
+                 max_node_fatigue: int = 20):
         """
         Initialize the GraphExecutor.
         
@@ -42,6 +43,7 @@ class GraphExecutor:
         # Use provided instances or create defaults
         self.logger = logger if logger is not None else AuditLogger(log_dir, hmac_secret=hmac_secret)
         self.tracker = tracker if tracker is not None else TokenTracker()
+        self.max_node_fatigue = max_node_fatigue
 
     def run_step_by_step(self, start_node: BaseNode, initial_state: dict, max_steps: int = 100):
         """
@@ -73,9 +75,15 @@ class GraphExecutor:
         self.tracker.reset()
 
         step_index = 0
+        node_counts = {}
         try:
             while current_node is not None:
                 node_name = current_node.__class__.__name__
+                
+                # --- NODE FATIGUE (Economic & Loop Constraint) ---
+                node_counts[node_name] = node_counts.get(node_name, 0) + 1
+                state.set("__node_counts", node_counts)
+                
                 state_before = copy.deepcopy(state.get_all())
                 
                 log_entry = {
@@ -87,6 +95,15 @@ class GraphExecutor:
                     "run_metadata": {}, 
                     "outcome": "pending"
                 }
+                
+                if node_counts[node_name] > self.max_node_fatigue:
+                    msg = f"Maximum visits ({self.max_node_fatigue}) exceeded for {node_name}."
+                    print(f"  [GraphExecutor] 🛑 FATIGUE TRIPPED: {msg}")
+                    log_entry["outcome"] = "error"
+                    log_entry["error"] = msg
+                    self.logger.log_step(log_entry)
+                    yield log_entry
+                    break
                 
                 try:
                     # Execute the node
@@ -135,20 +152,22 @@ class GraphExecutor:
                 
                 # --- CIRCUIT BREAKER ---
                 if step_index >= max_steps:
-                    print(f"  [GraphExecutor] 🛑 CIRCUIT BREAKER TRIPPED: Exceeded {max_steps} steps.")
+                    print(f"  [GraphExecutor]: CIRCUIT BREAKER TRIPPED: Exceeded {max_steps} steps.")
                     
                     # Log the termination event
-                    log_entry = {
+                    final_log = {
+                        "run_id": run_id,
+                        "timestamp": self.logger._get_utc_timestamp(),
                         "step": step_index,
-                        "node": "CircuitBreaker",
-                        "state_before": {},
+                        "node": "CIRCUIT_BREAKER",
+                        "state_before": state_after,
                         "state_diff": {}, 
                         "run_metadata": {},
                         "outcome": "error",
-                        "error": f"Maximum steps exceeded ({max_steps}). Infinite loop detected."
+                        "error": f"Max steps ({max_steps}) exceeded without reaching a stop condition."
                     }
-                    self.logger.log_step(log_entry)
-                    yield log_entry
+                    self.logger.log_step(final_log)
+                    yield final_log
                     break
 
         finally:

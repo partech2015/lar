@@ -247,6 +247,7 @@ You can build any agent with four core components:
 - **`ToolNode`**: The "Actor." Executes deterministic Python functions (API calls, DB lookups). Separates success/error routing.
 - **`RouterNode`**: The "Traffic Cop." Deterministically routes execution to the next node based on state values.
 - **`BatchNode`** *(New)*: The "Parallelizer." Fans out multiple nodes to run concurrently on separate threads.
+- **`ReduceNode`** *(New)*: The "Compressor." Summarizes multi-agent outputs and explicitly deletes raw memory to prevent context bloat.
 - **`DynamicNode`** *(New)*: The "Architect." Can recursively generate and execute new sub-agents at runtime (Fractal Agency).
 - **`HumanJuryNode`**: The "Guard." Pauses execution for explicit human approval via CLI.
 - **`ClearErrorNode`**: The "Janitor." Clears error states to allow robust retry loops.
@@ -263,6 +264,8 @@ Native support for **DeepSeek R1**, **OpenAI o1**, and **Liquid**.
 - **Example:** `examples/reasoning_models/1_deepseek_r1.py`
 
 ## Why Lár?
+- **Economic Constraints:** Guarantee that agents cannot exceed mathematically set Token Budgets before execution. (v1.6+)
+- **Memory Compression:** explicitly delete context from state via `ReduceNode` map-reduce patterns to prevent "black hole" token bloat. (v1.6+)
 - **Fractal Agency:** Agents can spawn sub-agents recursively (`DynamicNode`). (v1.5+)
 - **True Parallelism:** Run multiple agents in parallel threads (`BatchNode`). (v1.5+)
 - **Lightweight:** No vector DB required. Just Python.
@@ -494,6 +497,7 @@ We have provided **21 robust patterns** in the **[`examples/`](examples/)** dire
 | **2** | **[`2_mini_swarm_pruner.py`](examples/scale/2_mini_swarm_pruner.py)** | Dynamic Graph Pruning |
 | **3** | **[`3_parallel_newsroom.py`](examples/scale/3_parallel_newsroom.py)** | True Parallelism (`BatchNode`) |
 | **4** | **[`4_parallel_corporate_swarm.py`](examples/scale/4_parallel_corporate_swarm.py)** | Concurrent Branch Execution |
+| **5** | **[`11_map_reduce_budget.py`](examples/advanced/11_map_reduce_budget.py)** | **Memory Compression & Token Budgets** |
 
 #### 5. Metacognition (`examples/metacognition/`)
 

@@ -158,6 +158,14 @@ class LLMNode(BaseNode):
 
     
     def execute(self, state: GraphState):
+        # --- Token Budget Check (Economic Constraint) ---
+        budget = state.get("token_budget")
+        if budget is not None and budget <= 0:
+            msg = f"Token budget exceeded (Remaining: {budget}). Halting execution."
+            print(f"  [LLMNode] ERROR: {msg}")
+            state.set("last_error", msg)
+            return None # Stop executing or rely on error_node if implemented in future
+
         # 1. Build the prompt (the "contents")
         # Support both {var} and {{var}} syntax by normalizing double braces to single braces
         # This is user-friendly for those used to Jinja2/Mustache
@@ -246,7 +254,7 @@ class LLMNode(BaseNode):
                     
                     if reasoning:
                         usage["reasoning_content"] = reasoning
-                        print(f"  [LLMNode]: 🧠 Captured {len(reasoning)} chars of reasoning trace (Regex).")
+                        print(f"  [LLMNode]: Captured {len(reasoning)} chars of reasoning trace (Regex).")
 
                     # Set the (potentially cleaned) answer to the state
                     state.set(self.output_key, clean_answer)
@@ -254,6 +262,13 @@ class LLMNode(BaseNode):
 
                     state.set("__last_run_metadata", usage)
                     print(f"  [LLMNode]: Logged {usage['total_tokens']} tokens.")
+                    
+                    # --- Token Budget (Economic Constraint) ---
+                    budget = state.get("token_budget")
+                    if budget is not None:
+                        new_budget = budget - usage['total_tokens']
+                        state.set("token_budget", new_budget)
+                        print(f"  [LLMNode]: Token Budget: {budget} -> {new_budget} remaining.")
 
                 return self.next_node
 
@@ -522,6 +537,36 @@ class BatchNode(BaseNode):
         print(f"  [BatchNode]: Merged {updates_count} updates.")
         return self.next_node
 
+class ReduceNode(LLMNode):
+    """
+    Memory Compression Node (Map-Reduce).
+    Reads multiple keys from state, passes them to an LLM to generate a summary/extracted insight,
+    saves the output, and explicitly deletes the raw data keys from the state to free up context window.
+    """
+    def __init__(self, 
+                 model_name: str, 
+                 prompt_template: str, 
+                 input_keys: List[str], 
+                 output_key: str, 
+                 next_node: BaseNode = None,
+                 **kwargs):
+        super().__init__(model_name=model_name, prompt_template=prompt_template, output_key=output_key, next_node=next_node, **kwargs)
+        if not isinstance(input_keys, list) or not input_keys:
+            raise ValueError("input_keys must be a non-empty list of strings")
+        self.input_keys = input_keys
+
+    def execute(self, state: GraphState):
+        # First, run the normal LLMNode execution (it will read the current state)
+        next_n = super().execute(state)
+        
+        # Then, if successful (no last_error set by this step), explicitly delete the raw keys
+        if not state.get("last_error"):
+            print(f"  [ReduceNode]: Compressing memory: Deleting raw keys {self.input_keys}")
+            for key in self.input_keys:
+                state.delete(key)
+                
+        return next_n
+
 class HumanJuryNode(BaseNode):
     """
     A blocking node that pauses execution to request Human-in-the-Loop feedback via the CLI.
@@ -563,7 +608,7 @@ class HumanJuryNode(BaseNode):
 
     def execute(self, state: GraphState):
         print("\n" + "="*40)
-        print("  ✋ HUMAN JURY INTERVENTION REQUIRED")
+        print("  [!] HUMAN JURY INTERVENTION REQUIRED")
         print("="*40)
         
         # 1. Show Context

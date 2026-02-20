@@ -18,6 +18,7 @@ from .node import (
     BatchNode,
     HumanJuryNode,
     FunctionalNode,
+    ReduceNode,
     node
 )
 from .dynamic import DynamicNode, TopologyValidator
@@ -48,6 +49,7 @@ __all__ = [
     "BatchNode", 
     "HumanJuryNode",
     "FunctionalNode",
+    "ReduceNode",
     "node",
     "DynamicNode",
     "TopologyValidator",

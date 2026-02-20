@@ -26,6 +26,11 @@ class GraphState:
         """Allows value = state['key'] syntax."""
         return self._state[key]
 
+    def delete(self, key: str):
+        """Deletes a key from the state if it exists."""
+        if key in self._state:
+            del self._state[key]
+
     def get(self, key: str, default: any = None):
         """
         Gets a value from the state by its key.
