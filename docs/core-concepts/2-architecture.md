@@ -41,6 +41,12 @@
 
 **Job**: Runs multiple nodes *concurrently* in separate threads. It creates a copy of the state for each thread (Fan-Out) and merges the results back into the main state (Fan-In). Essential for multi-agent swarms.
 
+- The `ReduceNode` *(v1.6+)*
+
+**What it is**: The "Compressor" or "Summarizer."
+
+**Job**: Used immediately after a `BatchNode` in a Map-Reduce flow. It reads massive documents from parallel agents, extracts a summary using an LLM, and then **explicitly deletes the raw data from the state** to prevent context bloat.
+
 - The `HumanJuryNode` (Article 14)
 
 **What it is**: The "Hardware Stop" or "Oversight Guard."
