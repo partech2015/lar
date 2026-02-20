@@ -302,6 +302,41 @@ This is a **real execution** log from a lar-built agent. The agent's job was to 
 
 **This is the `lar` difference.** You know the *exact* node (`LLMNode`), the *exact* step (3), and the *exact reason* (`APIConnectionError`) for the failure. You can't debug a "black box," but you can **always** fix a "glass box."
 
+---
+
+## Cryptographic Audit Logs (v1.5.1+)
+
+For enterprise environments (EU AI Act, SOC2, HIPAA), having a log isn't enough—you must prove the log wasn't tampered with.
+
+Lár natively supports **HMAC-SHA256 Cryptographic Signing** of your audit logs. If an agent executes a high-stakes trade or a medical diagnosis, the `GraphExecutor` will mathematically sign the entire execution trace (including nodes visited, LLM reasoning, and token usage) using a Secret Key.
+
+```python
+from lar import GraphExecutor
+
+# 1. Instantiating the executor with an HMAC secret turns on Cryptographic Auditing
+executor = GraphExecutor(
+    log_dir="secure_logs", 
+    hmac_secret="your_enterprise_secret_key"
+)
+# 2. Run your agent as normal. The resulting JSON log will contain a SHA-256 signature.
+
+# 3. To verify the audit log later:
+import hmac, hashlib, json
+
+with open("secure_logs/run_xyz.json", "r") as f:
+    log_data = json.load(f)
+
+saved_signature = log_data.pop("signature")
+payload_str = json.dumps(log_data, sort_keys=True, separators=(',', ':'))
+
+mac = hmac.new(b"your_enterprise_secret_key", payload_str.encode(), hashlib.sha256)
+assert saved_signature == mac.hexdigest(), "Log Tampered With!"
+```
+**See the Compliance Pattern Library for full verification scripts:**
+*   `examples/compliance/8_hmac_audit_log.py` (Basic Authentication)
+*   `examples/compliance/9_high_risk_trading_hmac.py` (Algorithmic Trading / SEC)
+*   `examples/compliance/10_pharma_clinical_trials_hmac.py` (FDA 21 CFR Part 11)
+
 
 ##  Just-in-Time Integrations
 

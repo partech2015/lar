@@ -66,6 +66,30 @@ For healthcare and pharmaceutical applications (e.g., Drug Discovery pipelines),
 2.  **Audit Trails**: The `GraphExecutor` logs are immutable and time-stamped.
 3.  **Authority Checks**: Lár's `SecurityNode` pattern allows you to implement permissions (e.g., "Only User A can approve Tool B") directly in the graph logic.
 
+### Cryptographic Audit Trails (HMAC Signing)
+
+To truly comply with enterprise regulations (like HIPAA, SOC2, FDA GxP, SEC/FINRA), an audit log is not enough—you must prove mathematically that the log has not been tampered with.
+
+Lár v1.5.1 introduced **Cryptographic Signatures** for the audit log. By passing an `hmac_secret` (e.g., from AWS KMS or HashiCorp Vault) to the `GraphExecutor`, the engine will sign the final JSON execution trace using HMAC-SHA256. 
+
+```python
+from lar import GraphExecutor
+
+# Instantiating the executor with an HMAC secret turns on Cryptographic Auditing
+executor = GraphExecutor(
+    log_dir="secure_logs", 
+    hmac_secret="your_enterprise_secret_key"
+)
+```
+
+**How to verify:**
+If a single character of the payload (like a node output, reasoning string, or token cost) is altered manually after execution, the signature verification will instantly fail. 
+
+Lár includes three reference implementations to demonstrate this across different industries:
+*   [8_hmac_audit_log.py](../examples/compliance/8_hmac_audit_log.py) (Basic usage)
+*   [9_high_risk_trading_hmac.py](../examples/compliance/9_high_risk_trading_hmac.py) (Algorithmic Trading & FINRA)
+*   [10_pharma_clinical_trials_hmac.py](../examples/compliance/10_pharma_clinical_trials_hmac.py) (Clinical Data Routing & FDA 21 CFR 11)
+
 ---
 
 ## Risk Mitigation: Dynamic Graphs (Self-Modifying Code)

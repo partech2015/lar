@@ -1,6 +1,8 @@
 import json
 import os
 import datetime
+import hmac
+import hashlib
 from typing import List, Dict, Any, Optional
 
 
@@ -12,14 +14,16 @@ class AuditLogger:
     it to JSON files for compliance and debugging purposes.
     """
     
-    def __init__(self, log_dir: str = "lar_logs"):
+    def __init__(self, log_dir: str = "lar_logs", hmac_secret: str = None):
         """
         Initialize the AuditLogger.
         
         Args:
             log_dir (str): Directory where audit logs will be saved.
+            hmac_secret (str, optional): Secret key for cryptographically signing the log.
         """
         self.log_dir = log_dir
+        self.hmac_secret = hmac_secret
         self.history: List[Dict[str, Any]] = []
         
         # Create log directory if it doesn't exist
@@ -71,13 +75,35 @@ class AuditLogger:
             "summary": summary or {}
         }
 
+        # Sign the log if a secret is provided
+        if self.hmac_secret:
+            log_data["signature"] = self._generate_signature(log_data)
+
         try:
             with open(filename, "w") as f:
                 json.dump(log_data, f, indent=2)
-            print(f"\n✅ [AuditLogger] Log saved to: {filename}")
+            print(f"\n[AuditLogger] Log saved to: {filename}")
         except Exception as e:
-            print(f"\n⚠️ [AuditLogger] Failed to save log: {e}")
+            print(f"\n[AuditLogger] Failed to save log: {e}")
     
     def clear_history(self) -> None:
         """Clear the current execution history (useful for reusing the logger)."""
         self.history = []
+
+    def _generate_signature(self, payload: dict) -> str:
+        """
+        Generates an HMAC-SHA256 signature for the given JSON payload.
+        Keys are sorted to ensure canonical representation.
+        """
+        # Remove existing signature to avoid recursive hashing
+        clean_payload = {k: v for k, v in payload.items() if k != "signature"}
+        
+        # Canonicalize JSON (sorted keys, no extra spaces)
+        payload_str = json.dumps(clean_payload, sort_keys=True, separators=(',', ':'))
+        
+        mac = hmac.new(
+            self.hmac_secret.encode('utf-8'),
+            payload_str.encode('utf-8'),
+            hashlib.sha256
+        )
+        return mac.hexdigest()

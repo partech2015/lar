@@ -1,0 +1,73 @@
+{
+  "run_id": "dccd9e16-1043-48fb-a21a-59830bc27682",
+  "user_id": null,
+  "timestamp": "2026-02-20T00:51:33.208052",
+  "steps": [
+    {
+      "step": 0,
+      "node": "LLMNode",
+      "state_before": {
+        "patient_id": "SUBJ-9921-A",
+        "patient_note": "Patient reports severe chest pain and shortness of breath 2 hours after administering the trial compound. Vitals are unstable."
+      },
+      "state_diff": {
+        "added": {
+          "trial_classification": "ADVERSE_EVENT"
+        },
+        "removed": {},
+        "updated": {}
+      },
+      "run_metadata": {
+        "prompt_tokens": 83,
+        "output_tokens": 4,
+        "total_tokens": 87,
+        "model": "ollama/phi4:latest"
+      },
+      "outcome": "success",
+      "state_after": {
+        "patient_id": "SUBJ-9921-A",
+        "patient_note": "Patient reports severe chest pain and shortness of breath 2 hours after administering the trial compound. Vitals are unstable.",
+        "trial_classification": "ADVERSE_EVENT"
+      }
+    },
+    {
+      "step": 1,
+      "node": "FunctionalNode",
+      "state_before": {
+        "patient_id": "SUBJ-9921-A",
+        "patient_note": "Patient reports severe chest pain and shortness of breath 2 hours after administering the trial compound. Vitals are unstable.",
+        "trial_classification": "ADVERSE_EVENT",
+        "__last_run_metadata": null
+      },
+      "state_diff": {
+        "added": {
+          "routing_action": "ESCALATED_TO_PHARMACOVIGILANCE",
+          "priority": "CRITICAL"
+        },
+        "removed": {
+          "__last_run_metadata": null
+        },
+        "updated": {}
+      },
+      "run_metadata": null,
+      "outcome": "success",
+      "state_after": {
+        "patient_id": "SUBJ-9921-A",
+        "patient_note": "Patient reports severe chest pain and shortness of breath 2 hours after administering the trial compound. Vitals are unstable.",
+        "trial_classification": "ADVERSE_EVENT",
+        "routing_action": "ESCALATED_TO_PHARMACOVIGILANCE",
+        "priority": "CRITICAL"
+      }
+    }
+  ],
+  "summary": {
+    "total_steps": 2,
+    "total_prompt_tokens": 83,
+    "total_completion_tokens": 4,
+    "total_tokens": 87,
+    "tokens_by_model": {
+      "ollama/phi4:latest": 87
+    }
+  },
+  "signature": "2280e6857e71c60037e0012e86d02f0492cbbe1fd1346b4b0b816289d3599274"
+}

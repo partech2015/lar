@@ -24,7 +24,8 @@ class GraphExecutor:
                  offline_mode: bool = False, 
                  user_id: Optional[str] = None,
                  logger: Optional[AuditLogger] = None,
-                 tracker: Optional[TokenTracker] = None):
+                 tracker: Optional[TokenTracker] = None,
+                 hmac_secret: Optional[str] = None):
         """
         Initialize the GraphExecutor.
         
@@ -33,12 +34,13 @@ class GraphExecutor:
             user_id (str, optional): User identifier for multi-tenant systems
             logger (AuditLogger, optional): Custom logger instance. If None, creates default.
             tracker (TokenTracker, optional): Custom tracker instance. If None, creates default.
+            hmac_secret (str, optional): Secret key for cryptographically signing the log.
         """
         self.offline_mode = offline_mode
         self.user_id = user_id
         
         # Use provided instances or create defaults
-        self.logger = logger if logger is not None else AuditLogger(log_dir)
+        self.logger = logger if logger is not None else AuditLogger(log_dir, hmac_secret=hmac_secret)
         self.tracker = tracker if tracker is not None else TokenTracker()
 
     def run_step_by_step(self, start_node: BaseNode, initial_state: dict, max_steps: int = 100):

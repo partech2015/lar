@@ -33,6 +33,9 @@
 | **5** | **[`5_context_contamination_test.py`](../../examples/compliance/5_context_contamination_test.py)** | Red Teaming: Social Engineering |
 | **6** | **[`6_zombie_action_test.py`](../../examples/compliance/6_zombie_action_test.py)** | Red Teaming: Stale Authority |
 | **7** | **[`7_hitl_agent.py`](../../examples/compliance/7_hitl_agent.py)** | Article 14 Compliance Node |
+| **8** | **[`8_hmac_audit_log.py`](../../examples/compliance/8_hmac_audit_log.py)** | Cryptographic Audits (HMAC) |
+| **9** | **[`9_high_risk_trading_hmac.py`](../../examples/compliance/9_high_risk_trading_hmac.py)** | Financial Ledger Signing |
+| **10** | **[`10_pharma_clinical_trials_hmac.py`](../../examples/compliance/10_pharma_clinical_trials_hmac.py)** | FDA/GxP Secured Logs |
 
 #### 4. High Scale (`examples/scale/`)
 | # | Pattern | Concept |
