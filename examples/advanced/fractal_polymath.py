@@ -152,10 +152,17 @@ if __name__ == "__main__":
         print("MISSION ACCOMPLISHED")
         print("="*50)
         
-        print(f"\nResults in State:")
-        for k, v in final_state.items():
-            if k in ["cipher_result", "poem_result", "final_review"]:
-                print(f"\n{k.upper()}:\n{v}")
+        print(f"\nFinal Generated Output:")
+        # The parent DynamicNode stores its final answer in its default output_key
+        result = final_state.get("dynamic_out", str(final_state))
+        
+        # Clean up markdown if the LLM wrapped it
+        if "```json" in result:
+            result = result.split("```json")[1].split("```")[0].strip()
+        elif "```" in result:
+            result = result.split("```")[1].split("```")[0].strip()
+            
+        print(f"\n{result}\n")
                 
     except Exception as e:
         print(f"\nAgency Failed: {e}")
