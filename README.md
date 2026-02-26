@@ -340,9 +340,9 @@ python examples/compliance/11_verify_audit_log.py secure_logs/run_xyz.json your_
 **Outcome:** The script will output either `[+] VERIFICATION SUCCESSFUL` (authentic) or `[-] VERIFICATION FAILED` (tampered).
 
 **See the Compliance Pattern Library for full verification scripts:**
-*   `examples/compliance/8_hmac_audit_log.py` (Basic Authentication)
-*   `examples/compliance/9_high_risk_trading_hmac.py` (Algorithmic Trading / SEC)
-*   `examples/compliance/10_pharma_clinical_trials_hmac.py` (FDA 21 CFR Part 11)
+*   [`examples/compliance/8_hmac_audit_log.py`](examples/compliance/8_hmac_audit_log.py) (Basic Authentication)
+*   [`examples/compliance/9_high_risk_trading_hmac.py`](examples/compliance/9_high_risk_trading_hmac.py) (Algorithmic Trading / SEC)
+*   [`examples/compliance/10_pharma_clinical_trials_hmac.py`](examples/compliance/10_pharma_clinical_trials_hmac.py) (FDA 21 CFR Part 11)
 *   [`examples/compliance/11_verify_audit_log.py`](examples/compliance/11_verify_audit_log.py) (Standalone Auditor Script)
 
 

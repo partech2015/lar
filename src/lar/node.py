@@ -114,9 +114,9 @@ class LLMNode(BaseNode):
             stream (bool): Stream output chunk-by-chunk to sys.stdout.
             response_format (type): Pydantic model for structured JSON output.
             
-            # --- Enterprise --- see https://snath.ai/enterprise
+            # --- Enterprise --- 
             # These parameters hook directly into Snath Cloud infrastructure.
-            # For managed failover, caching, and observability, see snath.ai/enterprise
+            # For managed failover, caching, and observability, see https://snath.ai/enterprise
             fallbacks (list): Backup models for auto-recovery.
             caching (bool): Enable semantic/exact match caching.
             success_callbacks (list): Observability dashboards (e.g., langfuse, datadog).
