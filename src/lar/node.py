@@ -93,7 +93,12 @@ class LLMNode(BaseNode):
                  next_node: BaseNode = None,
                  max_retries: int = 3,
                  system_instruction: Optional[str] = None, 
-                 generation_config: Optional[Dict[str, Any]] = None 
+                 generation_config: Optional[Dict[str, Any]] = None,
+                 stream: bool = False,
+                 response_format: Optional[Any] = None,
+                 fallbacks: Optional[List[str]] = None,
+                 caching: bool = False,
+                 success_callbacks: Optional[List[str]] = None
                  ):
         """
         Initialize an LLM Execution Node.
@@ -106,6 +111,15 @@ class LLMNode(BaseNode):
             max_retries (int, optional): Number of times to retry on API errors. Defaults to 3.
             system_instruction (str, optional): System prompt to steer the model's behavior.
             generation_config (dict, optional): LiteLLM-specific parameters (temperature, max_tokens, etc).
+            stream (bool): Stream output chunk-by-chunk to sys.stdout.
+            response_format (type): Pydantic model for structured JSON output.
+            
+            # --- Enterprise --- see https://snath.ai/enterprise
+            # These parameters hook directly into Snath Cloud infrastructure.
+            # For managed failover, caching, and observability, see snath.ai/enterprise
+            fallbacks (list): Backup models for auto-recovery.
+            caching (bool): Enable semantic/exact match caching.
+            success_callbacks (list): Observability dashboards (e.g., langfuse, datadog).
         """
         
         # Validation
@@ -127,6 +141,13 @@ class LLMNode(BaseNode):
         self.max_retries = max_retries
         self.system_instruction = system_instruction
         self.generation_config_dict = generation_config or {}
+        
+        # --- Enterprise Configuration & Streaming Options ---
+        self.stream = stream
+        self.response_format = response_format
+        self.fallbacks = fallbacks
+        self.caching = caching
+        self.success_callbacks = success_callbacks
 
         # 2. Check Cache Key (Identifies the unique model configuration)
         # The key includes model name and system instruction for unique caching
@@ -187,18 +208,95 @@ class LLMNode(BaseNode):
         
         # Build LiteLLM optional parameters
         litellm_kwargs = self.generation_config_dict.copy()
+        
+        # Inject Enterprise & Structured Options
+        if getattr(self, "response_format", None):
+            litellm_kwargs["response_format"] = self.response_format
+        if getattr(self, "fallbacks", None):
+            litellm_kwargs["fallbacks"] = self.fallbacks
+        if getattr(self, "caching", None):
+            litellm_kwargs["caching"] = self.caching
+        if getattr(self, "success_callbacks", None):
+            litellm_kwargs["success_callbacks"] = self.success_callbacks
+
         if self.system_instruction:
              # LiteLLM handles system instructions by injecting a system message
              messages.insert(0, {"role": "system", "content": self.system_instruction})
 
         while retries < self.max_retries:
             try:
-                # 2. Call the LiteLLM completion API
-                response: ModelResponse = completion(
-                    model=self.model_identifier, 
-                    messages=messages,
-                    **litellm_kwargs
-                )
+                if getattr(self, "stream", False):
+                    # --- STREAMING EXECUTION PATH ---
+                    import sys
+                    stream_kwargs = litellm_kwargs.copy()
+                    stream_kwargs["stream"] = True
+                    stream_kwargs["stream_options"] = {"include_usage": True}
+                    
+                    response_gen = completion(
+                        model=self.model_identifier, 
+                        messages=messages,
+                        **stream_kwargs
+                    )
+                    
+                    llm_response_text = ""
+                    usage_dict = None
+                    reasoning = ""
+                    
+                    print(f"  [LLMNode]: Streaming response from {self.model_identifier}:\n  >> ", end="")
+                    
+                    for chunk in response_gen:
+                        delta = chunk.choices[0].delta if getattr(chunk, "choices", None) else None
+                        if delta:
+                            content = getattr(delta, "content", None)
+                            if content:
+                                llm_response_text += content
+                                sys.stdout.write(content)
+                                sys.stdout.flush()
+                                
+                            reasoning_delta = getattr(delta, "reasoning_content", None)
+                            if reasoning_delta:
+                                reasoning += reasoning_delta
+                        
+                        chunk_usage = getattr(chunk, "usage", None)
+                        if chunk_usage:
+                            usage_dict = {
+                                "prompt_tokens": chunk_usage.prompt_tokens,
+                                "completion_tokens": chunk_usage.completion_tokens,
+                            }
+
+                    print("\n") # Formatting barrier after stream finishes
+                    
+                    if not llm_response_text:
+                        raise ValueError("LLM streaming response was empty or blocked by safety filters.")
+                        
+                    # Mock Response object to seamlessly integrate with v1.6.0 parsing code below
+                    class MockMessage:
+                        def __init__(self, c, r):
+                            self.content = c
+                            self.reasoning_content = r
+                    class MockChoice:
+                        def __init__(self, msg):
+                            self.message = msg
+                    class MockUsage:
+                        def __init__(self, p_t, c_t):
+                            self.prompt_tokens = p_t
+                            self.completion_tokens = c_t
+                    class MockResponse:
+                        def __init__(self, choices, usage):
+                            self.choices = choices
+                            self.usage = usage
+                            
+                    u_obj = MockUsage(usage_dict["prompt_tokens"], usage_dict["completion_tokens"]) if usage_dict else None
+                    response = MockResponse([MockChoice(MockMessage(llm_response_text, reasoning if reasoning else None))], u_obj)
+
+                else:
+                    # --- SYNCHRONOUS EXECUTION PATH (V1.6.0 Logic) ---
+                    # 2. Call the LiteLLM completion API
+                    response = completion(
+                        model=self.model_identifier, 
+                        messages=messages,
+                        **litellm_kwargs
+                    )
                 
                 # 3. Extract the response text
                 if not response.choices or not response.choices[0].message.content:
@@ -524,15 +622,33 @@ class BatchNode(BaseNode):
         print(f"  [BatchNode]: Merging results from {len(results)} threads...")
         
         updates_count = 0
+        
+        # Track total token spend across threads for accurate merging
+        total_budget_spent = 0
+        base_budget = base_state_dict.get("token_budget")
+        
         for local_state in results:
             local_dict = local_state.get_all()
+            
+            # Extract budget delta if applicable
+            if base_budget is not None and "token_budget" in local_dict:
+                thread_spent = base_budget - local_dict["token_budget"]
+                if thread_spent > 0:
+                    total_budget_spent += thread_spent
+                    
             for k, v in local_dict.items():
+                if k == "token_budget":
+                    continue # Handled mathematically below
                 # If value is different from base, or new, we merge it.
-                # Logic: If multiple nodes update the SAME key, the last one wins (race condition).
-                # Users should avoid overlapping output_keys in BatchNode.
                 if k not in base_state_dict or base_state_dict[k] != v:
                     state.set(k, v)
                     updates_count += 1
+                    
+        # Apply reconciled budget reduction
+        if base_budget is not None:
+            new_budget = base_budget - total_budget_spent
+            state.set("token_budget", new_budget)
+            print(f"  [BatchNode]: Reconciled parallel Token Budget: {base_budget} -> {new_budget} remaining.")
         
         print(f"  [BatchNode]: Merged {updates_count} updates.")
         return self.next_node

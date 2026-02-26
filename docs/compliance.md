@@ -82,13 +82,25 @@ executor = GraphExecutor(
 )
 ```
 
-**How to verify:**
+**How to verify (For Auditors):**
 If a single character of the payload (like a node output, reasoning string, or token cost) is altered manually after execution, the signature verification will instantly fail. 
 
-Lár includes three reference implementations to demonstrate this across different industries:
+We provide a standalone verification script specifically for Compliance Officers to mathematically prove a log's authenticity:
+
+**Step 1:** Locate the generated JSON audit log (e.g., `secure_logs/run_xyz.json`).
+**Step 2:** Obtain the enterprise HMAC Secret Key used during the agent's execution.
+**Step 3:** Run the verification script from your terminal:
+```bash
+python examples/compliance/11_verify_audit_log.py secure_logs/run_xyz.json your_enterprise_secret_key
+```
+
+**Outcome:** The script will output either `[+] VERIFICATION SUCCESSFUL` (authentic) or `[-] VERIFICATION FAILED` (tampered).
+
+Lár includes four reference implementations to demonstrate this across different industries:
 *   [8_hmac_audit_log.py](../examples/compliance/8_hmac_audit_log.py) (Basic usage)
 *   [9_high_risk_trading_hmac.py](../examples/compliance/9_high_risk_trading_hmac.py) (Algorithmic Trading & FINRA)
 *   [10_pharma_clinical_trials_hmac.py](../examples/compliance/10_pharma_clinical_trials_hmac.py) (Clinical Data Routing & FDA 21 CFR 11)
+*   [11_verify_audit_log.py](../examples/compliance/11_verify_audit_log.py) (Standalone Auditor Script)
 
 ---
 

@@ -66,3 +66,49 @@ def test_llm_node_integration(mock_completion):
     llm_step = audit_log[0]
     assert llm_step['run_metadata']['total_tokens'] == 30
     assert final_state_data.get("completion_marker") == True
+
+
+@patch('lar.node.completion')
+def test_llm_node_streaming(mock_completion):
+    """
+    Tests that the LLMNode correctly handles streaming responses and constructs the 
+    final response string and usage metadata from chunks.
+    """
+    LLMNode._model_cache.clear() 
+    
+    # Setup mock iterator for streaming
+    chunk1 = MagicMock()
+    chunk1.choices = [MagicMock(delta=MagicMock(content="Streaming ", reasoning_content="<think>"))]
+    chunk1.usage = None
+    
+    chunk2 = MagicMock()
+    chunk2.choices = [MagicMock(delta=MagicMock(content="response.", reasoning_content=" done</think>"))]
+    chunk2.usage = None
+    
+    chunk3 = MagicMock()
+    chunk3.choices = []
+    chunk3.usage = MagicMock(prompt_tokens=5, completion_tokens=10, total_tokens=15)
+    
+    mock_completion.return_value = iter([chunk1, chunk2, chunk3])
+    
+    end_node = AddValueNode(key="end", value=True, next_node=None)
+    start_node = LLMNode(
+        model_name="gemini/gemini-2.5-pro",
+        prompt_template="Test stream",
+        output_key="stream_response",
+        stream=True,
+        next_node=end_node
+    )
+    
+    executor = GraphExecutor()
+    log = list(executor.run_step_by_step(start_node=start_node, initial_state={}))
+    
+    final_state = {}
+    for step in log:
+        final_state = apply_diff(final_state, step["state_diff"])
+        
+    mock_completion.assert_called_once()
+    assert final_state["stream_response"] == "Streaming response."
+    
+    llm_step = log[0]
+    assert llm_step['run_metadata']['total_tokens'] == 15

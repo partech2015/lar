@@ -323,22 +323,27 @@ executor = GraphExecutor(
 )
 # 2. Run your agent as normal. The resulting JSON log will contain a SHA-256 signature.
 
-# 3. To verify the audit log later:
-import hmac, hashlib, json
-
-with open("secure_logs/run_xyz.json", "r") as f:
-    log_data = json.load(f)
-
-saved_signature = log_data.pop("signature")
-payload_str = json.dumps(log_data, sort_keys=True, separators=(',', ':'))
-
-mac = hmac.new(b"your_enterprise_secret_key", payload_str.encode(), hashlib.sha256)
-assert saved_signature == mac.hexdigest(), "Log Tampered With!"
+# 3. To verify the audit log later, you can use the standalone verification script:
+# See: examples/compliance/11_verify_audit_log.py
 ```
+
+### How to Verify (For Auditors)
+We provide a standalone verification script specifically for Compliance Officers to mathematically prove a log has not been tampered with.
+
+**Step 1:** Locate the generated JSON audit log (e.g., `secure_logs/run_xyz.json`).
+**Step 2:** Obtain the enterprise HMAC Secret Key used during the agent's execution.
+**Step 3:** Run the verification script from your terminal:
+```bash
+python examples/compliance/11_verify_audit_log.py secure_logs/run_xyz.json your_enterprise_secret_key
+```
+
+**Outcome:** The script will output either `[+] VERIFICATION SUCCESSFUL` (authentic) or `[-] VERIFICATION FAILED` (tampered).
+
 **See the Compliance Pattern Library for full verification scripts:**
 *   `examples/compliance/8_hmac_audit_log.py` (Basic Authentication)
 *   `examples/compliance/9_high_risk_trading_hmac.py` (Algorithmic Trading / SEC)
 *   `examples/compliance/10_pharma_clinical_trials_hmac.py` (FDA 21 CFR Part 11)
+*   [`examples/compliance/11_verify_audit_log.py`](examples/compliance/11_verify_audit_log.py) (Standalone Auditor Script)
 
 
 ##  Just-in-Time Integrations
