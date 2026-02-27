@@ -1,4 +1,4 @@
-# Lár Framework - Cursor Rules
+# Lár Framework - Claude Rules
 
 You are coding with **Lár**, a graph-based agent framework that treats "Code as the Graph".
 
