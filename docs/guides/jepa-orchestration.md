@@ -6,7 +6,7 @@ As the industry moves away from purely autoregressive models (like GPT-4) toward
 
 Most orchestration frameworks (LangChain, AutoGPT) assume the agent's mind is a sequence of conversational text. They crash if you hand them a 768-dimensional NumPy array representing a "collision state."
 
-**This is why we built [Lar-JEPA]((https://github.com/snath-ai/Lar-JEPA)): a dedicated testbed and pattern library for World Model orchestration.**
+**This is why we built [Lar-JEPA](https://github.com/snath-ai/Lar-JEPA): a dedicated testbed and pattern library for World Model orchestration.**
 
 ---
 
