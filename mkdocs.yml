@@ -63,7 +63,7 @@ nav:
     - 'Red Teaming (Security)': case-studies/red-teaming.md
   - 'Guides':
     - 'Universal Model Support (LiteLLM)': guides/litellm_setup.md
-
+    - 'Post-LLM World Models (JEPA)': guides/jepa-orchestration.md
     - 'Multi-Agent Orchestration': guides/multi-agent-orchestration.md
     - 'Just-in-Time Integrations': guides/integrations.md
     - 'Self-Correcting Loops': guides/self-correction-loop.md
