@@ -401,7 +401,7 @@ DMN (Default Mode Network) is a **complete cognitive architecture** built entire
 
 ---
 
-## 🔮 Post-LLM Orchestration: Lar-JEPA
+## Post-LLM Orchestration: Lar-JEPA
 
 **[snath-ai/Lar-JEPA](https://github.com/snath-ai/Lar-JEPA)** - A dedicated testbed for routing **Predictive World Models**.
 
