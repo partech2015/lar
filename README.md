@@ -398,6 +398,14 @@ DMN (Default Mode Network) is a **complete cognitive architecture** built entire
 | **Memory** | Context window only | Persistent episodic memory with sleep consolidation |
 | **Learning** | Static prompts | Learns from interactions and self-corrects |
 | **Architecture** | Single-path logic | Dual-process (Fast + Slow) cognitive system |
+
+---
+
+## 🔮 Post-LLM Orchestration: Lar-JEPA
+
+**[snath-ai/Lar-JEPA](https://github.com/snath-ai/Lar-JEPA)** - A dedicated testbed for routing **Predictive World Models**.
+
+As AI transitions from purely autoregressive text generation to Joint Embedding Predictive Architectures (JEPAs), frameworks must adapt. **Lar-JEPA** is a proof-of-concept repository showing how Lár's deterministic execution spine can safely route massive, abstract mathematical states (Tensors/Embeddings) using System 2 `RouterNodes` without relying on LLM chat generation.
 | **Auditability** | Black box | Complete glass-box audit trail of every thought |
 
 **[Explore the DMN Repository →](https://github.com/snath-ai/DMN)**
