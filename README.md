@@ -419,6 +419,20 @@ See `examples/metacognition/` for 5 working Proof-of-Concepts.
 
 ---
 
+## Fractal Agency (v1.5+)
+
+**Scale without limits.**
+
+Using the `DynamicNode` and `BatchNode`, Lár graphs can explicitly spawn recursive copies of themselves or launch entirely new nested graph topologies dynamically.
+
+- **Recursive Sub-Agents:** An agent can stop reasoning, define a new specialized graph, and execute it as a sub-process before resuming its original thread.
+- **Deep Research Trees:** Allow agents to dynamically branch out and perform parallelized deep-dives based on data complexity.
+- **Perfect Isolation:** Each spawned graph runs in its own memory space, ensuring no context bleed back to the parent—only the final synthesized answer is returned.
+
+**[Read the Full Concept Guide](https://docs.snath.ai/core-concepts/11-fractal-agency)** | **[See the Advanced Showcase](examples/advanced/fractal_polymath.py)**
+
+---
+
 ## The DMN Showcase: A Cognitive Architecture
 
 **[snath-ai/DMN](https://github.com/snath-ai/DMN)** - The flagship demonstration of Lár's capabilities.
