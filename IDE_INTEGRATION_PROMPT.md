@@ -34,9 +34,10 @@ import json
 # Requires: pip install your_sdk
 # import your_sdk
 
-from lar import ToolNode
+from lar import node
 
-def integration_wrapper(state):
+@node(output_key=None, next_node=None)
+def integration_action(state):
     """
     [Docstring: Explain what this tool does and what state keys it expects]
     """
@@ -54,6 +55,7 @@ def integration_wrapper(state):
         # result = client.do_action(...)
         
         # 4. Return Flat Dict (Best Practice)
+        # Merges returned dict directly into GraphState because output_key=None
         return {
             "result_id": "123",
             "status": "success"
@@ -63,14 +65,6 @@ def integration_wrapper(state):
     except Exception as e:
         # Catch-all for safety, but try to catch specific library errors first
         return {"error": f"Integration Action Failed: {str(e)}"}
-
-# 5. Node Definition
-integration_node = ToolNode(
-    tool_function=integration_wrapper,
-    input_keys=["__state__"], # Pass full state to function
-    output_key=None, # Merges returned dict into GraphState
-    next_node=None   # Wiring handled by the Architect
-)
 ```
 
 ---
@@ -96,9 +90,10 @@ Verify your generated code against these rules:
 import os
 # Requires: pip install stripe
 import stripe
-from lar import ToolNode
+from lar import node
 
-def refund_stripe_payment(state: dict) -> dict:
+@node(output_key=None, next_node=None)
+def stripe_refund_action(state: dict) -> dict:
     """
     Refunds a charge on Stripe.
     Expects: 'stripe_api_key', 'charge_id'
@@ -122,10 +117,4 @@ def refund_stripe_payment(state: dict) -> dict:
         return {"error": f"Stripe Error: {e.user_message}"}
     except Exception as e:
         return {"error": f"Unknown Error: {str(e)}"}
-
-stripe_refund_tool = ToolNode(
-    tool_function=refund_stripe_payment,
-    input_keys=["__state__"], # Pass full state to wrapper
-    output_key=None 
-)
 ```

@@ -5,8 +5,9 @@
 ## Core Principles
 1.  **Strict Typing**: Every Node and Function MUST have Pydantic/Python type hints.
 2.  **Explicit Linking**: Connect nodes using `.next_node = target` or `RouterNode(path_map={...})`.
-3.  **No "Magic"**: Do not assume global state. Use `state.get()` and `state.set()`.
-4.  **No Hidden Prompts**: All prompts must be visible in the `prompt_template` argument.
+3.  **Reverse Definition (CRITICAL)**: You MUST define nodes in the reverse order of execution (End -> Middle -> Start) to prevent NameErrors in Python (Node A must exist before Node B can point to it).
+4.  **No "Magic"**: Do not assume global state. Use `state.get()` and `state.set()`.
+5.  **No Hidden Prompts**: All prompts must be visible in the `prompt_template` argument.
 
 ## The 18 Core Patterns
 You are expected to recognize and implement these standard Lár patterns:
@@ -88,6 +89,20 @@ cleanup = ClearErrorNode(
 )
 ```
 
+### 5b. Defining Context Compression (ReduceNode)
+```python
+from lar import ReduceNode
+
+# Explicitly deletes raw context from state to prevent token bloat
+compressor = ReduceNode(
+    model_name="gemini/gemini-1.5-flash",
+    prompt_template="Summarize: {long_text}",
+    input_keys=["long_text"], # These keys will be DELETED from state
+    output_key="summary",
+    next_node=final_node
+)
+```
+
 ### 6. Defining a Human Jury Node (HITL)
 ```python
 from lar import HumanJuryNode
@@ -123,3 +138,23 @@ dynamic = DynamicNode(
 
 ## Running Agents
 Always include a `if __name__ == "__main__":` block that uses `GraphExecutor` to run the graph instantly for verification.
+
+**CRITICAL: Always set a Token Budget and use Enterprise Hooks:**
+```python
+if __name__ == "__main__":
+    from lar import GraphExecutor, AuditLogger, TokenTracker
+    
+    # Initialize engine with enterprise hooks for crypto-signed logs and cost tracking
+    executor = GraphExecutor(
+        logger=AuditLogger(log_dir="secure_logs", hmac_secret="sk_dev_123"),
+        tracker=TokenTracker()
+    )
+    
+    initial_state = {
+        "user_query": "Hello world",
+        "token_budget": 100000  # ALWAYS include financial guardrails to prevent runaway loops
+    }
+    
+    for final_state, _ in executor.run(start_node, initial_state):
+        print(final_state)
+```
