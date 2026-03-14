@@ -241,16 +241,57 @@ You can build any agent with four core components:
     
     **See:** `examples/patterns/16_custom_logger_tracker.py` for full demo
 
-### 4. Node Implementations (The Building Blocks)
+### 4. Node Implementations in v1.7+ (The Building Blocks)
 
-- **`LLMNode`**: The "Thinker." Calls any major LLM API (Gemini, GPT-4, DeepSeek, etc.) to plan, reason, or write code.
-- **`ToolNode`**: The "Actor." Executes deterministic Python functions (API calls, DB lookups). Separates success/error routing.
-- **`RouterNode`**: The "Traffic Cop." Deterministically routes execution to the next node based on state values.
-- **`BatchNode`** *(New)*: The "Parallelizer." Fans out multiple nodes to run concurrently on separate threads.
-- **`ReduceNode`** *(New)*: The "Compressor." Summarizes multi-agent outputs and explicitly deletes raw memory to prevent context bloat.
-- **`DynamicNode`** *(New)*: The "Architect." Can recursively generate and execute new sub-agents at runtime (Fractal Agency).
-- **`HumanJuryNode`**: The "Guard." Pauses execution for explicit human approval via CLI.
-- **`ClearErrorNode`**: The "Janitor." Clears error states to allow robust retry loops.
+Lár execution is simply passing a `GraphState` object from one Node to the next. Here is a breakdown of every core node available in v1.7+, how it works, and how to use it.
+
+#### 1. The Brain: `LLMNode`
+The `LLMNode` is where the generative AI lives. It reads data from the state, generates a response, logs cryptographic tokens, and saves the output back to the state.
+* **How it works:** Uses LiteLLM under the hood, meaning you can plug in OpenAI, Anthropic, or Gemini effortlessly. Crucially, it automatically enforces your `token_budget` and halts if exceeded.
+```python
+from lar import LLMNode
+translator_node = LLMNode(
+    model_name="gpt-4o",
+    system_instruction="You are a professional translator.",
+    prompt_template="Translate this text to French: {english_text}",
+    output_key="french_translation"
+)
+```
+
+#### 2. The Traffic Cop: `RouterNode`
+Sometimes the AI needs to make a decision. The `RouterNode` evaluates the state and directs the flow to different branches.
+* **How it works:** You provide a Python `decision_function` that returns a string. The router matches that string to the `path_map` and pushes the state down the correct branch.
+
+#### 3. The Hands: `ToolNode`
+To send an email, query a database, or execute an API, you use the `ToolNode`.
+* **How it works:** You wrap a standard Python function in a `ToolNode`. The node pulls the arguments from the `GraphState`, runs the script, and saves the result globally.
+
+#### 4. The Scale: `BatchNode` (v1.5+)
+`BatchNode` allows you to execute an entire list of nodes simultaneously in parallel.
+* **How it works:** It spins up parallel threads, gives each thread a perfectly isolated clone of the `GraphState`, runs the nodes, and cleanly merges the results back together.
+
+#### 5. The Memory Manager: `ReduceNode` (v1.6+)
+The `ReduceNode` prevents context bloat using explicit memory compression.
+* **How it works:** It is exactly like an `LLMNode`, but after it generates a summary, it acts like a garbage collector and **deletes** the raw, bloated data keys from the state entirely.
+
+#### 6. The Architect: `DynamicNode` (v1.5+)
+The `DynamicNode` allows recursive generation of graphs during runtime.
+* **How it works:** This node spawns sub-agents recursively, enabling "Fractal Agency" strategies where the graph builds new routing layers dynamically based on its own progress.
+
+#### 7. Regulatory Compliance: `HumanJuryNode`
+For high-risk environments, Article 14 of the EU AI Act requires "Human-in-the-Loop" oversight.
+* **How it works:** This node pauses the entire graph execution, displays the context securely on the CLI, and waits for an explicit human keystroke to approve or reject the action.
+
+#### 8. The Fast Lane: The `@node` Decorator
+The `@node` decorator allows you to instantly convert a Python function into a Lár node.
+* **How it works:** Just tag a function with `@node`. The function takes the `state` as an argument, and whatever it returns gets assigned to the `output_key`.
+```python
+from lar import node
+
+@node(output_key="formatted_date", next_node=llm_node)
+def fix_date(state):
+    return state.get("raw_date").replace("-", "/")
+```
 
 ---
 
@@ -491,8 +532,17 @@ We have provided **21 robust patterns** in the **[`examples/`](examples/)** dire
 | **7** | **[`7_integration_test.py`](examples/patterns/7_integration_test.py)** | Integration Builder (CoinCap) |
 | **8** | **[`8_ab_tester.py`](examples/patterns/8_ab_tester.py)** | A/B Tester (Parallel Prompts) |
 | **9** | **[`9_resumable_graph.py`](examples/patterns/9_resumable_graph.py)** | Time Traveller (Crash & Resume) |
+| **10** | **[`16_custom_logger_tracker.py`](examples/patterns/16_custom_logger_tracker.py)** | Advanced Observability |
 
-#### 3. Compliance & Safety (`examples/compliance/`)
+#### 3. Reasoners & Comparisons (`examples/reasoning_models/`, `examples/comparisons/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_deepseek_r1.py`](examples/reasoning_models/1_deepseek_r1.py)** | Native `<think>` tag parsing |
+| **2** | **[`2_openai_o1.py`](examples/reasoning_models/2_openai_o1.py)** | High-IQ O1 Planner Nodes |
+| **3** | **[`3_liquid_thinking.py`](examples/reasoning_models/3_liquid_thinking.py)** | Fast Local Edge Inferencing |
+| **4** | **[`langchain_swarm_fail.py`](examples/comparisons/langchain_swarm_fail.py)** | Proof of Context Crashes |
+
+#### 4. Compliance & Safety (`examples/compliance/`)
 | # | Pattern | Concept |
 | :---: | :--- | :--- |
 | **1** | **[`1_human_in_the_loop.py`](examples/compliance/1_human_in_the_loop.py)** | User Approval & Interrupts |
@@ -502,8 +552,12 @@ We have provided **21 robust patterns** in the **[`examples/`](examples/)** dire
 | **5** | **[`5_context_contamination_test.py`](examples/compliance/5_context_contamination_test.py)** | Red Teaming: Social Engineering |
 | **6** | **[`6_zombie_action_test.py`](examples/compliance/6_zombie_action_test.py)** | Red Teaming: Stale Authority |
 | **7** | **[`7_hitl_agent.py`](examples/compliance/7_hitl_agent.py)** | Article 14 Compliance Node |
+| **8** | **[`8_hmac_audit_log.py`](examples/compliance/8_hmac_audit_log.py)** | Immutable cryptographic logs |
+| **9** | **[`9_high_risk_trading_hmac.py`](examples/compliance/9_high_risk_trading_hmac.py)** | Algorithmic Trading (SEC) |
+| **10** | **[`10_pharma_clinical_trials_hmac.py`](examples/compliance/10_pharma_clinical_trials_hmac.py)** | FDA 21 CFR Part 11 Trial Logic |
+| **11** | **[`11_verify_audit_log.py`](examples/compliance/11_verify_audit_log.py)** | Standalone Auditor Script |
 
-#### 4. High Scale (`examples/scale/`)
+#### 5. High Scale & Advanced (`examples/scale/`, `examples/advanced/`)
 | # | Pattern | Concept |
 | :---: | :--- | :--- |
 | **1** | **[`1_corporate_swarm.py`](examples/scale/1_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph |
@@ -511,9 +565,10 @@ We have provided **21 robust patterns** in the **[`examples/`](examples/)** dire
 | **3** | **[`3_parallel_newsroom.py`](examples/scale/3_parallel_newsroom.py)** | True Parallelism (`BatchNode`) |
 | **4** | **[`4_parallel_corporate_swarm.py`](examples/scale/4_parallel_corporate_swarm.py)** | Concurrent Branch Execution |
 | **5** | **[`11_map_reduce_budget.py`](examples/advanced/11_map_reduce_budget.py)** | **Memory Compression & Token Budgets** |
+| **6** | **[`fractal_polymath.py`](examples/advanced/fractal_polymath.py)** | **Fractal Agency** (Recursion + Parallelism) |
+| **7** | **[`13_world_model_jepa.py`](examples/advanced/13_world_model_jepa.py)** | **Predictive World Models** |
 
-#### 5. Metacognition (`examples/metacognition/`)
-
+#### 6. Metacognition (`examples/metacognition/`)
 See the **[Metacognition Docs](https://docs.snath.ai/core-concepts/9-metacognition)** for a deep dive.
 
 | # | Pattern | Concept |
@@ -523,11 +578,6 @@ See the **[Metacognition Docs](https://docs.snath.ai/core-concepts/9-metacogniti
 | **3** | **[`3_self_healing.py`](examples/metacognition/3_self_healing.py)** | **Error Recovery** (Injecting Fix Subgraphs) |
 | **4** | **[`4_adaptive_deep_dive.py`](examples/metacognition/4_adaptive_deep_dive.py)** | **Recursive Research** (Spawning Sub-Agents) |
 | **5** | **[`5_expert_summoner.py`](examples/metacognition/5_expert_summoner.py)** | **Dynamic Persona Instantiation** |
-
-#### 6. Advanced Showcase (`examples/advanced/`)
-| # | Pattern | Concept |
-| :---: | :--- | :--- |
-| **1** | **[`fractal_polymath.py`](examples/advanced/fractal_polymath.py)** | **Fractal Agency** (Recursion + Parallelism) |
 
 
 ---

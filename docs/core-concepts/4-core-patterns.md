@@ -22,8 +22,17 @@
 | **7** | **[`7_integration_test.py`](../../examples/patterns/7_integration_test.py)** | Integration Builder (CoinCap) |
 | **8** | **[`8_ab_tester.py`](../../examples/patterns/8_ab_tester.py)** | A/B Tester (Parallel Prompts) |
 | **9** | **[`9_resumable_graph.py`](../../examples/patterns/9_resumable_graph.py)** | Time Traveller (Crash & Resume) |
+| **10** | **[`16_custom_logger_tracker.py`](../../examples/patterns/16_custom_logger_tracker.py)** | Advanced Observability |
 
-#### 3. Compliance & Safety (`examples/compliance/`)
+#### 3. Reasoners & Comparisons (`examples/reasoning_models/`, `examples/comparisons/`)
+| # | Pattern | Concept |
+| :---: | :--- | :--- |
+| **1** | **[`1_deepseek_r1.py`](../../examples/reasoning_models/1_deepseek_r1.py)** | Native `<think>` tag parsing |
+| **2** | **[`2_openai_o1.py`](../../examples/reasoning_models/2_openai_o1.py)** | High-IQ O1 Planner Nodes |
+| **3** | **[`3_liquid_thinking.py`](../../examples/reasoning_models/3_liquid_thinking.py)** | Fast Local Edge Inferencing |
+| **4** | **[`langchain_swarm_fail.py`](../../examples/comparisons/langchain_swarm_fail.py)** | Proof of Context Crashes |
+
+#### 4. Compliance & Safety (`examples/compliance/`)
 | # | Pattern | Concept |
 | :---: | :--- | :--- |
 | **1** | **[`1_human_in_the_loop.py`](../../examples/compliance/1_human_in_the_loop.py)** | User Approval & Interrupts |
@@ -33,20 +42,23 @@
 | **5** | **[`5_context_contamination_test.py`](../../examples/compliance/5_context_contamination_test.py)** | Red Teaming: Social Engineering |
 | **6** | **[`6_zombie_action_test.py`](../../examples/compliance/6_zombie_action_test.py)** | Red Teaming: Stale Authority |
 | **7** | **[`7_hitl_agent.py`](../../examples/compliance/7_hitl_agent.py)** | Article 14 Compliance Node |
-| **8** | **[`8_hmac_audit_log.py`](../../examples/compliance/8_hmac_audit_log.py)** | Cryptographic Audits (HMAC) |
-| **9** | **[`9_high_risk_trading_hmac.py`](../../examples/compliance/9_high_risk_trading_hmac.py)** | Financial Ledger Signing |
-| **10** | **[`10_pharma_clinical_trials_hmac.py`](../../examples/compliance/10_pharma_clinical_trials_hmac.py)** | FDA/GxP Secured Logs |
+| **8** | **[`8_hmac_audit_log.py`](../../examples/compliance/8_hmac_audit_log.py)** | Immutable cryptographic logs |
+| **9** | **[`9_high_risk_trading_hmac.py`](../../examples/compliance/9_high_risk_trading_hmac.py)** | Algorithmic Trading (SEC) |
+| **10** | **[`10_pharma_clinical_trials_hmac.py`](../../examples/compliance/10_pharma_clinical_trials_hmac.py)** | FDA 21 CFR Part 11 Trial Logic |
+| **11** | **[`11_verify_audit_log.py`](../../examples/compliance/11_verify_audit_log.py)** | Standalone Auditor Script |
 
-#### 4. High Scale (`examples/scale/`)
+#### 5. High Scale & Advanced (`examples/scale/`, `examples/advanced/`)
 | # | Pattern | Concept |
 | :---: | :--- | :--- |
 | **1** | **[`1_corporate_swarm.py`](../../examples/scale/1_corporate_swarm.py)** | **Stress Test**: 60+ Node Graph |
 | **2** | **[`2_mini_swarm_pruner.py`](../../examples/scale/2_mini_swarm_pruner.py)** | Dynamic Graph Pruning |
 | **3** | **[`3_parallel_newsroom.py`](../../examples/scale/3_parallel_newsroom.py)** | True Parallelism (`BatchNode`) |
 | **4** | **[`4_parallel_corporate_swarm.py`](../../examples/scale/4_parallel_corporate_swarm.py)** | Concurrent Branch Execution |
+| **5** | **[`11_map_reduce_budget.py`](../../examples/advanced/11_map_reduce_budget.py)** | **Memory Compression & Token Budgets** |
+| **6** | **[`fractal_polymath.py`](../../examples/advanced/fractal_polymath.py)** | **Fractal Agency** (Recursion + Parallelism) |
+| **7** | **[`13_world_model_jepa.py`](../../examples/advanced/13_world_model_jepa.py)** | **Predictive World Models** |
 
-#### 5. Metacognition (`examples/metacognition/`)
-
+#### 6. Metacognition (`examples/metacognition/`)
 See the **[Metacognition Docs](9-metacognition.md)** for a deep dive.
 
 | # | Pattern | Concept |
@@ -56,8 +68,3 @@ See the **[Metacognition Docs](9-metacognition.md)** for a deep dive.
 | **3** | **[`3_self_healing.py`](../../examples/metacognition/3_self_healing.py)** | **Error Recovery** (Injecting Fix Subgraphs) |
 | **4** | **[`4_adaptive_deep_dive.py`](../../examples/metacognition/4_adaptive_deep_dive.py)** | **Recursive Research** (Spawning Sub-Agents) |
 | **5** | **[`5_expert_summoner.py`](../../examples/metacognition/5_expert_summoner.py)** | **Dynamic Persona Instantiation** |
-
-#### 6. Advanced Showcase (`examples/advanced/`)
-| # | Pattern | Concept |
-| :---: | :--- | :--- |
-| **1** | **[`fractal_polymath.py`](../../examples/advanced/fractal_polymath.py)** | **Fractal Agency** (Recursion + Parallelism) |
