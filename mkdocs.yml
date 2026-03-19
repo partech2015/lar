@@ -60,7 +60,6 @@ nav:
     - 'Dynamic Graphs (Metacognition)': core-concepts/9-metacognition.md
     - 'Defensive Constraints (Budgets)': core-concepts/10-defensive-constraints.md
     - 'Fractal Agency (Recursion)': core-concepts/11-fractal-agency.md
-    - 'Solving Catastrophic Forgetting': core-concepts/12-catastrophic-forgetting.md
   - 'Case Studies':
     - 'Red Teaming (Security)': case-studies/red-teaming.md
   - 'Guides':
