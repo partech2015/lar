@@ -18,17 +18,23 @@ description: 专门应对 DeepSeek R1、OpenAI O1 等长思维链推理模型，
   - 节点 1 (`ThinkNode`)：使用 R1 生成纯文本的长串计划和思考推演，存入 `state["deep_thought"]`。
   - 节点 2 (`ExtractNode`)：使用快速的 Flash / Haiku 级别模型，仅以 `state["deep_thought"]` 作为输入，提取出精确的 `JSON` 命令流。
 
-## 战术二：`<think>` 标签免疫术 (The Think-Parser)
-像 DeepSeek R1 这样的模型会在真正的答案前拉出一堆带有 `<think>...</think>` 的自言自语。
-- **做法**：当在 Lár 构建使用此类模型的 `LLMNode` 时，必须提供或插入一段 `OutputParser` (解析器工具)。
-- 指导用户在流转出 `LLMNode` 后，**第一时间**写一个正则是 `re.split(r'</think>', output)` 的纯 Python `ToolNode`。
-- 将“思考过程”分发给 `state["thought_process"]` 以用于审计记账。
-- 将“最终定论”分发给 `state["final_answer"]` 给下一个业务节点，彻底防止下游 Context 被大量无效思考污染。
+## 战术二：原生 `<think>` 标签免疫术 (Native Think-Parser)
+像 DeepSeek R1 这样的模型会在真正的答案前拉出一堆带有 `<think>...</think>` 的自言自语。如果你外接了低级框架，你需要自己写正则。但 Lár 不需要！
+- **做法**：在 Lár (v1.4.1+) 中，你**不需要**指导用户写任何 `ToolNode` 来裁剪文本。
+- **机制**：Lár 引擎的 `LLMNode` 会在底层**自动解析并剥离** `<think>` 标签。
+- **数据走向**：
+  - 纯净的“最终定论”会自动被分发到你设定的 `output_key` 中（供下游业务节点直接作为干净的 JSON 或指令提取）。
+  - 冗长的“思考过程”会被隐式存入审计账本的 `run_metadata["reasoning_content"]` 中，彻底防止下游 Context 被污染，同时保留了 100% 的取证能力。
 
 ## 战术三：大段上下文防爆优化 (Liquid Thinking 模式)
 推理模型所需预算极其昂贵且极耗 Token (Token Burn)。
 - 在使用 o1 级别规划器时，如果 `state` 累积了几万字的历史，不要把它全抛给规划器。
 - 建议用户使用 Lár 的 `ReduceNode` 压榨上下文，或者在传给高智商模型前，动态通过 `RemoveKeyNode` 剥离掉无关的中间键值对。
+
+## 战术四：OpenAI o1 的特殊体质 (o1 Configurations)
+针对 `o1-preview` 或 `o1-mini`：
+- **无 System 角色**：o1 模型通常不支持 `system` 角色设定。在定义 `LLMNode` 时，请将行为约束直接写进业务提示词（`prompt_template`）中。
+- **配置覆盖**：由于 o1 占用大量后台思考配额，必须在 `LLMNode` 初始化时显式传入 `generation_config={"max_completion_tokens": 2000}` 来限制或给予其足够的呼吸空间。
 
 # 提示建议
 当与用户聊到此处时，可以这么跟他们说：

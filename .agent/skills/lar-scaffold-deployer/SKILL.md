@@ -17,10 +17,11 @@ description: 指导开发者使用 Lár CLI 脚手架初始化项目并提供基
   `lar new agent <项目名>`
 - **附带解释**：向其说明该命令会自动生成 `agent.py`（主逻辑）、`pyproject.toml`（带必须的 `lar-engine` 和 `python-dotenv` 依赖，采用 poetry 管理）以及基础的 `.env` 环境变量文件。
 
-## 2. 生产级 API 包装 (FastAPI Delivery)
+## 2. 生产级 API 包装与透明白盒架构 (FastAPI Delivery / Glass Box)
 开发完的 Lár Graph 不能只存在于命令行。
-- **最佳实践**：不要让用户自己死磕 `StreamingResponse`。建议他们引入 `FastAPI`，并将 `GraphExecutor.run()` 或 `run_step_by_step()` 包装在 POST 路由内。
-- **流式返回**：由于 Lár 的每次 step 都能产生状态 Diff，指导用户利用 FastAPI 的 `Server-Sent Events (SSE)` 或 WebSocket 接口，把每一步的思考过程（节点流转信息和增量 Token）实时推流给前端，不要等全跑完才返回。
+- **最佳实践**：参考项目目录下的 `examples/basic/4_fastapi_server.py`。不要让用户自己死磕 `StreamingResponse`。建议他们引入 `FastAPI`，并将 `GraphExecutor.run_step_by_step()` 包装在 POST 路由内。
+- **强制的透明返回体 (Glass Box Return)**：因为 Lár 是主打“取证与高可控”的。在 API 的返回值中，绝对不能只把 `response` 丢给客户端。**必须**将 `list(executor.run_step_by_step(...))` 得到的所有步骤日志作为一个 `audit_log` 数组连同结果一起返回（例如 `return {"status": "success", "result": "...", "audit_log": result_log}`），让前端能够画出 Agent 的思考节点图。
+- **流式推流 (SSE)**：如果任务执行缓慢，指导用户利用 FastAPI 的 `Server-Sent Events (SSE)`，把每一步的思考过程（节点流转信息和增量 Token）实时推流给前端，不要等全跑完才返回。
 
 ## 3. 企业级执行器埋点 (Enterprise Hooks)
 在部署时，这是绝对不能漏掉的一环！

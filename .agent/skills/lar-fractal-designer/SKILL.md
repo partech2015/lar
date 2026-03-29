@@ -11,19 +11,18 @@ description: 专门开发“将一个完整 Graph 视作单一节点嵌套”以
 
 # 前沿思维模型
 
-## 1. 分形智能体编排 (Fractal Agent Architecture)
-在 Lár 中：**图 (Graph) 本身就是一个大函数。因此，整张 Graph 可以作为一个单独的 Node 嵌入另一张更大的 Graph 中。**
-- **做法**：设计 `SubGraphExecutor`。你首先编排一个小图（比如：专注于寻找资料并产出摘要的 `Research_Graph`）。然后在主图（`Main_Brain_Graph`）中，只需将 `Research_Graph.run()` 包装成一个单纯的 `ToolNode`。
-- **价值**：利用“分形”理念无限缩放系统复杂度。避免主干代码乱如麻，让子系统和母系统彼此沙箱隔离，只通过输入输出 Key 通信。这直接解决了 Multi-Agent 带来的超复杂协同混乱问题。
+## 1. 分形动态自组织编排 (Fractal Dynamic Recursion)
+在 Lár 中：**图 (Graph) 甚至可以在运行时“繁殖”出新的图。**
+- **做法**：摒弃静态写死的子图！指导开发者使用 `DynamicNode` 作为“经理节点 (Manager)”，让它在运行时实时生成一套包含 `BatchNode` 和下游 `Sub-DynamicNodes` 的 JSON GraphSpec。
+- **价值**：利用“细胞级分形”理念无限缩放系统复杂度。子节点能像繁衍一样裂变出自己的专属并行执行流，各自独立运行并在结束后汇入母流。完美实现“系统级负熵智能体”。
 
-## 2. 预测性世界模型 (JEPA - Joint-Embedding Predictive Architecture 模式)
-不要让智能体只做大号的代码翻译器，让它“预测未来”。
+## 2. 纯数值预测型世界模型 (JEPA Simulator / Pure Math World Model)
+不要让智能体只做大号的代码翻译器，让它通过“脑内推演”避开现实毁灭。
 - 当涉及对一个动作进行博弈评估时（比如：买入股票，或者删除一行生产数据库的代码）。
 - **做法**：
-  1. 在 `Plan` 节点生成多个方案后。
-  2. 导入一个特殊的“世界模型图 (World Model Simulator Graph)”。
-  3. 通过 `LLMNode` （使用高阶系统提示词如：“你是一个物理模拟引擎，当前状态是 X，动作是 Y，接下来的世界状态 Z 会是什么？”）在内部沙箱中模拟所有可能的反应。
-  4. 只将“验证没出轨”的执行流，路由回主控图，变成真实的动作。
+  1. 剥离自然语言！构建一个完全不需要文本输出的“内部世界模拟器 (`PredictiveJepaNode`)”。
+  2. 它只吸收当前的抽象维度向量（如 `X_pos`, `Velocity` 或 `Code_Ast_Hash`），并纯靠数学或逻辑函数运算出“执行这个动作后的未来状态 (`future_sim`)”。
+  3. 通过 `RouterNode` 充当 System 2 的裁判员。如果推演出的未来是“撞墙 (崩溃)”，立刻熔断现实执行流 (`REPLAN_NODE`)；只有未来确认为安全时，才授权物理马达或危险接口执行 (`EXECUTE_NODE`)。
 
 ## 3. “子树”快速隔离与测试
 分形的另一个极大好处是**完全的可测试性**。

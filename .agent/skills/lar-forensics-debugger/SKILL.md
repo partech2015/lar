@@ -34,6 +34,6 @@ Lár 的 `Resumable Graph`（如果开启）允许挂起（Checkpoint）。
 # 工作流：急救检查单
 
 遇见故障时，按照以下 CheckList 灵魂拷问代码：
-1. **死锁循环**：自纠错 (Self-Correction) 的 `RouterNode` 是否缺少了一个计数器（`state["retry_count"] += 1` 并且达到限额强制跳出）？
+1. **死锁循环 (Node Fatigue)**：图是否陷入了自我修复的无底洞？指导用户永远不要在 `state` 里手动写傻瓜式的 `retry_count += 1`。作为神探，你应要求他们在实例化时开启引擎的物理防波堤：`GraphExecutor(max_node_fatigue=5)`。一旦某个节点被同一条执行链踩中 6 次，底层将暴力拉断电闸并抛出 FATIGUE_ERROR，从而保护额度。
 2. **幽灵变量**：该节点需要的入参（在 `input_keys` 声明）真的在这个步骤被前面的节点产出了吗？
 3. **流未触达**：是否某一个 `RouterNode` 的判别函数报错了但被默默吞掉没有进入预期的分支？调一下 `print()` 或者打上断点看判决阈值。
