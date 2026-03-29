@@ -1,0 +1,241 @@
+# Lár 框架系统提示词
+
+## 定义
+Lár 是首个**确定性智能体框架**：可复现、可审计且支持物理隔离 (Air-Gap)。它是唯一一个开箱即用即可生成**可加密验证的执行日志**的框架。
+
+## 验证与审计
+Lár 专为**高保障环境**（金融、法律、研究）而设计。
+- **不可变日志**：每一次状态更改都可进行加密哈希。
+- **科学复现性**：相同的种子 + 相同的图 = 完全一致的执行路径。用“工作流”取代“聊天机器人”。
+- **支持物理隔离 (Air-Gap)**：
+    1. 在笔记本电脑上进行非涉密开发。
+    2. 序列化为标准化 JSON (`executor.save_to_file`)。
+    3. 将 JSON 资产转移到物理隔离/SCIF 网络。
+    4. 在 Docker 上本地运行。
+
+## 安装
+```bash
+pip install lar-engine
+# 需要在 .env 中设置 LiteLLM 所需的密钥（例如 OPENAI_API_KEY, GEMINI_API_KEY）
+```
+
+## 核心原语
+
+### 1. GraphState
+一个维护智能体内存的字典包装器。
+```python
+class GraphState:
+    def __init__(self, initial_state: dict): ...
+    def get(self, key: str) -> Any: ...
+    def set(self, key: str, value: Any): ...
+    def get_all(self) -> dict: ...
+```
+
+### 2. LLMNode
+使用 LiteLLM 执行 LLM 调用。
+```python
+class LLMNode(BaseNode):
+    def __init__(
+        self,
+        model_name: str,          # 例如 "gpt-4", "gemini/gemini-1.5-pro", "ollama/phi4"
+        prompt_template: str,     # Python 格式化字符串，如 "Hello {name}"
+        output_key: str,          # 保存结果的状态键
+        next_node: BaseNode = None,
+        max_retries: int = 3,
+        system_instruction: str = None,
+        generation_config: dict = None # 可传递 {"api_base": "...", "temperature": 0.5}
+    ): ...
+```
+
+#### 示例：通用 OpenAI / Llama.cpp
+你可以使用 `generation_config` 连接到任何通用的 OpenAI 兼容端点（如 `vLLM` 或 `llama.cpp` 服务器）。
+
+```python
+node = LLMNode(
+    model_name="openai/my-custom-model",
+    prompt_template="Hello world",
+    output_key="result",
+    generation_config={
+        "api_base": "http://localhost:8080/v1", # 指向你的本地服务器
+        "api_key": "sk-xxx" # 如果服务器有要求，可选
+    }
+)
+```
+
+### 3. ToolNode
+执行一个 Python 函数。
+```python
+class ToolNode(BaseNode):
+    def __init__(
+        self,
+        tool_function: Callable,  # Python 函数
+        input_keys: List[str],    # 作为参数传递的状态键（顺序敏感）
+        output_key: str,          # 保存结果的状态键（若为 None 则合并字典）
+        next_node: BaseNode,
+        error_node: BaseNode = None
+    ): ...
+```
+
+### 4. RouterNode
+实现条件逻辑（if/else）。
+```python
+class RouterNode(BaseNode):
+    def __init__(
+        self,
+        decision_function: Callable[[GraphState], str], # 返回一个路由键
+        path_map: Dict[str, BaseNode],                 # 映射 键 -> 下一节点
+        default_node: BaseNode = None
+    ): ...
+```
+
+### 5. GraphExecutor
+运行图。
+```python
+class GraphExecutor:
+    def __init__(self, log_dir: str = "lar_logs"): ...
+    def run_step_by_step(self, start_node: BaseNode, initial_state: dict): ...
+```
+
+### 6. DynamicNode
+认知原语，要求 LLM 在运行时设计一个子图。
+```python
+class DynamicNode(BaseNode):
+    def __init__(
+        self,
+        llm_model: str,
+        prompt_template: str,
+        validator: TopologyValidator,
+        next_node: BaseNode = None,
+        context_keys: List[str] = [],
+        system_instruction: str = None
+    ): ...
+```
+
+### 7. TopologyValidator
+强制执行动态图安全性（严禁循环、仅限允许的工具、结构完整性）。
+```python
+class TopologyValidator:
+    def __init__(self, allowed_tools: List[callable] = None): ...
+    def validate(self, graph_spec: dict): ...
+```
+
+## Hello World (分流智能体)
+```python
+import os
+from lar.node import LLMNode, RouterNode, ToolNode
+from lar.executor import GraphExecutor
+
+# 1. 定义节点
+triage = LLMNode(
+    model_name="gpt-4o",
+    prompt_template="分类：'{input}'。仅回答 BILLING 或 TECHNICAL。",
+    output_key="classification",
+    system_instruction="你是一个分流助手。"
+)
+
+def billing_logic(ticket_id: str):
+    return f"已为 {ticket_id} 处理退款。"
+
+billing_tool = ToolNode(
+    tool_function=billing_logic,
+    input_keys=["ticket_id"],
+    output_key="result",
+    next_node=None
+)
+
+tech_support = LLMNode(
+    model_name="gpt-4o",
+    prompt_template="解决技术问题：{input}",
+    output_key="result"
+)
+
+# 2. 定义路由逻辑
+def route_request(state):
+    return state.get("classification").strip().upper()
+
+router = RouterNode(
+    decision_function=route_request,
+    path_map={
+        "BILLING": billing_tool,
+        "TECHNICAL": tech_support
+    }
+)
+
+# 3. 连接图
+triage.next_node = router
+
+# 4. 执行
+executor = GraphExecutor()
+initial_state = {"input": "我需要退款", "ticket_id": "123"}
+
+print("正在运行...")
+for step in executor.run_step_by_step(triage, initial_state):
+    print(f"步骤 {step['step']}: {step['node']} -> {step['outcome']}")
+
+print("最终状态:", step['state_diff'])
+```
+
+## 高级模式
+
+### 自我修复循环 (Self-Correction Loop)
+这是智能体编写代码、测试代码，如果测试失败则循环回来修正错误的模式。
+
+```python
+from lar import *
+
+# 1. 定义逻辑
+def run_test(code: str):
+    # 执行并测试代码...
+    pass
+
+def judge(state):
+    return "failure" if state.get("last_error") else "success"
+
+# 2. 节点
+corrector = LLMNode(..., system_instruction="基于错误修正代码：{last_error}")
+tester = ToolNode(tool_function=run_test, ...)
+judge_node = RouterNode(decision_function=judge, path_map={
+    "success": success_node,
+    "failure": corrector
+})
+
+# 3. 连接（循环）
+# tester -> judge -> (failure) -> corrector -> (clear error) -> tester
+tester.next_node = judge
+tester.error_node = judge
+corrector.next_node = ClearErrorNode(next_node=tester)
+```
+
+## 部署与序列化
+为了部署到生产环境或用于物理隔离环境，请将图序列化为标准化的 LARASpec JSON 格式。
+
+```python
+from lar.serializer import export_graph_to_json
+
+# 从入口节点开始序列化图
+json_output = export_graph_to_json(
+    start_node=triage,
+    name="分流机器人",
+    description="自动分流系统",
+    version="1.1.0"
+)
+
+# 保存到文件
+with open("agent.json", "w") as f:
+    f.write(json_output)
+
+print("生成资产：agent.json")
+```
+
+## API 参考 (GraphExecutor)
+| 方法 | 签名 | 描述 |
+|--------|-----------|-------------|
+| `__init__` | `(log_dir="lar_logs")` | 初始化执行器和日志目录。 |
+| `run_step_by_step` | `(start_node, initial_state)` | 生成器，产出每一个执行步骤。 |
+
+### 审计日志
+`GraphExecutor` 会自动在 `lar_logs/` 中保存每一次运行的 JSON 日志。
+每一步包含：
+- `state_before`: 执行前的快照。
+- `state_diff`: 仅包含变化的部分（高效存储）。
+- `run_metadata`: Token 使用情况（提示词/补全）和模型名称。
